@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
@@ -47,4 +48,12 @@ public class Project {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Department department;
+
+    @ManyToMany
+    @JoinTable(
+            name = "project_member",  // Specify the name of the join table
+            joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
+            inverseJoinColumns = @JoinColumn(name = "user_id", nullable = false)  // Column in the join table for Architecture
+    )
+    private Set<User> users;
 }

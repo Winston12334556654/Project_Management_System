@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -63,6 +64,10 @@ public class Issue {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Project project;
+
+    @OneToMany(mappedBy = "issue")
+    private Set<AssignIssue> assignIssues;
+
 
 
 }

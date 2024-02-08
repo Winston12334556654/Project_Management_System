@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" >
+
+
+<!-- Mirrored from themesbrand.com/velzon/html/material/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:43:02 GMT -->
+<head th:replace="~{layout :: head}">
+
+    <meta charset='utf-8' />
+
+</head>
+
+<body>
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+    <div id="header-container">
+        <header th:replace="~{header :: header}"></header>
+    </div>
+
+
+    <!-- ========== App Menu ========== -->
+    <div id="navbar-container">
+        <div th:replace="~{navbar :: navbar}"></div>
+    </div>
+</div>
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+<div id='calendar'></div>
+        </div>
+    </div>
+</div>
+
+
+
+<div th:replace="~{layout :: footer}"></div>
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css' />
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: [
+                {
+                    title: 'Issue 1 ',
+                    start: '2024-02-06T10:00:00',
+                    end: '2024-02-08T12:00:00'
+                },
+                {
+                    title: 'Issue 2 ',
+                    start: '2024-02-08T14:00:00',
+                    end: '2024-02-12T16:00:00'
+                }
+                // Add more events as needed
+            ]
+        });
+        calendar.render();
+    });
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -86,4 +86,10 @@ public class PageController {
          return "login";
 
     }
+
+    @GetMapping("/calendar")
+    public String getCalendar(){
+
+        return "calendar";
+    }
 }

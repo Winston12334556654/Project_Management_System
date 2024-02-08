@@ -2,7 +2,7 @@
 let departmentList = [];
 document.addEventListener('DOMContentLoaded', () => {
     // Make an AJAX request to fetch data from the Rest API endpoint
-    fetch('/departments')
+    fetch('/departments-selector')
         .then(response => response.json())
         .then(data => {
             console.log('All department list: ', data);

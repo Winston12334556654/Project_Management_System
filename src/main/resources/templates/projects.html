@@ -67,7 +67,7 @@
             <div class="row g-4 mb-3">
                 <div class="col-sm-auto">
 
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="ri-add-line align-bottom me-1"></i>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="departmentGetter()"><i class="ri-add-line align-bottom me-1"></i>
                         Create project
                     </button>
                 </div>
@@ -951,6 +951,14 @@
                                 });
                         });
                     </script>
+                    <!--Departments-->
+                    <div class="mb-3">
+                        <label class="form-label" th:for="project-department-input">Department</label>
+                        <select class="form-select" data-choices data-choices-search-false th:id="project-department-input" name="department">
+
+                        </select>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label" th:for="project-category-input">Category</label>
 
@@ -999,9 +1007,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!--Departments-->
-
 
                 <div class="modal-footer">
                     <div class="text-end mb-4">

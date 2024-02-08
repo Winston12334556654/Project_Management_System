@@ -20,16 +20,31 @@ script.src = 'https://code.jquery.com/jquery-3.6.4.min.js';
 document.body.appendChild(script);
 
 <!--Project creation-->
+function departmentGetter(){
+    fetch('/departments-selector')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(department=>{
+                const option = document.createElement('option');
+                option.value = department.id;
+                option.text = department.name;
+                document.getElementById('project-department-input').createElement(option);
+            })
+        });
+}
 
 function stripHtmlTags(html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || "";
 }
+
 function showData() {
 
     document.getElementById("formAuthor").addEventListener("submit", async function (event) {
         event.preventDefault();
         console.log("submitting form...");
+
+
 
         let editorData = window.ckeditor.getData();
         let plainTextData = stripHtmlTags(editorData);
