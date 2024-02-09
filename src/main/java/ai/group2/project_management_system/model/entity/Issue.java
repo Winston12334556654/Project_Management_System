@@ -68,6 +68,8 @@ public class Issue {
     @OneToMany(mappedBy = "issue")
     private Set<AssignIssue> assignIssues;
 
+    @Column(nullable = false)
+    private boolean isActive;
 
 
 }

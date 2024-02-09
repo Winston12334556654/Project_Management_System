@@ -194,7 +194,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card tasks-box  todo"   draggable="true">
+                                    <div class="card tasks-box  todo" draggable="true">
                                         <div class="card-body">
                                             <div class="d-flex mb-2">
                                                 <div class="flex-grow-1">
@@ -252,7 +252,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card tasks-box  todo"   draggable="true">
+                                    <div class="card tasks-box  todo" draggable="true">
                                         <div class="card-body">
                                             <div class="d-flex mb-2">
                                                 <div class="flex-grow-1">
@@ -312,6 +312,7 @@
                                     </div>                               
                                     
                                 </div>
+
                                 
                             </div>
                         
@@ -399,8 +400,9 @@
                         
                        
                     </div>
-                    <!--end task-board-->                   
+                    <!--end task-board-->
 
+                    <!--create issue modal form-->
                     <div class="modal fade" id="createrissueModal" tabindex="-1" aria-labelledby="createrissueModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content border-0">
@@ -416,11 +418,10 @@
                                                 <div class="input-light">
                                                     <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
                                                         <option selected disabled>Project Name</option>
-                                                        
-                                                        <option value="New">A</option>
-                                                        <option value="Pending">B</option>
-                                                        <option value="Inprogress">C</option>
-                                                        <option value="Completed">D</option>
+                                                        <option value="New">New</option>
+                                                        <option value="Pending">Pending</option>
+                                                        <option value="In progress">In progress</option>
+                                                        <option value="Completed">Completed</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -430,16 +431,19 @@
                                                 <input type="text" class="form-control" id="sub-tasks" placeholder="Issue title">
                                             </div>
                                             <!--end col-->
+
                                             <div class="col-lg-12">
                                                 <label for="sub-tasks" class="form-label">Issue Type</label>
                                                 <div class="input-light">
                                                     <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
                                                         <option selected disabled>Issue Type</option>
-                                                        <option value="all">All</option>
-                                                        <option value="New">A</option>
-                                                        <option value="Pending">B</option>
-                                                        <option value="Inprogress">C</option>
-                                                        <option value="Completed">D</option>
+                                                        <option value="Task">Task</option>
+                                                        <option value="Request">Request</option>
+                                                        <option value="QA">QA</option>
+                                                        <option value="Coding Bug">Coding Bug</option>
+                                                        <option value="Change Request">Change Request</option>
+                                                        <option value="Problem">Problem</option>
+                                                        <option value="Other">Other</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -447,14 +451,7 @@
                                             <div class="col-lg-12">
                                                 <label for="sub-tasks" class="form-label">Issue Category</label>
                                                 <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                        <option selected disabled>Category</option>
-                                                        <option value="all">All</option>
-                                                        <option value="New">A</option>
-                                                        <option value="Pending">B</option>
-                                                        <option value="Inprogress">C</option>
-                                                        <option value="Completed">D</option>
-                                                    </select>
+                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="issue-category-input" onclick="getCategory()"></select>
                                                 </div>
                                             </div>
                                             <!--end col-->
@@ -488,7 +485,8 @@
                                                                         <span class="flex-grow-1 ms-2" id="userLabel">
                                                                             Anna Adame
                                                                         </span>   
-                                                                </div>                                                    <div class="d-flex justify-content-center">
+                                                                </div>
+                                                                <div class="d-flex justify-content-center">
                                                                     <!-- <a href="pages-profile.html" class="btn btn-sm btn-light view-btn">View </a> -->
                                                                     <button class="btn btn-sm btn-light" id="view-btn">View</button>
                                                                 </div> 
@@ -672,6 +670,7 @@
                     </div>
                     <!--end add create issue modal-->
 
+                    <!--update issue modal form-->
                     <div class="modal fade" id="updateissueModal" tabindex="-1" aria-labelledby="updateissueModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content border-0">
@@ -942,8 +941,9 @@
                             </div>
                         </div>
                     </div>
-                    <!--end update issue modal-->                 
+                    <!--end update issue modal-->
 
+                    <!--delete record modal form-->
                     <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -967,6 +967,7 @@
                         </div>
                     </div>
                     <!--end modal -->
+
                      <!--View Modal-->
   <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -1158,7 +1159,7 @@
                 viewModal.show();
             });
 
-            document.getElementById('create-issue').addEventListener('click', ()=>{
+            document.getElementById('create-issue').addEventListener('click', function (){
                 createIssueModal.show();
             })
     
