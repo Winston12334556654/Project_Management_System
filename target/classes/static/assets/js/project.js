@@ -20,18 +20,86 @@ script.src = 'https://code.jquery.com/jquery-3.6.4.min.js';
 document.body.appendChild(script);
 
 <!--Project creation-->
-function departmentGetter(){
-    fetch('/departments-selector')
+<!--Getting Users-->
+function userGetter(){
+    const url = '/member-selector';
+    fetch(url, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+        }
+    })
         .then(response => response.json())
         .then(data => {
-            data.forEach(department=>{
+            const teamMemberList = document.getElementById('team-member-list');
+            teamMemberList.innerHTML = ''; // Clear any existing content
+
+            data.forEach(user => {
+                const listItem = document.createElement('li');
+
+
+
+            });
+        }).catch(error => console.error("Error:", error));
+}
+
+<!--Getting Department-->
+function departmentGetter() {
+    const url = '/departments-selector';
+    fetch(url, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            const selectElement = document.getElementById('project-department-input');
+            // Clear existing options
+            selectElement.innerHTML = '';
+            // Create and append options for each department
+            data.forEach(department => {
                 const option = document.createElement('option');
                 option.value = department.id;
-                option.text = department.name;
-                document.getElementById('project-department-input').createElement(option);
-            })
-        });
+                option.textContent = department.name;
+                selectElement.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Error:", error));
 }
+
+
+function stripHtmlTags(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+}
+function selectMembers() {
+    const url = '/members-selector';
+    fetch(url, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            const selectElement = document.getElementById('project-crab-input');
+            // Clear existing options
+            selectElement.innerHTML = '';
+            // Create and append options for each department
+            data.forEach(department => {
+                const option = document.createElement('option');
+                option.value = department.id;
+                option.textContent = department.name;
+                selectElement.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Error:", error));
+}
+
 
 function stripHtmlTags(html) {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -43,8 +111,6 @@ function showData() {
     document.getElementById("formAuthor").addEventListener("submit", async function (event) {
         event.preventDefault();
         console.log("submitting form...");
-
-
 
         let editorData = window.ckeditor.getData();
         let plainTextData = stripHtmlTags(editorData);
@@ -58,7 +124,10 @@ function showData() {
             priority: document.getElementById('choices-priority-input').value,
             planStartDate: document.getElementById('datepicker-start-date-input').value,
             planEndDate: document.getElementById('datepicker-end-date-input').value,
-            status: document.getElementById('project-status-input').value
+            status: document.getElementById('project-status-input').value,
+            department: {
+                id: document.getElementById('project-department-input').value
+            }
         };
 
         console.log("there");

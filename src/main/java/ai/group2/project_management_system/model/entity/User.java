@@ -37,10 +37,13 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private Set<Project> projects;
+<<<<<<< HEAD
+=======
 
     @OneToMany(mappedBy = "user")
     private Set<AssignIssue> assignIssues;
 
+>>>>>>> 2338aebb91284745344c8f8e06e2367a6817922f
 
     @Override
     public String toString() {

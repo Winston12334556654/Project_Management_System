@@ -67,9 +67,10 @@
             <div class="row g-4 mb-3">
                 <div class="col-sm-auto">
 
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="departmentGetter()"><i class="ri-add-line align-bottom me-1"></i>
-                        Create project
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="departmentGetter()">
+                        <i class="ri-add-line align-bottom me-1"></i>Create project
                     </button>
+
                 </div>
                 <div class="col-sm">
                     <div class="d-flex justify-content-sm-end gap-2">
@@ -953,11 +954,10 @@
                     </script>
                     <!--Departments-->
                     <div class="mb-3">
-                        <label class="form-label" th:for="project-department-input">Department</label>
-                        <select class="form-select" data-choices data-choices-search-false th:id="project-department-input" name="department">
-
-                        </select>
+                        <label class="form-label" for="project-department-input">Department</label>
+                        <select class="form-select" data-choices data-choices-search-false id="project-department-input" name="department" onclick="userGetter()"></select>
                     </div>
+
 
                     <div class="mb-3">
                         <label class="form-label" th:for="project-category-input">Category</label>
@@ -1007,6 +1007,16 @@
                         </div>
                     </div>
                 </div>
+                <!--Members-->
+                <div class="col-lg-12">
+                    <label th:for="tasks-progress" class="form-label">Add Team Member</label>
+                    <div data-simplebar style="height: 95px;">
+                        <ul class="list-unstyled vstack gap-2 mb-0" th:id="team-member-list">
+                            <!-- Placeholder for dynamic content -->
+                        </ul>
+                    </div>
+                </div>
+
 
                 <div class="modal-footer">
                     <div class="text-end mb-4">
@@ -1018,6 +1028,7 @@
             </div>
         </div>
     </div>
+
 </form>
 <!--Update Modal-->
 <!--<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">-->
