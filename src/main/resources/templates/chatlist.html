@@ -1,260 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>whatsapp clone</title>
-    <link rel="stylesheet" th:href="@{/assets/css/chatlist.css}" />
-    <link
-            rel="stylesheet"
-            th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css}"/>
+    <title>Chat</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" >
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" >
+    <!-- CSS -->
+    <link  rel="stylesheet" href="/assets/css/chatlist.css" >
 </head>
-<style>
-    .fa-location-arrow {
-        font-size: 30px; /* Adjust the size as needed */
-        color: #86A7FC;
-    }
-</style>
 <body>
-<div class="container1">
-    <div class="whatapp_Box">
-        <div class="_header">
-            <div class="top_header_content">
-                <h3>Chat List</h3>
-            </div>
-            <div class="bottom_header_content">
-                <h5>Show All</h5>
-            </div>
+<div class="container-fluid h-100">
+    <div class="row justify-content-center h-100">
+        <div class="d-flex justify-content-center align-items-center">
+            <button class="btn btn-lg btn-secondary" onclick="location.href='/teamleader-issueboard'">Back</button>
         </div>
-
-        <div class="screen">
-            <div class="contact_list">
-                <ul  class=" userContactList">
-                    <li>
-                        <div class="profile_section">
-                            <img
-                                    src="icons/pngtree-male-avatar-simple-cartoon-design-png-image_1934458.jpg"
-                                    alt=""
-                            />
-                        </div>
-                        <div class="contact_section">
-                            <h5>Ankit Jangir 2</h5>
-                            <small>channel ka link</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">10:00 am</small>
-                            <small class="count">14</small>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img2.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>Aman</h5>
-                            <small>Lorem ipsum dolor sit</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">11:00 am</small>
-                            <!-- <small class="count">44</small> -->
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img3.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>anish yadav</h5>
-                            <small>Lorem ipsum dolor sit amet consectetur</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">10:00 am</small>
-                            <!-- <small class="count">44</small> -->
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img4.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>mitali</h5>
-                            <small>Lorem ipsum dolor sit amet consectetur</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">11:09 am</small>
-                            <small class="count">69</small>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img5.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>avni singh</h5>
-                            <small>quod quos ducimus libero. Voluptate!</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">10:00 am</small>
-                            <small class="count">44</small>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img6.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>rohan</h5>
-                            <small>quod quos ducimus libero. Voluptate!</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">10:00 am</small>
-                            <!-- <small class="count">44</small> -->
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img7.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>harry</h5>
-                            <small>quod quos ducimus libero. Voluptate!</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">10:00 am</small>
-                            <!-- <small class="count">44</small> -->
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img8.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>akhil</h5>
-                            <small>quod quos ducimus libero. Voluptate!</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">10:00 am</small>
-                            <!-- <small class="count">44</small> -->
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img9.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>amit singh</h5>
-                            <small>quod quos ducimus libero. Voluptate!</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">10:00 am</small>
-                            <!-- <small class="count">44</small> -->
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img10.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>farhan</h5>
-                            <small>quod quos ducimus libero. Voluptate!</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">10:00 am</small>
-                            <small class="count">44</small>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="profile_section">
-                            <img src="icons/img11.png" alt="" />
-                        </div>
-                        <div class="contact_section">
-                            <h5>rahul jangir</h5>
-                            <small>quod quos ducimus libero. Voluptate!</small>
-                        </div>
-                        <div class="msg_counter">
-                            <small class="time">10:00 am</small>
-                            <small class="count">44</small>
-                        </div>
-                    </li>
-                </ul>
-
-            </div>
-
-        </div>
-        <div class="contact_chat_area">
-            <div class="header_contact">
-                <div class="profile_contact">
-                    <i class="fa fa-arrow-left "></i>
-
-                </div>
-                <div class="contact_name ">
-                    <img src="icons/img8.png" alt="">
-                    <div style="margin-left: 10px;">
-                        <h5>Ankit Jangir</h5>
-                        <small>online</small>
+        <div class="col-md-4 col-xl-3 chat"><div class="card mb-sm-3 mb-md-0 contacts_card">
+            <div class="card-header">
+                <div class="input-group">
+                    <input type="text" placeholder="Search..." name="" class="form-control search">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
                     </div>
-
-                </div>
-                <div></div>
-            </div>
-            <div class="chat_screen">
-                <div class="chat_">
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Alias sapiente deleniti earum commodi quod quae explicabo maxime? Molestiae excepturi ipsum labore at, asperiores doloremque quidem vitae alias maiores repellendus beatae.</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
-                    <p class="left_chat">this is the left chat</p>
-                    <p class="right_chat">this is the right chat</p>
                 </div>
             </div>
-
-            <div class="input_">
-                <button type="button" class="btn btn-success"><i class=""></i></button>
-                <input type="text" placeholder="Message">
-                <!-- <div class="more_icons">
-
-                    <i class="fa fa-location-arrow" aria-hidden="true"></i>
-                    <i class="fa fa-camera" aria-hidden="true"></i>
-                 </div>  -->
-                <div class="more_icons">
-                    <i class="fa fa-location-arrow "></i>
+            <div class="card-body contacts_body">
+                <ui class="contacts">
+                    <li class="active">
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info">
+                                <span>Khalid Charif</span>
+                                <p>Online</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="https://2.bp.blogspot.com/-8ytYF7cfPkQ/WkPe1-rtrcI/AAAAAAAAGqU/FGfTDVgkcIwmOTtjLka51vineFBExJuSACLcBGAs/s320/31.jpg" class="rounded-circle user_img">
+                                <span class="online_icon offline"></span>
+                            </div>
+                            <div class="user_info">
+                                <span>Chaymae Naim</span>
+                                <p>Left 7 mins ago</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="https://i.pinimg.com/originals/ac/b9/90/acb990190ca1ddbb9b20db303375bb58.jpg" class="rounded-circle user_img">
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info">
+                                <span>Sami Rafi</span>
+                                <p>Online</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="https://avatars.hsoubcdn.com/ed57f9e6329993084a436b89498b6088?s=256" class="rounded-circle user_img">
+                                <span class="online_icon offline"></span>
+                            </div>
+                            <div class="user_info">
+                                <span>Hassan Agmir</span>
+                                <p>Left 30 mins ago</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg" class="rounded-circle user_img">
+                                <span class="online_icon offline"></span>
+                            </div>
+                            <div class="user_info">
+                                <span>Abdou Chatabi</span>
+                                <p>Left 50 mins ago</p>
+                            </div>
+                        </div>
+                    </li>
+                </ui>
+            </div>
+            <div class="card-footer"></div>
+        </div></div>
+        <div class="col-md-8 col-xl-6 chat">
+            <div class="card">
+                <div class="card-header msg_head">
+                    <div class="d-flex bd-highlight">
+                        <div class="img_cont">
+                            <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+                            <span class="online_icon"></span>
+                        </div>
+                        <div class="user_info">
+                            <span>khalid Charif</span>
+                            <p>1767 Messages</p>
+                        </div>
+                        <div class="video_cam">
+                            <span><i class="fas fa-video"></i></span>
+                            <span><i class="fas fa-phone"></i></span>
+                        </div>
+                    </div>
+                    <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+                    <div class="action_menu">
+                        <ul>
+                            <li><i class="fas fa-user-circle"></i> View profile</li>
+                            <li><i class="fas fa-users"></i> Add to close friends</li>
+                            <li><i class="fas fa-plus"></i> Add to group</li>
+                            <li><i class="fas fa-ban"></i> Block</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body msg_card_body">
+                    <div class="d-flex justify-content-start mb-4">
+                        <div class="img_cont_msg">
+                            <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+                        </div>
+                        <div class="msg_cotainer">
+                            Hi, how are you samim?
+                            <span class="msg_time">8:40 AM, Today</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-4">
+                        <div class="msg_cotainer_send">
+                            Hi Khalid i am good tnx how about you?
+                            <span class="msg_time_send">8:55 AM, Today</span>
+                        </div>
+                        <div class="img_cont_msg">
+                            <img src="https://avatars.hsoubcdn.com/ed57f9e6329993084a436b89498b6088?s=256" class="rounded-circle user_img_msg">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start mb-4">
+                        <div class="img_cont_msg">
+                            <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+                        </div>
+                        <div class="msg_cotainer">
+                            I am good too, thank you for your chat template
+                            <span class="msg_time">9:00 AM, Today</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-4">
+                        <div class="msg_cotainer_send">
+                            You are welcome
+                            <span class="msg_time_send">9:05 AM, Today</span>
+                        </div>
+                        <div class="img_cont_msg">
+                            <img src="https://avatars.hsoubcdn.com/ed57f9e6329993084a436b89498b6088?s=256" class="rounded-circle user_img_msg">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start mb-4">
+                        <div class="img_cont_msg">
+                            <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+                        </div>
+                        <div class="msg_cotainer">
+                            I am looking for your next templates
+                            <span class="msg_time">9:07 AM, Today</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-4">
+                        <div class="msg_cotainer_send">
+                            Ok, thank you have a good day
+                            <span class="msg_time_send">9:10 AM, Today</span>
+                        </div>
+                        <div class="img_cont_msg">
+                            <img src="https://avatars.hsoubcdn.com/ed57f9e6329993084a436b89498b6088?s=256" class="rounded-circle user_img_msg">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start mb-4">
+                        <div class="img_cont_msg">
+                            <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+                        </div>
+                        <div class="msg_cotainer">
+                            Bye, see you
+                            <span class="msg_time">9:12 AM, Today</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="input-group">
+                        <div class="input-group-append">
+                            <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                        </div>
+                        <textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
+                        <div class="input-group-append">
+                            <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script th:src="@{/assets/js/chatlist.js}"></script>
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script  src="/assets/js/chatlist.js"></script>
 </body>
 </html>
+

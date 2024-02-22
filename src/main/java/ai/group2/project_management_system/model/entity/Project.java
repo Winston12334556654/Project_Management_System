@@ -5,17 +5,26 @@ import ai.group2.project_management_system.model.Enum.Priority;
 import ai.group2.project_management_system.model.Enum.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+import lombok.*;
+
+import ai.group2.project_management_system.model.entity.User;
+
+
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Project {
+//@ToString(exclude = "users")
+//@EqualsAndHashCode(exclude = "users")
+public class Project implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,10 +55,24 @@ public class Project {
 
     private LocalDate actualEndDate;
 
+    public boolean isIsActive() {
+        return is_active;
+    }
+
+    public void setIsActive(boolean is_active) {
+        this.is_active = is_active;
+    }
+
+    private boolean is_active;
+
+    @ElementCollection
+    @Transient
+    private List<Long> userIds;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     private Department department;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(
             name = "project_member",  // Specify the name of the join table
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project

@@ -166,7 +166,7 @@ async function toggleDepartment(departmentId) {
 
         // Show Bootstrap modal for confirmation
         const actionText = department.active ? 'Block' : 'Active';
-        document.getElementById('co nfirmationDepartmentAction').textContent = actionText;
+        document.getElementById('confirmationDepartmentAction').textContent = actionText;
         const confirmationModal = document.getElementById('confirmationDepartmentModal');
         confirmationModal.classList.add('show');
     //

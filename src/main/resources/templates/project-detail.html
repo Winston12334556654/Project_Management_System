@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<head th:replace="~{layout :: head}">
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css}" />
+    <title>Project Management System</title>
+</head>
+<body>
+<div id="layout-wrapper">
+    <div id="header-container">
+        <header th:replace="~{header :: header}"></header>
+    </div>
+
+
+    <!-- ========== App Menu ========== -->
+    <div id="navbar-container">
+        <div th:replace="~{navbar :: navbar}"></div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mt-n4 mx-n4">
+                        <div class="bg-warning-subtle">
+                            <div class="card-body pb-0 px-4">
+                                <div class="row mb-3">
+                                    <div class="col-md">
+                                        <div class="row align-items-center g-3">
+                                            <div class="col-md-auto">
+                                                <div class="avatar-md">
+                                                    <div class="avatar-title bg-white rounded-circle">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#343a40" class="bi bi-folder-check" viewBox="0 0 16 16">
+                                                            <path fill="#343a40" d="m.5 3 .04.87a2 2 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2m5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19q-.362.002-.683.12L1.5 2.98a1 1 0 0 1 1-.98z"/>
+                                                            <path fill="#343a40" d="M15.854 10.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.707 0l-1.5-1.5a.5.5 0 0 1 .707-.708l1.146 1.147 2.646-2.647a.5.5 0 0 1 .708 0"/>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div>
+                                                    <h4 class="fw-bold">Velzon - Admin & Dashboard</h4>
+                                                    <div class="hstack gap-3 flex-wrap">
+
+                                                        <div class="vr"></div>
+                                                        <div>Create Date : <span class="fw-medium" th:text="${project.planStartDate}"></span></div>
+                                                        <div class="vr"></div>
+                                                        <div>Due Date : <span class="fw-medium" th:text="${project.planEndDate}"></span></div>
+                                                        <div class="vr"></div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <div class="hstack gap-1 flex-wrap">
+                                            <button type="button" class="btn py-0 fs-16 favourite-btn active shadow-none">
+                                                <i class="ri-star-fill"></i>
+                                            </button>
+                                            <button type="button" class="btn py-0 fs-16 text-body shadow-none">
+                                                <i class="ri-share-line"></i>
+                                            </button>
+                                            <button type="button" class="btn py-0 fs-16 text-body shadow-none">
+                                                <i class="ri-flag-line"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tab-content text-muted">
+                        <div class="tab-pane fade show active" id="project-overview" role="tabpanel">
+                            <div class="row">
+                                <div >
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="text-muted">
+                                                <h6 class="mb-3 fw-semibold text-uppercase">Description</h6>
+                                                <p th:text="${project.description}"></p>
+
+                                                <div class="pt-3 border-top border-top-dashed mt-4">
+                                                    <div class="row gy-3">
+
+                                                        <div class="col-lg-3 col-sm-6">
+                                                            <div>
+                                                                <p class="mb-2 text-uppercase fw-medium">Actual Start Date :</p>
+                                                                <h5 class="fs-15 mb-0" th:if="${project.actualStartDate != null}" th:text="${project.actualStartDate}"></h5>
+                                                                <h5 class="fs-15 mb-0" th:if="${project.actualStartDate == null}">This project isn't started yet!</h5>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3 col-sm-6">
+                                                            <div>
+                                                                <p class="mb-2 text-uppercase fw-medium">Actual Start Date :</p>
+                                                                <h5 class="fs-15 mb-0" th:if="${project.actualEndDate != null}" th:text="${project.actualEndDate}"></h5>
+                                                                <h5 class="fs-15 mb-0" th:if="${project.actualEndDate == null}">This project isn't started yet!</h5>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 col-sm-6">
+                                                            <div>
+                                                                <p class="mb-2 text-uppercase fw-medium">Priority :</p>
+                                                                <div class="badge bg-danger fs-12" th:text="${project.priority}"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 col-sm-6">
+                                                            <div>
+                                                                <p class="mb-2 text-uppercase fw-medium">Status :</p>
+                                                                <div class="badge bg-warning fs-12" th:text="${project.status}"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end card body -->
+                                    </div>
+                                    <!-- end card -->
+                                </div>
+                                <!-- ene col -->
+
+                                <div class="row g-4 mb-3">
+                                    <div class="col-sm">
+                                        <div class="d-flex">
+                                            <div class="search-box me-2">
+                                                <input type="text" class="form-control" placeholder="Search member..." id="search-members">
+                                                <i class="ri-search-line search-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end row -->
+
+                                <div class="team-list list-view-filter" id="member-list">
+                                    <!--the html card-->
+                                </div>
+                                <!-- end team list -->
+                            </div>
+                            <!-- end row -->
+                        </div>
+                        <!-- end tab pane -->
+
+
+                    </div>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © Velzon.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by Themesbrand
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        memberGetter();
+    });
+
+    function memberGetter(){
+        const userId = [[${project.userIds}]];
+        console.log(userId);
+        const url = `/user-getter?userIds=${userId.join(',')}`;
+        fetch(url, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Display the users returned by the server in the member list
+                console.log(data);
+                displayMemberList(data);
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+            });
+    }
+
+const member=[];
+    function displayMemberList(dto) {
+        const memberListContainer = document.getElementById('member-list');
+        // Clear existing member list content
+        memberListContainer.innerHTML = '';
+
+        if (!Array.isArray(dto)) {
+            console.error('DTO is not an array:', dto);
+            return;
+        }
+
+        // Loop through the DTOs and create HTML elements for each DTO
+        dto.forEach(user => {
+            const listItem = document.createElement('div');
+            listItem.classList.add('card', 'team-box');
+            listItem.innerHTML = `
+                                        <div class="card-body px-4" id="member-card">
+                                            <div class="row align-items-center team-row">
+                                                <div class="col-lg-4 col">
+                                                    <div class="team-profile-img">
+                                                        <div class="avatar-lg img-thumbnail rounded-circle shadow">
+                                                            <img src="assets/images/users/${user.photo}" alt="" class="img-fluid d-block rounded-circle" />
+                                                        </div>
+                                                        <div class="team-content">
+                                                            <a href="#" class="d-block">
+                                                                <h5 class="member-names fs-16 mb-1">${user.name}</h5>
+                                                            </a>
+                                                            <p class="text-muted mb-0">${user.role}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col">
+                                                    <div class="text-end">
+                                                        <a href="pages-profile.html" class="btn btn-light view-btn">View Profile</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+        `;
+            memberListContainer.appendChild(listItem);
+        });
+        const memberElements = document.querySelectorAll('.member-names');
+        memberElements.forEach(element => {
+            member.push(element.textContent);
+        });
+        console.log(member);
+    }
+    function searchMembers() {
+        const searchInput = document.getElementById('search-members').value;
+        console.log(searchInput);
+        const members = document.querySelectorAll('.team-box');
+
+        console.log(member);
+        members.forEach((card, index) => {
+            const m = member[index];
+            if (m.includes(searchInput)) {
+                card.style.display = 'block'; // Show the card if it matches the search
+            } else {
+                card.style.display = 'none'; // Hide the card if it doesn't match the search
+            }
+        });
+    }
+    document.getElementById('search-members').addEventListener('input', searchMembers);
+</script>
+
+</body>
+</html>

@@ -1,22 +1,26 @@
 package ai.group2.project_management_system.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IssueFiles {
+public class IssueFiles implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String name;
+    private Long id;
+
+    private String fileName;
+
     @ManyToOne
     @JoinColumn(nullable = false)
-  //  @JsonIgnore
+    @JsonIgnore
     private Issue issue;
 }

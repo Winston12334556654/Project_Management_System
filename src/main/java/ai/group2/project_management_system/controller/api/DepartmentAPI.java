@@ -27,7 +27,7 @@ public class DepartmentAPI {
     }
 
     @PutMapping("/edit-department/{id}")
-    public ResponseEntity<Department> updateDepartment(@PathVariable("id") int departmentId, @RequestBody Department updatedDepartment) {
+    public ResponseEntity<Department> updateDepartment(@PathVariable("id") Long departmentId, @RequestBody Department updatedDepartment) {
         Department existingDepartment = departmentService.getDepartmentById(departmentId);
 
         if (existingDepartment != null) {
@@ -35,7 +35,7 @@ public class DepartmentAPI {
             existingDepartment.setName(updatedDepartment.getName());
             existingDepartment.setEmail(updatedDepartment.getEmail());
             existingDepartment.setPhone(updatedDepartment.getPhone());
-            existingDepartment.setStatus(updatedDepartment.isStatus());
+            existingDepartment.set_active(updatedDepartment.is_active());
             // Update other fields as needed
 
             Department savedDepartment = departmentService.save(existingDepartment);
@@ -46,10 +46,10 @@ public class DepartmentAPI {
     }
 
     @PutMapping("/department-toggle/{departmentId}")
-    public ResponseEntity<String> toggleDepartmentStatus(@PathVariable("departmentId") int departmentId) {
+    public ResponseEntity<String> toggleDepartmentStatus(@PathVariable("departmentId") Long departmentId) {
         Department department = departmentService.getDepartmentById(departmentId);
         if (department != null) {
-            department.setStatus(!department.isStatus());
+            department.set_active(!department.is_active());
             departmentService.save(department);
             return ResponseEntity.ok("Department status changed successfully");
         } else {

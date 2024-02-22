@@ -97,7 +97,7 @@ public class UserController {
             //user.setPosition(position);
             // Set photo name in the User object
             user.setPhoto(photoname);
-            user.setStatus(true);
+            user.set_active(true);
             System.out.println(user.getName());
 
             // Add user (consider transaction management)

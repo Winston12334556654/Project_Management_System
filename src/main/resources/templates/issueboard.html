@@ -1,11 +1,13 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" xmlns:th="http://www.thymeleaf.org">
 
 
 <!-- Mirrored from themesbrand.com/velzon/html/material/apps-tasks-kanban.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:20 GMT -->
 <head th:replace="~{layout :: head}">
     <link rel="stylesheet" href="assets/libs/dragula/dragula.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">-->
 </head>
 <style>
    
@@ -64,7 +66,7 @@
                              <div class="row g-2">
                                 <div class="col-lg-auto">
                                     <div class="hstack gap-2">
-                                        <button class="btn btn-primary" id="create-issue"><i class="ri-add-line align-bottom me-1"></i> Create Issue</button>
+                                        <button class="btn btn-primary" id="create-issue"><i class="ri-add-line align-bottom me-1" ></i> Create Issue</button>
                                     </div>
                                 </div>
                                 
@@ -403,39 +405,39 @@
                     <!--end task-board-->
 
                     <!--create issue modal form-->
-                    <div class="modal fade" id="createrissueModal" tabindex="-1" aria-labelledby="createrissueModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="createIssueModal" tabindex="-1" aria-labelledby="createIssueModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content border-0">
                                 <div class="modal-header p-3 bg-info-subtle">
-                                    <h5 class="modal-title" id="createrissueModalLabel">Create New Issue</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h5 class="modal-title" id="createIssueModalLabel">Create New Issue</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="#">
+                                    <form name="issue" id="createIssueForm" enctype="multipart/form-data">
                                         <div class="row g-3">
+                                            <!--Project Name col-->
                                             <div class="col-lg-12">
                                                 <label for="sub-tasks" class="form-label">Project Name</label>
                                                 <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                                        <option selected disabled>Project Name</option>
-                                                        <option value="New">New</option>
-                                                        <option value="Pending">Pending</option>
-                                                        <option value="In progress">In progress</option>
-                                                        <option value="Completed">Completed</option>
+                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="parent-project-input" >
+
                                                     </select>
                                                 </div>
                                             </div>
                                             <!--end col-->
+
+                                            <!--Issue title col-->
                                             <div class="col-lg-12">
                                                 <label for="sub-tasks" class="form-label">Issue Title</label>
-                                                <input type="text" class="form-control" id="sub-tasks" placeholder="Issue title">
+                                                <input type="text" class="form-control" id="issue-title-input" placeholder="Issue title">
                                             </div>
                                             <!--end col-->
 
+                                            <!--Issue type col-->
                                             <div class="col-lg-12">
                                                 <label for="sub-tasks" class="form-label">Issue Type</label>
                                                 <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
+                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="issue-type-input" >
                                                         <option selected disabled>Issue Type</option>
                                                         <option value="Task">Task</option>
                                                         <option value="Request">Request</option>
@@ -448,21 +450,24 @@
                                                 </div>
                                             </div>
                                             <!--end col-->
+
+                                            <!--Issue category col-->
                                             <div class="col-lg-12">
                                                 <label for="sub-tasks" class="form-label">Issue Category</label>
                                                 <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="issue-category-input" onclick="getCategory()"></select>
+                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="issue-category-input" ></select>
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            
+
+                                            <!--Issue subject col-->
                                             <div class="col-lg-12">
                                                 <label for="task-description" class="form-label">Subject</label>
-                                                <textarea class="form-control" id="task-description" rows="3" placeholder="Issue description"></textarea>
+                                                <textarea class="form-control" id="issue-subject-input" rows="3" placeholder="Issue Subject"></textarea>
                                             </div>
                                             <!--end col-->
-                                            
 
+                                            <!--Issue description col-->
                                             <div class="mb-3">
                                                 <label class="form-label">Issue Description</label>
                                                 <div id="ckeditor-classic-1">
@@ -470,153 +475,41 @@
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-12">
-                                                <label for="tasks-progress" class="form-label">Add Team Leader</label>
-                                                <div data-simplebar style="height: 95px;">
-                                                    <ul class="list-unstyled vstack gap-2 mb-0">
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center justify-content-between">
-                                                                <div class="d-flex align-items-center">
-                                                                    <input class="form-check-input me-3" type="radio" value="" id="anna-adame" name="userselection">
-                                                                    <label class="form-check-label d-flex align-items-center" for="anna-adame"  >
-                                                                        <span class="flex-shrink-0">
-                                                                            <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                        </span>
-                                                                        <span class="flex-grow-1 ms-2" id="userLabel">
-                                                                            Anna Adame
-                                                                        </span>   
-                                                                </div>
-                                                                <div class="d-flex justify-content-center">
-                                                                    <!-- <a href="pages-profile.html" class="btn btn-sm btn-light view-btn">View </a> -->
-                                                                    <button class="btn btn-sm btn-light" id="view-btn">View</button>
-                                                                </div> 
-                                                                <div>
 
-                                                                </div>          
-                                                                   
-                                                                </label>
-                                                                
-                                                            </div>
-                                                            
-                                                            
-                                                        </li>
-                                                        
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="frank-hook" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="frank-hook">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Frank Hook
-                                                                    </span>
-                                                                </label>
-                                                                
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="alexis-clarke" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="alexis-clarke">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Alexis Clarke
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="herbert-stokes" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="herbert-stokes">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Herbert Stokes
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="michael-morris" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="michael-morris">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Michael Morris
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="nancy-martino" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="nancy-martino">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Nancy Martino
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="thomas-taylor" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="thomas-taylor">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Thomas Taylor
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="tonya-noble" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="tonya-noble">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Tonya Noble
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
+                                            <!--Issue Teamleader-->
+                                            <div class="col-lg-12">
+                                                <label th:for="tasks-progress" class="form-label">Assign Team Leader</label>
+                                                <div data-simplebar style="height: 95px;">
+                                                    <ul class="list-unstyled vstack gap-2 mb-0" th:id="teamleader-list">
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <!--end col-->
+
+                                            <!--Issue Plan Dates col-->
                                             <div class="col-lg-6">
-                                                <label for="duedate-field" class="form-label">Plan Start Date</label>
-                                                <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Start date" required />
+                                                <label th:for="issue-plan-start-date" class="form-label">Plan Start Date</label>
+                                                <input type="date" th:id="issue-plan-start-date" class="form-control" data-provider="flatpickr" placeholder="Plan Start date" required />
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-6">
-                                                <label for="duedate-field" class="form-label">Plan Due Date</label>
-                                                <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Due date" required />
+                                                <label th:for="issue-plan-due-date" class="form-label">Plan Due Date</label>
+                                                <input type="date" th:id="issue-plan-due-date" class="form-control" data-provider="flatpickr" placeholder="Plan Due date" required />
                                             </div>
                                             <!--end col-->
+
+                                            <!--issue-priority col-->
                                             <div class="col-lg-12">
-                                                <label for="priority-field" class="form-label">Priority</label>
-                                                <select class="form-control" id="priority-field">
+                                                <label for="issue-priority-input" class="form-label">Priority</label>
+                                                <select class="form-control" id="issue-priority-input">
                                                     <option value="">Priority</option>
-                                                    <option value="High">High</option>
-                                                    <option value="Medium">Medium</option>
-                                                    <option value="Low">Low</option>
+                                                    <option value="HIGH">High</option>
+                                                    <option value="MEDIUM">Medium</option>
+                                                    <option value="LOW">Low</option>
                                                 </select>
                                             </div>
                                             <!--end col-->
+
+                                            <!--Attached files input col-->
                                             <div class="col-lg-12">
                                                 <div class="card">
                                                     <div class="card-header">
@@ -630,7 +523,7 @@
                                                                
                                                                 <div class="dz-message needsclick">
                                                                     
-                                                                    <input type="file" id="file-input1"   name="file"  multiple="multiple" style="display: none;">
+                                                                    <input type="file" id="file-input1"   name="files"  multiple="multiple" style="display: none;">
 							                                         <label for="file-input1" >
                                                                         <div class="mb-3">
                                                                             <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
@@ -655,7 +548,7 @@
                                             <div class="mt-4">
                                                 <div class="hstack gap-2 justify-content-end">
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-success">Add Issue</button>
+                                                    <button type="submit" class="btn btn-success">Add Issue</button>
                                                 </div>
                                             </div>
                                             <!--end col-->
@@ -671,276 +564,276 @@
                     <!--end add create issue modal-->
 
                     <!--update issue modal form-->
-                    <div class="modal fade" id="updateissueModal" tabindex="-1" aria-labelledby="updateissueModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content border-0">
-                                <div class="modal-header p-3 bg-info-subtle">
-                                    <h5 class="modal-title" id="updateissueModalLabel">Update Issue</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="#">
-                                        <div class="row g-3">
-                                            <div class="col-lg-12">
-                                                <label for="sub-tasks" class="form-label">Project Name</label>
-                                                <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                                        <option selected disabled>Project Name</option>
-                                                        
-                                                        <option value="New">A</option>
-                                                        <option value="Pending">B</option>
-                                                        <option value="Inprogress">C</option>
-                                                        <option value="Completed">D</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <label for="sub-tasks" class="form-label">Issue Title</label>
-                                                <input type="text" class="form-control" id="sub-tasks" placeholder="Issue title">
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <label for="sub-tasks" class="form-label">Issue Type</label>
-                                                <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                                        <option selected disabled>Issue Type</option>
-                                                        <option value="all">All</option>
-                                                        <option value="New">A</option>
-                                                        <option value="Pending">B</option>
-                                                        <option value="Inprogress">C</option>
-                                                        <option value="Completed">D</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <label for="sub-tasks" class="form-label">Issue Category</label>
-                                                <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                        <option selected disabled>Category</option>
-                                                        <option value="all">All</option>
-                                                        <option value="New">A</option>
-                                                        <option value="Pending">B</option>
-                                                        <option value="Inprogress">C</option>
-                                                        <option value="Completed">D</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            
-                                            <div class="col-lg-12">
-                                                <label for="task-description" class="form-label">Subject</label>
-                                                <textarea class="form-control" id="task-description" rows="3" placeholder="Subject"></textarea>
-                                            </div>
-                                            <!--end col-->
-                                            
+<!--                    <div class="modal fade" id="updateissueModal" tabindex="-1" aria-labelledby="updateissueModalLabel" aria-hidden="true">-->
+<!--                        <div class="modal-dialog modal-dialog-centered modal-lg">-->
+<!--                            <div class="modal-content border-0">-->
+<!--                                <div class="modal-header p-3 bg-info-subtle">-->
+<!--                                    <h5 class="modal-title" id="updateissueModalLabel">Update Issue</h5>-->
+<!--                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                                </div>-->
+<!--                                <div class="modal-body">-->
+<!--                                    <form action="#">-->
+<!--                                        <div class="row g-3">-->
+<!--                                            <div class="col-lg-12">-->
+<!--                                                <label for="sub-tasks" class="form-label">Project Name</label>-->
+<!--                                                <div class="input-light">-->
+<!--                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >-->
+<!--                                                        <option selected disabled>Project Name</option>-->
+<!--                                                        -->
+<!--                                                        <option value="New">A</option>-->
+<!--                                                        <option value="Pending">B</option>-->
+<!--                                                        <option value="Inprogress">C</option>-->
+<!--                                                        <option value="Completed">D</option>-->
+<!--                                                    </select>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                            <div class="col-lg-12">-->
+<!--                                                <label for="sub-tasks" class="form-label">Issue Title</label>-->
+<!--                                                <input type="text" class="form-control" id="sub-tasks" placeholder="Issue title">-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                            <div class="col-lg-12">-->
+<!--                                                <label for="sub-tasks" class="form-label">Issue Type</label>-->
+<!--                                                <div class="input-light">-->
+<!--                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >-->
+<!--                                                        <option selected disabled>Issue Type</option>-->
+<!--                                                        <option value="all">All</option>-->
+<!--                                                        <option value="New">A</option>-->
+<!--                                                        <option value="Pending">B</option>-->
+<!--                                                        <option value="Inprogress">C</option>-->
+<!--                                                        <option value="Completed">D</option>-->
+<!--                                                    </select>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                            <div class="col-lg-12">-->
+<!--                                                <label for="sub-tasks" class="form-label">Issue Category</label>-->
+<!--                                                <div class="input-light">-->
+<!--                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">-->
+<!--                                                        <option selected disabled>Category</option>-->
+<!--                                                        <option value="all">All</option>-->
+<!--                                                        <option value="New">A</option>-->
+<!--                                                        <option value="Pending">B</option>-->
+<!--                                                        <option value="Inprogress">C</option>-->
+<!--                                                        <option value="Completed">D</option>-->
+<!--                                                    </select>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                            -->
+<!--                                            <div class="col-lg-12">-->
+<!--                                                <label for="task-description" class="form-label">Subject</label>-->
+<!--                                                <textarea class="form-control" id="task-description" rows="3" placeholder="Subject"></textarea>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                            -->
 
-                                            <div class="mb-3">
-                                                <label class="form-label">Issue Description</label>
-                                                <div id="ckeditor-classic-2">
-                                                    
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <label for="tasks-progress" class="form-label">Add Team Leader</label>
-                                                <div data-simplebar style="height: 95px;">
-                                                    <ul class="list-unstyled vstack gap-2 mb-0">
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center justify-content-between">
-                                                                <div class="d-flex align-items-center">
-                                                                    <input class="form-check-input me-3" type="radio" value="" id="anna-adame" name="userselection">
-                                                                    <label class="form-check-label d-flex align-items-center" for="anna-adame"  >
-                                                                        <span class="flex-shrink-0">
-                                                                            <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                        </span>
-                                                                        <span class="flex-grow-1 ms-2" id="userLabel">
-                                                                            Anna Adame
-                                                                        </span>   
-                                                                </div>                                                    <div class="d-flex justify-content-center">
-                                                                    <!-- <a href="pages-profile.html" class="btn btn-sm btn-light view-btn">View </a> -->
-                                                                    <button class="btn btn-sm btn-light view-btn" data-bs-toggle="modal" data-bs-target="#viewModal">View</button>
-                                                                </div> 
-                                                                <div>
+<!--                                            <div class="mb-3">-->
+<!--                                                <label class="form-label">Issue Description</label>-->
+<!--                                                <div id="ckeditor-classic-2">-->
+<!--                                                    -->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                            <div class="col-lg-12">-->
+<!--                                                <label for="tasks-progress" class="form-label">Add Team Leader</label>-->
+<!--                                                <div data-simplebar style="height: 95px;">-->
+<!--                                                    <ul class="list-unstyled vstack gap-2 mb-0">-->
+<!--                                                        <li>-->
+<!--                                                            <div class="form-check d-flex align-items-center justify-content-between">-->
+<!--                                                                <div class="d-flex align-items-center">-->
+<!--                                                                    <input class="form-check-input me-3" type="radio" value="" id="anna-adame" name="userselection">-->
+<!--                                                                    <label class="form-check-label d-flex align-items-center" for="anna-adame"  >-->
+<!--                                                                        <span class="flex-shrink-0">-->
+<!--                                                                            <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />-->
+<!--                                                                        </span>-->
+<!--                                                                        <span class="flex-grow-1 ms-2" id="userLabel">-->
+<!--                                                                            Anna Adame-->
+<!--                                                                        </span>   -->
+<!--                                                                </div>                                                    <div class="d-flex justify-content-center">-->
+<!--                                                                    &lt;!&ndash; <a href="pages-profile.html" class="btn btn-sm btn-light view-btn">View </a> &ndash;&gt;-->
+<!--                                                                    <button class="btn btn-sm btn-light view-btn" data-bs-toggle="modal" data-bs-target="#viewModal">View</button>-->
+<!--                                                                </div> -->
+<!--                                                                <div>-->
 
-                                                                </div>          
-                                                                   
-                                                                </label>
-                                                                
-                                                            </div>
-                                                            
-                                                            
-                                                        </li>
-                                                        
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="frank-hook" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="frank-hook">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Frank Hook
-                                                                    </span>
-                                                                </label>
-                                                                
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="alexis-clarke" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="alexis-clarke">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Alexis Clarke
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="herbert-stokes" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="herbert-stokes">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Herbert Stokes
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="michael-morris" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="michael-morris">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Michael Morris
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="nancy-martino" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="nancy-martino">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Nancy Martino
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="thomas-taylor" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="thomas-taylor">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Thomas Taylor
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="form-check d-flex align-items-center">
-                                                                <input class="form-check-input me-3" type="radio" value="" id="tonya-noble" name="userselection">
-                                                                <label class="form-check-label d-flex align-items-center" for="tonya-noble">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                    <span class="flex-grow-1 ms-2">
-                                                                        Tonya Noble
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-6">
-                                                <label for="duedate-field" class="form-label">Plan Start Date</label>
-                                                <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Start date" required />
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-6">
-                                                <label for="duedate-field" class="form-label">Plan Due Date</label>
-                                                <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Due date" required />
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <label for="priority-field" class="form-label">Priority</label>
-                                                <select class="form-control" id="priority-field">
-                                                    <option value="">Priority</option>
-                                                    <option value="High">High</option>
-                                                    <option value="Medium">Medium</option>
-                                                    <option value="Low">Low</option>
-                                                </select>
-                                            </div>
-                                            <!--end col-->
+<!--                                                                </div>          -->
+<!--                                                                   -->
+<!--                                                                </label>-->
+<!--                                                                -->
+<!--                                                            </div>-->
+<!--                                                            -->
+<!--                                                            -->
+<!--                                                        </li>-->
+<!--                                                        -->
+<!--                                                        <li>-->
+<!--                                                            <div class="form-check d-flex align-items-center">-->
+<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="frank-hook" name="userselection">-->
+<!--                                                                <label class="form-check-label d-flex align-items-center" for="frank-hook">-->
+<!--                                                                    <span class="flex-shrink-0">-->
+<!--                                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle" />-->
+<!--                                                                    </span>-->
+<!--                                                                    <span class="flex-grow-1 ms-2">-->
+<!--                                                                        Frank Hook-->
+<!--                                                                    </span>-->
+<!--                                                                </label>-->
+<!--                                                                -->
+<!--                                                            </div>-->
+<!--                                                        </li>-->
+<!--                                                        <li>-->
+<!--                                                            <div class="form-check d-flex align-items-center">-->
+<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="alexis-clarke" name="userselection">-->
+<!--                                                                <label class="form-check-label d-flex align-items-center" for="alexis-clarke">-->
+<!--                                                                    <span class="flex-shrink-0">-->
+<!--                                                                        <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />-->
+<!--                                                                    </span>-->
+<!--                                                                    <span class="flex-grow-1 ms-2">-->
+<!--                                                                        Alexis Clarke-->
+<!--                                                                    </span>-->
+<!--                                                                </label>-->
+<!--                                                            </div>-->
+<!--                                                        </li>-->
+<!--                                                        <li>-->
+<!--                                                            <div class="form-check d-flex align-items-center">-->
+<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="herbert-stokes" name="userselection">-->
+<!--                                                                <label class="form-check-label d-flex align-items-center" for="herbert-stokes">-->
+<!--                                                                    <span class="flex-shrink-0">-->
+<!--                                                                        <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />-->
+<!--                                                                    </span>-->
+<!--                                                                    <span class="flex-grow-1 ms-2">-->
+<!--                                                                        Herbert Stokes-->
+<!--                                                                    </span>-->
+<!--                                                                </label>-->
+<!--                                                            </div>-->
+<!--                                                        </li>-->
+<!--                                                        <li>-->
+<!--                                                            <div class="form-check d-flex align-items-center">-->
+<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="michael-morris" name="userselection">-->
+<!--                                                                <label class="form-check-label d-flex align-items-center" for="michael-morris">-->
+<!--                                                                    <span class="flex-shrink-0">-->
+<!--                                                                        <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />-->
+<!--                                                                    </span>-->
+<!--                                                                    <span class="flex-grow-1 ms-2">-->
+<!--                                                                        Michael Morris-->
+<!--                                                                    </span>-->
+<!--                                                                </label>-->
+<!--                                                            </div>-->
+<!--                                                        </li>-->
+<!--                                                        <li>-->
+<!--                                                            <div class="form-check d-flex align-items-center">-->
+<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="nancy-martino" name="userselection">-->
+<!--                                                                <label class="form-check-label d-flex align-items-center" for="nancy-martino">-->
+<!--                                                                    <span class="flex-shrink-0">-->
+<!--                                                                        <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />-->
+<!--                                                                    </span>-->
+<!--                                                                    <span class="flex-grow-1 ms-2">-->
+<!--                                                                        Nancy Martino-->
+<!--                                                                    </span>-->
+<!--                                                                </label>-->
+<!--                                                            </div>-->
+<!--                                                        </li>-->
+<!--                                                        <li>-->
+<!--                                                            <div class="form-check d-flex align-items-center">-->
+<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="thomas-taylor" name="userselection">-->
+<!--                                                                <label class="form-check-label d-flex align-items-center" for="thomas-taylor">-->
+<!--                                                                    <span class="flex-shrink-0">-->
+<!--                                                                        <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />-->
+<!--                                                                    </span>-->
+<!--                                                                    <span class="flex-grow-1 ms-2">-->
+<!--                                                                        Thomas Taylor-->
+<!--                                                                    </span>-->
+<!--                                                                </label>-->
+<!--                                                            </div>-->
+<!--                                                        </li>-->
+<!--                                                        <li>-->
+<!--                                                            <div class="form-check d-flex align-items-center">-->
+<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="tonya-noble" name="userselection">-->
+<!--                                                                <label class="form-check-label d-flex align-items-center" for="tonya-noble">-->
+<!--                                                                    <span class="flex-shrink-0">-->
+<!--                                                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />-->
+<!--                                                                    </span>-->
+<!--                                                                    <span class="flex-grow-1 ms-2">-->
+<!--                                                                        Tonya Noble-->
+<!--                                                                    </span>-->
+<!--                                                                </label>-->
+<!--                                                            </div>-->
+<!--                                                        </li>-->
+<!--                                                    </ul>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                            <div class="col-lg-6">-->
+<!--                                                <label for="duedate-field" class="form-label">Plan Start Date</label>-->
+<!--                                                <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Start date" required />-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                            <div class="col-lg-6">-->
+<!--                                                <label for="duedate-field" class="form-label">Plan Due Date</label>-->
+<!--                                                <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Due date" required />-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                            <div class="col-lg-12">-->
+<!--                                                <label for="priority-field" class="form-label">Priority</label>-->
+<!--                                                <select class="form-control" id="priority-field">-->
+<!--                                                    <option value="">Priority</option>-->
+<!--                                                    <option value="High">High</option>-->
+<!--                                                    <option value="Medium">Medium</option>-->
+<!--                                                    <option value="Low">Low</option>-->
+<!--                                                </select>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
 
-                                             <div class="col-lg-12">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h5 class="card-title mb-0">Attached files</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div>
-                                                            <p class="text-muted">Add Attached files here.</p>
-                    
-                                                            <div class="dropzone" >
-                                                               
-                                                                <div class="dz-message needsclick">
-                                                                    
-                                                                    <input type="file" id="file-input"   name="file"  multiple="multiple" style="display: none;">
-							                                         <label for="file-input" >
-                                                                        <div class="mb-3">
-                                                                            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                                                        </div>
-                                                                        <h5>Drop files here or click to upload.</h5></label>
-                                                                    
-                                                                </div>
-                                                            </div>
-                                                            <ul class="list-unstyled mb-0" >
-                                                                <li class="mt-2" id="fileNames">
-                                                                   
-                                                                    
-                                                                </li>
-                                                            </ul> 
-                                                             <!-- end dropzon-preview  -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> 
-                                            <!--end col-->
-                                         
-                                            <div class="mt-4">
-                                                <div class="hstack gap-2 justify-content-end">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-success">Update Issue</button>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
+<!--                                             <div class="col-lg-12">-->
+<!--                                                <div class="card">-->
+<!--                                                    <div class="card-header">-->
+<!--                                                        <h5 class="card-title mb-0">Attached files</h5>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="card-body">-->
+<!--                                                        <div>-->
+<!--                                                            <p class="text-muted">Add Attached files here.</p>-->
+<!--                    -->
+<!--                                                            <div class="dropzone" >-->
+<!--                                                               -->
+<!--                                                                <div class="dz-message needsclick">-->
+<!--                                                                    -->
+<!--                                                                    <input type="file" id="file-input"   name="file"  multiple="multiple" style="display: none;">-->
+<!--							                                         <label for="file-input" >-->
+<!--                                                                        <div class="mb-3">-->
+<!--                                                                            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>-->
+<!--                                                                        </div>-->
+<!--                                                                        <h5>Drop files here or click to upload.</h5></label>-->
+<!--                                                                    -->
+<!--                                                                </div>-->
+<!--                                                            </div>-->
+<!--                                                            <ul class="list-unstyled mb-0" >-->
+<!--                                                                <li class="mt-2" id="fileNames">-->
+<!--                                                                   -->
+<!--                                                                    -->
+<!--                                                                </li>-->
+<!--                                                            </ul> -->
+<!--                                                             &lt;!&ndash; end dropzon-preview  &ndash;&gt;-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div> -->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
+<!--                                         -->
+<!--                                            <div class="mt-4">-->
+<!--                                                <div class="hstack gap-2 justify-content-end">-->
+<!--                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>-->
+<!--                                                    <button type="button" class="btn btn-success">Update Issue</button>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
 
 
-                                        </div>
-                                        <!--end row-->
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash;end row&ndash;&gt;-->
+<!--                                    </form>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <!--end update issue modal-->
 
                     <!--delete record modal form-->
@@ -969,7 +862,7 @@
                     <!--end modal -->
 
                      <!--View Modal-->
-  <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-info-subtle">
@@ -1140,6 +1033,48 @@
         </div>
     </div>
 </div>
+
+                    <!--Add Issue Category Form-->
+                    <div class="modal fade" id="addIssueCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-light p-3">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add New Issue Category</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <form id="addIssueCategoryForm">
+                                    <div class="modal-body">
+                                        <div class="mb-3" id="modal-id" style="display: none;">
+                                            <label th:for="issueCategoryId" class="form-label">ID</label>
+                                            <input type="hidden" name="id" th:id="issueCategoryId" th:class="form-control" placeholder="ID" readonly />
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label  th:for="issueCategoryName" class="form-label">Department Name</label>
+                                            <input type="text" name="name" th:id="issueCategoryName" th:class="form-control" placeholder="Name" th:required="required" />
+                                            <div class="invalid-feedback">Please enter a department name.</div>
+                                        </div>
+
+
+                                        <div class="col-lg-12">
+                                            <label th:for="issueCategoryDescription" class="form-label">Description</label>
+                                            <textarea class="form-control" th:id="issueCategoryDescription" rows="3" placeholder="Description"></textarea>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-success" id="add-btn" data-bs-dismiss="modal">confirm</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- container-fluid -->
             </div>
@@ -1147,61 +1082,61 @@
 
     </div>
     <!-- END layout-wrapper -->
+
 <div th:replace="~{layout :: footer}"></div>
     <!-- Add this script after your HTML content -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var createIssueModal = new bootstrap.Modal(document.getElementById('createrissueModal'));
-            var viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
-    
-            // Handle the click event on the "View" button in the first modal
-            document.getElementById('view-btn').addEventListener('click', function () {
-                viewModal.show();
-            });
 
-            document.getElementById('create-issue').addEventListener('click', function (){
-                createIssueModal.show();
-            })
-    
-            
-        });
-    </script>
 
-    <script src="assets/js/issue.js"></script>
+    <script th:src="@{assets/js/issue.js}"></script>
+    <script th:src="@{/assets/js/issue-init.js}"></script>
+    <script th:src="@{/assets/js/create-issue.js}"></script>
 <!--FIle Script-->
 <script src="assets/js/file.js"></script>
-<script>
-    initializeFileUpload('file-input', 'fileNames');
-    initializeFileUpload1('file-input1', 'fileNames1');
-</script> 
-
+<!--<script>-->
+<!--    initializeFileUpload('file-input', 'fileNames');-->
+<!--    initializeFileUpload1('file-input1', 'fileNames1');-->
+<!--</script>-->
+    <script th:src="@{https://cdn.jsdelivr.net/npm/flatpickr}"></script>
   <!-- JAVASCRIPT -->
-     <script src="assets/js/pages/tasks-kanban.init.js"></script>
+     <script th:src="@{assets/js/pages/tasks-kanban.init.js}"></script>
      <!-- ckeditor -->
-     <script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+     <script th:src="@{assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js}"></script>
 <script>
     // Initialize CKEditor for the first instance
-    ClassicEditor
-        .create(document.querySelector('#ckeditor-classic-1'))
-        .catch(error => {
-            console.error(error);
-        });
+    // ClassicEditor
+    //     .create(document.querySelector('#ckeditor-classic-1'))
+    //     .catch(error => {
+    //         console.error(error);
+    //     });
 
-    // Initialize CKEditor for the second instance
-    ClassicEditor
-        .create(document.querySelector('#ckeditor-classic-2'))
-        .catch(error => {
-            console.error(error);
-        });
+    //Initialize CKEditor for the second instance
+    // ClassicEditor
+    //     .create(document.querySelector('#ckeditor-classic-2'))
+    //     .catch(error => {
+    //         console.error(error);
+    //     });
+</script>
+
+<script th:src="@{/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        ClassicEditor
+            .create(document.querySelector('#ckeditor-classic-1'))
+            .then(newEditor  => {
+                // editor.model.document.on('change:data', () => {
+                //     const editorData = editor.getData();
+                //     console.log('CKEditor Data:', editorData);
+                // });
+                window.ckeditor = newEditor;
+            })
+            .catch(error => {
+                console.error('Error initializing CKEditor:', error);
+            });
+    });
 </script>
 
 
-    <!-- dragula init js -->
-    <script src="assets/libs/dragula/dragula.min.js"></script>
 
-    <!-- dom autoscroll -->
-    <script src="assets/libs/dom-autoscroller/dom-autoscroller.min.js"></script>
-    <script src="assets/libs/dropzone/dropzone-min.js"></script> 
 
     <script>
         function triggerFileInput() {
@@ -1215,8 +1150,25 @@
           });
         });
       </script>
- <!-- project-create init -->
- <script src="assets/js/pages/project-create.init.js"></script>
+
+    <!-- dragula init js -->
+    <script th:src="@{assets/libs/dragula/dragula.min.js}"></script>
+
+    <!-- dom autoscroll -->
+    <script th:src="@{assets/libs/dom-autoscroller/dom-autoscroller.min.js}"></script>
+    <script th:src="@{assets/libs/dropzone/dropzone-min.js}"></script>
+
+    <!-- project-create init -->
+     <script th:src="@{assets/js/pages/project-create.init.js}"></script>
+
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
 
 </body>
 <!-- Mirrored from themesbrand.com/velzon/html/material/apps-tasks-kanban.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:22 GMT -->

@@ -7,32 +7,13 @@
     <!-- Sweet Alert css-->
     <link  rel="stylesheet" th:href="@{/assets/libs/sweetalert2/sweetalert2.min.css}" type="text/css" />
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+    <!-- Include Flatpickr CSS (you can use a CDN or include it locally) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 
 </head>
-<style>
-    .additional-content {
-        display: none;
-    }
 
-    .form-check-label:hover .additional-content {
-        display: block;
-    }
-
-    .hidden-input {
-        display: none;
-    }
-
-
-    .dz-message {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        text-align: center;
-    }
-
-</style>
 <body>
 <!-- Begin page -->
 <div id="layout-wrapper">
@@ -81,52 +62,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body border-bottom-dashed border-bottom">
-                            <form>
-                                <div class="row g-3">
-                                    <div class="col-xl-6">
-                                        <div class="search-box">
-                                            <input type="text" class="form-control search" placeholder="Search for customer, email, phone, status or something...">
-                                            <i class="ri-search-line search-icon"></i>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-xl-6">
-                                        <div class="row g-3">
-                                            <div class="col-sm-4">
-                                                <div class="">
-                                                    <input type="text" class="form-control" id="datepicker-range" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true" placeholder="Select date">
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-sm-4">
-                                                <div>
-                                                    <select class="form-control" data-plugin="choices" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                        <option value="">Status</option>
-                                                        <option value="all" selected>All</option>
-                                                        <option value="Active">Active</option>
-                                                        <option value="Block">Block</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
 
-                                            <div class="col-sm-4">
-                                                <div>
-                                                    <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-2 align-bottom"></i>Filters</button>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--end row-->
-                            </form>
-                        </div>
                         <div class="card-body">
                             <div>
                                 <div class="table-responsive table-card mb-1">
-                                    <table class="table align-middle" id="customerTable">
+                                    <table id="example" class="table align-middle table-striped table-hover table1 display" >
                                         <thead class="table-light text-muted">
                                         <tr>
 
@@ -140,21 +80,27 @@
                                         </tr>
                                         </thead>
                                         <tbody class="list form-check-all">
-                                        <tr>
+                                        <tr th:each="issue : ${issues}">
 
-                                            <td class="">PMS</td>
-                                            <td class="">Front End</td>
-                                            <td class="">25 Dec, 2021</td>
-                                            <td class="">06 Apr, 2021</td>
-                                            <td class=""><span class="badge bg-danger-subtle text-warning text-uppercase">To Do</span>
+                                            <td class="" th:text="${issue.getProject().getTitle()}"></td>
+                                            <td class="" th:text="${issue.getTitle()}"></td>
+                                            <td class="" th:text="${issue.getPlanStartDate()}"></td>
+                                            <td class="" th:text="${issue.getPlanDueDate()}"></td>
+                                            <td class=""><span class="badge bg-danger-subtle text-warning text-uppercase" th:text="${issue.getStatus()}"></span>
                                             </td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
-                                                    <button type="button" class="btn btn-sm btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#createrissueModal"><i class="ri-add-line align-bottom me-1"></i> Assign Issue</button>
+                                                    <button type="button" th:unless="${issue.is_assigned()}" class="btn btn-sm btn-success add-btn" th:attr="data-issue-id=${issue.getId()}" onclick="assignIssueBox(this.getAttribute('data-issue-id'))">
+                                                        <i class="ri-add-line align-bottom me-1"></i> Assign Issue
+                                                    </button>
+                                                    <button type="button" th:if="${issue.is_assigned()}" class="btn btn-sm btn-primary add-btn">
+                                                         Assigned
+                                                    </button>
+
                                                 </ul>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-light" onclick='location.href="/issue-details"'> View</button>
+                                                <a class="btn btn-sm btn-light" th:href="@{'/teamleader-issuedetails/'+${issue.getId()}}"> View</a>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -167,275 +113,67 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-end">
-                                    <div class="pagination-wrap hstack gap-2">
-                                        <a class="page-item pagination-prev disabled" href="#">
-                                            Previous
-                                        </a>
-                                        <ul class="pagination listjs-pagination mb-0"></ul>
-                                        <a class="page-item pagination-next" href="#">
-                                            Next
-                                        </a>
-                                    </div>
-                                </div>
+
+
                             </div>
 
-                            <div class="modal fade" id="createrissueModal" tabindex="-1" aria-labelledby="createrissueModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal fade" id="assignIssueModal" >
+                                <div class="modal-dialog modal-dialog-centered modal">
                                     <div class="modal-content border-0">
                                         <div class="modal-header p-3 bg-info-subtle">
-                                            <h5 class="modal-title" id="createrissueModalLabel">Assign Issue</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <h5 class="modal-title" id="assignIssueModalLabel">Assign Issue</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="#">
+                                            <form th:object="${assignIssue}" method="post" th:action="@{/assignIssue}">
                                                 <div class="row g-3">
-                                                    <div class="col-lg-12">
-                                                        <label for="sub-tasks" class="form-label">Project Name</label>
-                                                        <div class="input-light">
-                                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                                                <option selected disabled>Project Name</option>
 
-                                                                <option value="New">A</option>
-                                                                <option value="Pending">B</option>
-                                                                <option value="Inprogress">C</option>
-                                                                <option value="Completed">D</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
                                                     <!--end col-->
                                                     <div class="col-lg-12">
-                                                        <label for="sub-tasks" class="form-label">Issue Title</label>
-                                                        <input type="text" class="form-control" id="sub-tasks" placeholder="Issue title">
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-12">
-                                                        <label for="sub-tasks" class="form-label">Issue Type</label>
-                                                        <div class="input-light">
-                                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                                                <option selected disabled>Issue Type</option>
-                                                                <option value="all">All</option>
-                                                                <option value="New">A</option>
-                                                                <option value="Pending">B</option>
-                                                                <option value="Inprogress">C</option>
-                                                                <option value="Completed">D</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-12">
-                                                        <label for="sub-tasks" class="form-label">Issue Category</label>
-                                                        <div class="input-light">
-                                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                                <option selected disabled>Category</option>
-                                                                <option value="all">All</option>
-                                                                <option value="New">A</option>
-                                                                <option value="Pending">B</option>
-                                                                <option value="Inprogress">C</option>
-                                                                <option value="Completed">D</option>
-                                                            </select>
-                                                        </div>
+                                                        <label th:for="assignName" class="form-label">Assign Issue</label>
+                                                        <input type="text" class="form-control" th:id="assignName" th:name="assignName"  placeholder="Assign Issue Name" required>
                                                     </div>
                                                     <!--end col-->
 
-                                                    <div class="col-lg-12">
-                                                        <label for="task-description" class="form-label">Subject</label>
-                                                        <textarea class="form-control" id="task-description" rows="3" placeholder="Issue description"></textarea>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <!--end col-->
-
-
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Project Description</label>
-                                                        <div id="ckeditor-classic">
-
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
                                                     <!--Members-->
                                                     <div class="col-lg-12">
-                                                        <label for="tasks-progress" class="form-label">Add Team Member</label>
+                                                        <label for="memberlist" class="form-label">Add Team Member</label>
                                                         <div data-simplebar style="height: 95px;">
-                                                            <ul class="list-unstyled vstack gap-2 mb-0">
-                                                                <li>
-                                                                    <div class="form-check d-flex align-items-center justify-content-between">
-                                                                        <div>
-                                                                            <input class="form-check-input me-3" type="checkbox" value="" id="anna-adame">
-                                                                            <label class="form-check-label d-flex align-items-center" for="anna-adame"  >
-                                                                                    <span class="flex-shrink-0">
-                                                                                        <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                                    </span>
-                                                                                <span class="flex-grow-1 ms-2" id="userLabel">
-                                                                                        Anna Adame
-                                                                                    </span>
-                                                                                <div class="flex-shrink-0 ms-4 additional-content">
-                                                                                    <ul class="list-inline tasks-list-menu mb-0">
-                                                                                        <li class="list-inline-item"><a href="issue_member_details.html"><button class="btn btn-sm btn-light" id="view-btn">View</button></a></li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                        </div>
-                                                                        <div class="hidden-input " id="hiddenInputContainer">
-                                                                            <input type="text" class="form-control form-control-sm float-end" id="placeholderInput" placeholder="Placeholder">
-                                                                        </div>
-                                                                        </label>
-                                                                    </div>
-                                                                </li>
+                                                            <ul class="list-unstyled vstack gap-2 mb-0" id="memberlist">
 
-                                                                <li>
-                                                                    <div class="form-check d-flex align-items-center">
-                                                                        <input class="form-check-input me-3" type="checkbox" value="" id="frank-hook">
-                                                                        <label class="form-check-label d-flex align-items-center" for="frank-hook">
-                                                                                    <span class="flex-shrink-0">
-                                                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                                    </span>
-                                                                            <span class="flex-grow-1 ms-2">
-                                                                                        Frank Hook
-                                                                                    </span>
-                                                                        </label>
-
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="form-check d-flex align-items-center">
-                                                                        <input class="form-check-input me-3" type="checkbox" value="" id="alexis-clarke">
-                                                                        <label class="form-check-label d-flex align-items-center" for="alexis-clarke">
-                                                                                    <span class="flex-shrink-0">
-                                                                                        <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                                    </span>
-                                                                            <span class="flex-grow-1 ms-2">
-                                                                                        Alexis Clarke
-                                                                                    </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="form-check d-flex align-items-center">
-                                                                        <input class="form-check-input me-3" type="checkbox" value="" id="herbert-stokes">
-                                                                        <label class="form-check-label d-flex align-items-center" for="herbert-stokes">
-                                                                                    <span class="flex-shrink-0">
-                                                                                        <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                                    </span>
-                                                                            <span class="flex-grow-1 ms-2">
-                                                                                        Herbert Stokes
-                                                                                    </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="form-check d-flex align-items-center">
-                                                                        <input class="form-check-input me-3" type="checkbox" value="" id="michael-morris">
-                                                                        <label class="form-check-label d-flex align-items-center" for="michael-morris">
-                                                                                    <span class="flex-shrink-0">
-                                                                                        <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                                    </span>
-                                                                            <span class="flex-grow-1 ms-2">
-                                                                                        Michael Morris
-                                                                                    </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="form-check d-flex align-items-center">
-                                                                        <input class="form-check-input me-3" type="checkbox" value="" id="nancy-martino">
-                                                                        <label class="form-check-label d-flex align-items-center" for="nancy-martino">
-                                                                                    <span class="flex-shrink-0">
-                                                                                        <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                                    </span>
-                                                                            <span class="flex-grow-1 ms-2">
-                                                                                        Nancy Martino
-                                                                                    </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="form-check d-flex align-items-center">
-                                                                        <input class="form-check-input me-3" type="checkbox" value="" id="thomas-taylor">
-                                                                        <label class="form-check-label d-flex align-items-center" for="thomas-taylor">
-                                                                                    <span class="flex-shrink-0">
-                                                                                        <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                                    </span>
-                                                                            <span class="flex-grow-1 ms-2">
-                                                                                        Thomas Taylor
-                                                                                    </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="form-check d-flex align-items-center">
-                                                                        <input class="form-check-input me-3" type="checkbox" value="" id="tonya-noble">
-                                                                        <label class="form-check-label d-flex align-items-center" for="tonya-noble">
-                                                                                    <span class="flex-shrink-0">
-                                                                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                                    </span>
-                                                                            <span class="flex-grow-1 ms-2">
-                                                                                        Tonya Noble
-                                                                                    </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-                                                    <div class="col-lg-6">
-                                                        <label for="duedate-field" class="form-label">Plan Start Date</label>
-                                                        <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Start date" required />
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-6">
-                                                        <label for="duedate-field" class="form-label">Plan Due Date</label>
-                                                        <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Due date" required />
+                                                    <div class="col-lg-12">
+                                                        <label th:for="planStartDate" class="form-label">Plan Start Date</label>
+                                                        <input type="date" th:id="startDate" class="form-control" data-provider="flatpickr" th:name="planStartDate" placeholder="Plan Start date" required />
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-12">
-                                                        <label for="priority-field" class="form-label">Priority</label>
-                                                        <select class="form-control" id="priority-field">
-                                                            <option value="">Priority</option>
-                                                            <option value="High">High</option>
-                                                            <option value="Medium">Medium</option>
-                                                            <option value="Low">Low</option>
+                                                        <label th:for="planDueDate" class="form-label">Plan Due Date</label>
+                                                        <input type="date" th:id="dueDate" class="form-control" data-provider="flatpickr" th:name="planDueDate" placeholder="Plan Due date" required />
+                                                    </div>
+
+                                                    <input type="hidden" th:id="status" th:name="status" th:value="TODO">
+                                                    <input type="hidden" th:id="issueId" th:name="issue" th:field="*{issue.id}">
+<!--                                                    <input type="hidden" th:id="isActive" name="is_active" value=true>-->
+                                                    <!--end col-->
+                                                    <div class="col-lg-12">
+                                                        <label th:for="priority" class="form-label">Priority</label>
+                                                        <select class="form-control" th:id="priority" th:name="priority">
+                                                            <option disabled selected>Priority</option>
+                                                            <option value="HIGH">High</option>
+                                                            <option value="MEDIUM">Medium</option>
+                                                            <option value="LOW">Low</option>
                                                         </select>
                                                     </div>
                                                     <!--end col-->
-                                                    <div class="col-lg-12">
-                                                        <div class="card">
-                                                            <div class="card-header">
-                                                                <h5 class="card-title mb-0">Attached files</h5>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <div>
-                                                                    <p class="text-muted">Add Attached files here.</p>
 
-                                                                    <div class="dropzone" >
-
-                                                                        <div class="dz-message needsclick">
-
-                                                                            <input type="file" id="file-input"   name="file"  multiple="multiple" style="display: none;">
-                                                                            <label for="file-input" >
-                                                                                <div class="mb-3">
-                                                                                    <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                                                                </div>
-                                                                                <h5>Drop files here or click to upload.</h5></label>
-
-                                                                        </div>
-                                                                    </div>
-                                                                    <ul class="list-unstyled mb-0" >
-                                                                        <li class="mt-2" id="fileNames">
-
-
-                                                                        </li>
-                                                                    </ul>
-                                                                    <!-- end dropzon-preview  -->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
                                                     <div class="mt-4">
                                                         <div class="hstack gap-2 justify-content-end">
-                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-success">Add Issue</button>
+                                                            <button type="button" class="btn btn-light"  onclick="closeModal()">Close</button>
+                                                            <button type="submit" class="btn btn-success">Add Assign Issue</button>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -450,30 +188,6 @@
                             </div>
                             <!--end add create issue modal-->
 
-                            <!-- Modal -->
-                            <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="btn-close" id="deleteRecord-close" data-bs-dismiss="modal" aria-label="Close" ></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="mt-2 text-center">
-                                                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                                                    <h4>Are you sure ?</h4>
-                                                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this record ?</p>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                                                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn w-sm btn-danger" id="delete-record">Yes, Delete It!</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end modal -->
                         </div>
                     </div>
 
@@ -490,36 +204,40 @@
 <!-- end main content-->
 <div th:replace="~{layout :: footer}"></div>
 
-<script src="assets/js/file.js"></script>
+<!--<script src="assets/js/file.js"></script>-->
 <script>
     initializeFileUpload('file-input', 'fileNames');
 </script>
 
-<!-- ckeditor -->
-<script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 <!--Add Member Toggle-->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- JavaScript to close the modal using jQuery -->
 <script>
-    $(document).ready(function () {
-        $("#userLabel").click(function () {
-            $("#hiddenInputContainer").toggle();
+    function closeModal() {
+        var modal = document.getElementById('assignIssueModal');
+        modal.style.display = 'none';
+    }
+</script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" ></script>
+<script>
+    $(document).ready(function() {
+        new DataTable('#example', {
+            pagingType: 'full_numbers'
+
         });
     });
+
 </script>
 
-<script>
-    $(document).ready(function () {
-        $("#userLabel1").click(function () {
-            $("#hiddenInputContainer1").toggle();
-        });
-    });
-</script>
-
-
+<!-- Include Flatpickr JS (you can use a CDN or include it locally) -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <!-- dropzone js -->
 <script src="assets/libs/dropzone/dropzone-min.js"></script>
 <!-- project-create init -->
 <script src="assets/js/pages/project-create.init.js"></script>
+<!-- ckeditor -->
+<script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+<script th:src="@{/assets/js/teamleader-issuelist.js}"></script>
 </body>
 
 </html>
