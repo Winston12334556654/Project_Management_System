@@ -59,8 +59,10 @@ public class User implements UserDetails {
     private Position position;
     @Enumerated(EnumType.STRING)
     private Role role;
+
     @Transient
     private MultipartFile file;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private Set<Project> projects;
