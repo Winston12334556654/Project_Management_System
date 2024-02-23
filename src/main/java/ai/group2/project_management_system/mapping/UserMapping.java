@@ -17,7 +17,7 @@ public class UserMapping {
         dto.setEmail(users.getEmail());
         dto.setAddress(users.getAddress());
         dto.setPhone(users.getPhone());
-        dto.setPhoto(users.getPhoto());
+        dto.setPhoto(users.getProfilePictureFileName());
         dto.setPassword(users.getPassword());
         dto.setRole(users.getRole());
         dto.setPosition(users.getPosition());

@@ -51,4 +51,10 @@ public class AssignIssueServiceImpl implements AssignIssueService {
     public AssignIssue save(AssignIssue assignIssue) {
         return assignIssueRepository.save(assignIssue);
     }
+
+    @Override
+    public List<AssignIssue> getAssignIssuesByTeamleaderId(Long id) {
+        return assignIssueRepository.getAssignIssuesByTeamLeaderId(id);
+    }
+
 }

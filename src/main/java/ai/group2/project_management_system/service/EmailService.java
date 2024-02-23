@@ -11,5 +11,7 @@ public interface EmailService {
     String generateOTP();
 //    String sendMailWithAttachment(EmailDetail emailDetails);
     ResponseEntity<String> sendEmailWithAttachment(String recipient, String subject, String message, MultipartFile attachment);
+
+    String sendMultipleEmail( EmailDetail emailDetails);
 }
 

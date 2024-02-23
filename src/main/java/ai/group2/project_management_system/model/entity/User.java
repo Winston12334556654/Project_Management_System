@@ -1,8 +1,17 @@
 package ai.group2.project_management_system.model.entity;
 
 import ai.group2.project_management_system.model.Enum.Role;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 
 import lombok.*;
 import org.springframework.cglib.core.Local;
@@ -10,6 +19,7 @@ import org.springframework.cglib.core.Local;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -30,32 +40,33 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
+    @JoinColumn(name = "department_id") // adjust the column name accordingly
     private Department department;
     private String education;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
     private String gender;
     private String email;
     private String address;
     private String phone;
-    private String photo;
-    private boolean is_active;
+    private String profilePictureFileName; // Add this field to store the file name
+    @JsonProperty("isActive")
+    private boolean isActive;
     private String password;
-    private String position;
-
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private Position position;
     @Enumerated(EnumType.STRING)
     private Role role;
     @Transient
     private MultipartFile file;
-
     @JsonIgnore
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private Set<Project> projects;
-
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<AssignIssue> assignIssues;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -88,8 +99,146 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.is_active;
+        return this.isActive;
     }
+
+    public String getProfilePictureFileName() {
+        return profilePictureFileName;
+    }
+
+    public void setProfilePictureFileName(String profilePictureFileName) {
+        this.profilePictureFileName = profilePictureFileName;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+
+
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
+
+    public Set<AssignIssue> getAssignIssues() {
+        return assignIssues;
+    }
+
+    public void setAssignIssues(Set<AssignIssue> assignIssues) {
+        this.assignIssues = assignIssues;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
 
 
     @Override
@@ -104,8 +253,10 @@ public class User implements UserDetails {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
-                ", photo='" + photo + '\'' +
-                ", is_active=" + is_active +
+
+                ", photo='" + profilePictureFileName + '\'' +
+                ", isActive=" +isActive +
+
                 ", password='" + password + '\'' +
                 ", role=" + role+
                 '}';

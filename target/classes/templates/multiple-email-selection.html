@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Form</title>
+</head>
+<body>
+
+<form id="emailForm">
+    <label>Recipients:</label><br>
+    <input type="checkbox" id="recipient1" name="recipients" value="marannoe1322001@gmail.com">
+    <label for="recipient1">marannoe1322001@gmail.com</label><br>
+
+    <input type="checkbox" id="recipient2" name="recipients" value="winston.ws975@gmail.com">
+    <label for="recipient2">winston.ws975@gmail.com</label><br>
+    <!-- Add more checkboxes as needed -->
+
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" required><br>
+
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" rows="4" required></textarea><br>
+
+    <button type="button" onclick="sendEmail()">Send Email</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    // emailScript.js
+
+    function sendEmail() {
+        var selectedRecipients = [];
+
+        // Iterate over checkboxes and collect selected recipients
+        document.querySelectorAll('input[name="recipients"]:checked').forEach(function (checkbox) {
+            selectedRecipients.push(checkbox.value);
+        });
+
+        var subject = document.getElementById("subject").value;
+        var message = document.getElementById("message").value;
+
+        var emailData = {
+            recipients: selectedRecipients,
+            subject: subject,
+            msgBody: message
+        };
+
+        console.log(emailData.recipients);
+        console.log(emailData.subject);
+        console.log(emailData.msgBody);
+
+        // Using AJAX to send the data to the server
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/sendMultipleEmail",
+            data: JSON.stringify(emailData),
+            success: function (response) {
+                console.log("Email sent successfully");
+            },
+            error: function (error) {
+                console.error("Error sending email: " + error);
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

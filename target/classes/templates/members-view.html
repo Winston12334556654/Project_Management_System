@@ -6,6 +6,7 @@
 <head th:replace="~{layout :: head}">
     <!-- Sweet Alert css-->
     <link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 </head>
 <style>
     .additional-content {
@@ -53,102 +54,13 @@
             <!-- end page title -->
 
             <div class="row">
-                <div class="col-xxl-3 col-sm-6">
-                    <div class="card card-animate">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="fw-medium text-muted mb-0">Total Issues</p>
-                                    <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="234">0</span>k</h2>
-
-                                </div>
-                                <div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-info rounded-circle fs-4">
-                                                    <i class="ri-ticket-2-line"></i>
-                                                </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end card body -->
-                    </div> <!-- end card-->
-                </div>
-                <!--end col-->
-                <div class="col-xxl-3 col-sm-6">
-                    <div class="card card-animate">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="fw-medium text-muted mb-0">In Progress Issues</p>
-                                    <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="64.5">0</span>k</h2>
-
-                                </div>
-                                <div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-warning rounded-circle fs-4">
-                                                    <i class="mdi mdi-timer-sand"></i>
-                                                </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end card body -->
-                    </div>
-                </div>
-                <!--end col-->
-
-                <div class="col-xxl-3 col-sm-6">
-                    <div class="card card-animate">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="fw-medium text-muted mb-0">Completed Issues</p>
-                                    <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="116.21">0</span>K</h2>
-
-                                </div>
-                                <div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-success rounded-circle fs-4">
-                                                    <i class="ri-checkbox-circle-line"></i>
-                                                </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end card body -->
-                    </div>
-                </div>
-                <!--end col-->
-                <div class="col-xxl-3 col-sm-6">
-                    <div class="card card-animate">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="fw-medium text-muted mb-0">Over Due Issues</p>
-                                    <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="14.84">0</span>%</h2>
-
-                                </div>
-                                <div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-danger rounded-circle fs-4">
-                                                    <i class=" ri-bank-line"></i>
-                                                </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end card body -->
-                    </div>
-                </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
-
-            <div class="row">
                 <div class="col-lg-12">
                     <div class="card" id="tasksList">
                         <div class="card-header border-0">
                             <div class="d-flex ">
 
                                 <div class="col-xxl-3 col-sm-4">
-                                    <div class="input-light">
+                                    <!--<div class="input-light">
                                         <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
                                             <option selected disabled>Search Projects</option>
                                             <option value="New">All</option>
@@ -157,21 +69,21 @@
                                             <option value="Inprogress">C</option>
                                             <option value="Completed">D</option>
                                         </select>
-                                    </div>
+                                    </div>-->
                                 </div>
 
-                                <div class="d-flex  col-xxl-4 col-sm-4 ms-auto">
-                                    <div class="flex-shrink-0">
-                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle shadow">
+                                <div class="d-flex  col-xxl-4 col-sm-4 ms-auto justify-content-center align-items-center">
+                                    <div class="flex-shrink-0  " >
+                                        <img th:src="@{/assets/userPhoto/{photo}(photo=${user.photo})}" alt="" class="avatar-xs rounded-circle shadow">
                                     </div>
                                     <div class="flex-grow-1 ms-2">
-                                        <h6 class="mb-1"><a href="pages-profile.html" class="text-body">Tonya Noble</a></h6>
-                                        <p class="text-muted mb-0">Full Stack Developer</p>
+                                        <h6 class="mb-1"><a href="#" class="text-body" th:text="${user.getName()}"></a></h6>
+                                        <p class="text-muted mb-0" th:text="${user.getPosition()}"></p>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-3 ms-sm-auto">
-                                    <div class="input-light">
+                                   <!-- <div class="input-light">
                                         <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
                                             <option selected disabled>Search Issues</option>
                                             <option value="New">All</option>
@@ -180,138 +92,59 @@
                                             <option value="Inprogress">C</option>
                                             <option value="Completed">D</option>
                                         </select>
-                                    </div>
+                                    </div>-->
                                 </div>
 
 
                             </div>
                         </div>
-                        <div class="card-body border border-dashed border-end-0 border-start-0">
-                            <form>
-                                <div class="row g-3">
-                                    <div class="col-xxl-3 col-sm-4">
-                                        <div class="search-box">
-                                            <input type="text" class="form-control search bg-light border-light" placeholder="Search for issues or something...">
-                                            <i class="ri-search-line search-icon"></i>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
 
-                                    <div class="col-xxl-5 col-sm-4 mx-auto  mb-3 ">
-                                        <div class="d-flex justify-content-center align-items-center mb-1">Issue Status</div>
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <div class="progress col-6  ">
-
-                                                <div class="progress-bar " role="progressbar" style="width:50%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!--end col-->
-
-                                    <div class="col-xxl-3 col-sm-4">
-                                        <div class="input-light">
-                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                <option value="">Status</option>
-                                                <option value="all" selected>All</option>
-                                                <option value="New">TO DO</option>
-                                                <option value="Pending">Pending</option>
-                                                <option value="Inprogress">Inprogress</option>
-                                                <option value="Completed">Completed</option>
-                                                <option value="Completed">Over Due</option>
-                                                <option value="Completed">Deleted</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-xxl-1 col-sm-4">
-                                        <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
-                                            Filters
-                                        </button>
-                                    </div>
-                                    <!--end col-->
-                                </div>
-                                <!--end row-->
-                            </form>
-                        </div>
-                        <!--end card-body-->
                         <div class="card-body">
                             <div class="table-responsive table-card mb-4">
-                                <table class="table align-middle table-nowrap mb-0" id="tasksTable">
+                                <table class="table align-middle table-striped table-hover table1 display" id="example">
                                     <thead class="table-light text-muted">
                                     <tr>
 
-                                        <th class="sort" data-sort="id">PM Name</th>
-                                        <th class="sort" data-sort="due_date">Project</th>
-                                        <th class="sort" data-sort="tasks_name">Issue Title</th>
-                                        <th class="sort" data-sort="client_name">Assigned Issue</th>
-                                        <th class="sort" data-sort="assignedto">Assigned Member</th>
-                                        <th class="sort" data-sort="due_date">Start Date</th>
-                                        <th class="sort" data-sort="due_date">Due Date</th>
-                                        <th class="sort" data-sort="status">Status</th>
-                                        <th class="sort" data-sort="priority">Priority</th>
+                                        <th class="sort" data-sort="">PM Name</th>
+                                        <th class="sort" data-sort="">Project</th>
+                                        <th class="sort" data-sort="">Issue Title</th>
+                                        <th class="sort" data-sort="">Sub Issue</th>
+                                        <th class="sort" data-sort="">Assigned Member</th>
+                                        <th class="sort" data-sort="">Start Date</th>
+                                        <th class="sort" data-sort="">Due Date</th>
+                                        <th class="sort" data-sort="">Status</th>
+                                        <th class="sort" data-sort="">Priority</th>
                                     </tr>
                                     </thead>
                                     <tbody class="list form-check-all">
-                                    <tr>
-                                        <td class="id"><a href="apps-tasks-details.html" class="fw-medium link-primary">Daw Aye Thwe</a></td>
-                                        <td class="due_date"><a href="apps-tasks-details.html" class="fw-medium link-primary">PMS</a></td>
+                                    <tr th:each="assignIssue : ${assignIssues}">
+                                        <td class="id"><a href="#" class="fw-medium link-primary" th:text="${assignIssue.getIssue().getCreator()}"></a></td>
+                                        <td class="due_date"><a href="#" class="fw-medium link-primary" th:text="${assignIssue.getIssue().getProject().getTitle()}"></a></td>
 
                                         <td>
                                             <div class="d-flex">
-                                                <div class="flex-grow-1 tasks_name">Profile Page Satructure</div>
-
-
-
-                                                <div class="flex-shrink-0 ms-4">
-                                                    <ul class="list-inline tasks-list-menu mb-0">
-                                                        <li class="list-inline-item"><a href="issue_details.html"><i class="ri-eye-fill align-bottom me-2 text-muted"></i></a></li>
-                                                        <li class="list-inline-item"><a class="edit-item-btn" href="#updateissueModal" data-bs-toggle="modal"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i></a></li>
-                                                        <li class="list-inline-item">
-                                                            <a class="remove-item-btn" data-bs-toggle="modal" href="#deleteOrder">
-                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                <div class="flex-grow-1 tasks_name" th:text="${assignIssue.getIssue().getTitle()}"></div>
                                             </div>
                                         </td>
-                                        <td class="priority"><span class="badge bg-primary-subtle text-uppercase text-primary">UI</span></td>
+                                        <td class="priority"><span class="badge bg-primary-subtle text-uppercase text-primary" th:text="${assignIssue.getName()}"></span></td>
                                         <td class="assignedto">
                                             <div class="avatar-group">
                                                 <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
-                                                    <img src="assets/images/users/avatar-3.jpg" alt="" class="rounded-circle avatar-xxs" />
+                                                    <img th:src="@{'/assets/userPhoto/'+${assignIssue.getUser().getPhoto()}}" alt="" class="rounded-circle avatar-xxs" />
                                                 </a>
 
                                             </div>
                                         </td>
-                                        <td class="due_date">20 Jan, 2022</td>
-                                        <td class="due_date">25 Jan, 2022</td>
-                                        <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase">Inprogress</span></td>
-                                        <td class="priority"><span class="badge bg-danger text-uppercase">High</span></td>
+                                        <td class="due_date" th:text="${assignIssue.getPlanStartDate()}"></td>
+                                        <td class="due_date" th:text="${assignIssue.getPlanDueDate()}"></td>
+                                        <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase" th:text="${assignIssue.getStatus()}"></span></td>
+                                        <td class="priority"><span class="badge bg-danger text-uppercase" th:text="${assignIssue.getPriority()}"></span></td>
                                     </tr>
                                     </tbody>
                                 </table>
-                                <!--end table-->
-                                <div class="noresult" style="display: none">
-                                    <div class="text-center">
-                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
-                                        <h5 class="mt-2">Sorry! No Result Found</h5>
-                                        <p class="text-muted mb-0">We've searched more than 200k+ tasks We did not find any tasks for you search.</p>
-                                    </div>
-                                </div>
+
                             </div>
-                            <div class="d-flex justify-content-end mt-2">
-                                <div class="pagination-wrap hstack gap-2">
-                                    <a class="page-item pagination-prev disabled" href="#">
-                                        Previous
-                                    </a>
-                                    <ul class="pagination listjs-pagination mb-0"></ul>
-                                    <a class="page-item pagination-next" href="#">
-                                        Next
-                                    </a>
-                                </div>
-                            </div>
+
                         </div>
                         <!--end card-body-->
                     </div>
@@ -320,265 +153,6 @@
                 <!--end col-->
             </div>
             <!--end row-->
-
-            <div class="modal fade flip" id="deleteOrder" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body p-5 text-center">
-                            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
-                            <div class="mt-4 text-center">
-                                <h4>Are You Sure ?</h4>
-                                <p class="text-muted fs-14 mb-4">Do You Want to Delete This Issue?</p>
-                                <div class="hstack gap-2 justify-content-center remove">
-                                    <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" id="deleteRecord-close" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</button>
-                                    <button class="btn btn-danger" id="delete-record">Yes, Delete It</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--end delete modal -->
-
-
-            <div class="modal fade" id="updateissueModal" tabindex="-1" aria-labelledby="updateissueModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content border-0">
-                        <div class="modal-header p-3 bg-info-subtle">
-                            <h5 class="modal-title" id="updateissueModalLabel">Edit  Issue</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="#">
-                                <div class="row g-3">
-                                    <div class="col-lg-12">
-                                        <label for="sub-tasks" class="form-label">Project Name</label>
-                                        <div class="input-light">
-                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                                <option selected disabled>Project Name</option>
-
-                                                <option value="New">A</option>
-                                                <option value="Pending">B</option>
-                                                <option value="Inprogress">C</option>
-                                                <option value="Completed">D</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-12">
-                                        <label for="sub-tasks" class="form-label">Issue Title</label>
-                                        <input type="text" class="form-control" id="sub-tasks" placeholder="Issue title">
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-12">
-                                        <label for="sub-tasks" class="form-label">Issue Type</label>
-                                        <div class="input-light">
-                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                                <option selected disabled>Issue Type</option>
-                                                <option value="all">All</option>
-                                                <option value="New">A</option>
-                                                <option value="Pending">B</option>
-                                                <option value="Inprogress">C</option>
-                                                <option value="Completed">D</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-12">
-                                        <label for="sub-tasks" class="form-label">Issue Category</label>
-                                        <div class="input-light">
-                                            <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                <option selected disabled>Category</option>
-                                                <option value="all">All</option>
-                                                <option value="New">A</option>
-                                                <option value="Pending">B</option>
-                                                <option value="Inprogress">C</option>
-                                                <option value="Completed">D</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-
-                                    <div class="col-lg-12">
-                                        <label for="task-description" class="form-label">Subject</label>
-                                        <textarea class="form-control" id="task-description" rows="3" placeholder="Issue description"></textarea>
-                                    </div>
-                                    <!--end col-->
-                                    <!--end col-->
-                                    <div class="col-lg-12">
-                                        <label for="task-description" class="form-label">Issue Description</label>
-                                        <textarea class="form-control" id="task-description" rows="3" placeholder="Issue description"></textarea>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-12">
-                                        <label for="formFile" class="form-label">Issue Images</label>
-                                        <input class="form-control" type="file" id="formFile">
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-12">
-                                        <label for="tasks-progress" class="form-label">Update Team Member</label>
-                                        <div data-simplebar style="height: 95px;">
-                                            <ul class="list-unstyled vstack gap-2 mb-0">
-                                                <li>
-                                                    <div class="form-check d-flex align-items-center justify-content-between">
-                                                        <div>
-                                                            <input class="form-check-input me-3" type="checkbox" value="" id="anna">
-                                                            <label class="form-check-label d-flex align-items-center" for="anna"  >
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                                <span class="flex-grow-1 ms-2" id="userLabel1">
-                                                                        Anna Adame
-                                                                    </span>
-                                                                <div class="flex-shrink-0 ms-4 additional-content">
-                                                                    <ul class="list-inline tasks-list-menu mb-0">
-                                                                        <li class="list-inline-item"><a href="issue_member_details.html"><i class="ri-eye-fill align-bottom me-2 text-muted"></i></a></li>
-                                                                    </ul>
-                                                                </div>
-                                                        </div>
-                                                        <div class="hidden-input " id="hiddenInputContainer1">
-                                                            <input type="text" class="form-control form-control-sm float-end" id="placeholderInput" placeholder="Placeholder">
-                                                        </div>
-
-                                                        </label>
-
-                                                    </div>
-
-
-                                                </li>
-
-                                                <li>
-                                                    <div class="form-check d-flex align-items-center">
-                                                        <input class="form-check-input me-3" type="checkbox" value="" id="frank-hook">
-                                                        <label class="form-check-label d-flex align-items-center" for="frank-hook">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                            <span class="flex-grow-1 ms-2">
-                                                                        Frank Hook
-                                                                    </span>
-                                                        </label>
-
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check d-flex align-items-center">
-                                                        <input class="form-check-input me-3" type="checkbox" value="" id="alexis-clarke">
-                                                        <label class="form-check-label d-flex align-items-center" for="alexis-clarke">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                            <span class="flex-grow-1 ms-2">
-                                                                        Alexis Clarke
-                                                                    </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check d-flex align-items-center">
-                                                        <input class="form-check-input me-3" type="checkbox" value="" id="herbert-stokes">
-                                                        <label class="form-check-label d-flex align-items-center" for="herbert-stokes">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                            <span class="flex-grow-1 ms-2">
-                                                                        Herbert Stokes
-                                                                    </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check d-flex align-items-center">
-                                                        <input class="form-check-input me-3" type="checkbox" value="" id="michael-morris">
-                                                        <label class="form-check-label d-flex align-items-center" for="michael-morris">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                            <span class="flex-grow-1 ms-2">
-                                                                        Michael Morris
-                                                                    </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check d-flex align-items-center">
-                                                        <input class="form-check-input me-3" type="checkbox" value="" id="nancy-martino">
-                                                        <label class="form-check-label d-flex align-items-center" for="nancy-martino">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                            <span class="flex-grow-1 ms-2">
-                                                                        Nancy Martino
-                                                                    </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check d-flex align-items-center">
-                                                        <input class="form-check-input me-3" type="checkbox" value="" id="thomas-taylor">
-                                                        <label class="form-check-label d-flex align-items-center" for="thomas-taylor">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                            <span class="flex-grow-1 ms-2">
-                                                                        Thomas Taylor
-                                                                    </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check d-flex align-items-center">
-                                                        <input class="form-check-input me-3" type="checkbox" value="" id="tonya-noble">
-                                                        <label class="form-check-label d-flex align-items-center" for="tonya-noble">
-                                                                    <span class="flex-shrink-0">
-                                                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                                    </span>
-                                                            <span class="flex-grow-1 ms-2">
-                                                                        Tonya Noble
-                                                                    </span>
-                                                        </label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-6">
-                                        <label for="duedate-field" class="form-label">Plan Start Date</label>
-                                        <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Start date" required />
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-6">
-                                        <label for="duedate-field" class="form-label">Plan Due Date</label>
-                                        <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Due date" required />
-                                    </div>
-                                    <!--end col-->
-                                    <div class="col-lg-12">
-                                        <label for="priority-field" class="form-label">Priority</label>
-                                        <select class="form-control" id="priority-field">
-                                            <option value="">Priority</option>
-                                            <option value="High">High</option>
-                                            <option value="Medium">Medium</option>
-                                            <option value="Low">Low</option>
-                                        </select>
-                                    </div>
-                                    <!--end col-->
-                                    <div class="mt-4">
-                                        <div class="hstack gap-2 justify-content-end">
-                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-success">Update Issue</button>
-                                        </div>
-                                    </div>
-                                    <!--end col-->
-                                </div>
-                                <!--end row-->
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--end  update issue modal-->
-            <!--end modal-->
 
         </div>
         <!-- container-fluid -->
@@ -601,7 +175,16 @@
 </script>
 <!-- JAVASCRIPT -->
 <script src="assets/libs/list.js/list.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" ></script>
+<script>
+    $(document).ready(function() {
+        new DataTable('#example', {
+            pagingType: 'full_numbers'
 
+        });
+    });
+
+</script>
 <!--list pagination js-->
 <script src="assets/libs/list.pagination.js/list.pagination.min.js"></script>
 

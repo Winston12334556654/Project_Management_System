@@ -33,7 +33,7 @@ public class EmailServiceImpl implements EmailService {
             //Built-in
             SimpleMailMessage mailMessage=new SimpleMailMessage();
             mailMessage.setFrom(sender);
-            mailMessage.setTo(emailDetails.getRecipient());
+            mailMessage.setTo(emailDetails.getRecipients().toArray(new String[0]));
             mailMessage.setText(emailDetails.getMsgBody());
             mailMessage.setSubject(emailDetails.getSubject());
             javaMailSender.send(mailMessage);
@@ -111,4 +111,23 @@ public class EmailServiceImpl implements EmailService {
             return ResponseEntity.status(500).body("Error sending email");
         }
     }
+
+    @Override
+    public String sendMultipleEmail(EmailDetail emailDetails){
+        try{
+            //Built-in
+            SimpleMailMessage mailMessage=new SimpleMailMessage();
+            mailMessage.setFrom(sender);
+            mailMessage.setTo(emailDetails.getRecipients().toArray(new String[0]));
+            mailMessage.setSubject(emailDetails.getSubject());
+            mailMessage.setText(emailDetails.getMsgBody());
+
+            javaMailSender.send(mailMessage);
+            return "Mail Sent Successfully...";
+        }
+        catch (Exception e) {
+            return "Error while Sending Mail";
+        }
+    }
+
 }

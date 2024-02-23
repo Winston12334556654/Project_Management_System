@@ -43,7 +43,7 @@ public class ProjectDTO {
         status = project.getStatus();
         category = project.getCategory();
         priority = project.getPriority();
-        is_active = project.is_active();
+        is_active = project.isActive();
         actualStartDate = project.getActualStartDate();
         actualEndDate = project.getActualEndDate();
         userIds = project.getUserIds().stream().toList();

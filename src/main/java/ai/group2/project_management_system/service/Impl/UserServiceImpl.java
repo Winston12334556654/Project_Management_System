@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+
 import java.util.stream.Collectors;
 
 
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapping userMapping;
+
     @Override
     public User getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public User save(User user) {
         return userRepository.save(user);
@@ -48,6 +51,13 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public User getUserById(long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+
 
     @Override
     public List<User> findUsersByIds(List<Long> userIds) {
@@ -61,5 +71,6 @@ public class UserServiceImpl implements UserService {
                 .map(userMapping::mapUserToDTOs)
                 .collect(Collectors.toList());
     }
+
 
 }
