@@ -56,6 +56,23 @@
         padding: 0px 16px;
     }
 
+    .own-message {
+        float: right;
+        color: #ffffff;
+        background-color: #4b38b3;
+        border-radius: 15px;
+        padding: 12px 20px;
+    }
+
+    .other-message {
+        float: left;
+        color: #ffffff;
+        background-color: #4b38b3;
+        border-radius: 15px;
+        padding: 12px 20px;
+    }
+
+
 </style>
 <body>
 <div id="layout-wrapper">
@@ -549,7 +566,7 @@
                                                             <span class="user-status"></span>
                                                         </div>
                                                         <div class="flex-grow-1 overflow-hidden">
-                                                            <h5 class="text-truncate mb-0 fs-16"><a class="text-reset username" data-bs-toggle="offcanvas" href="#userProfileCanvasExample" aria-controls="userProfileCanvasExample">Lisa Parker</a></h5>
+                                                            <h5 class="text-truncate mb-0 fs-16"><a class="text-reset username" data-bs-toggle="offcanvas" href="#userProfileCanvasExample" aria-controls="userProfileCanvasExample" th:text = "${session.user.getName()}"></a></h5>
                                                             <p class="text-truncate text-muted fs-14 mb-0 userStatus"><small>Online</small></p>
                                                         </div>
                                                     </div>
@@ -706,6 +723,7 @@
                                             <div class="chat-input-feedback">
                                                 Please Enter a Message
                                             </div>
+                                            <input type="text" class="form-control chat-input bg-light border-light" id="sender" th:value="${session.user.getName()}" hidden="hidden">
                                             <input type="text" class="form-control chat-input bg-light border-light" id="content" placeholder="Type your message..." autocomplete="off">
                                         </div>
                                         <div class="col-auto">
