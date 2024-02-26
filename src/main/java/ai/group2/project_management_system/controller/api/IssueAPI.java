@@ -81,8 +81,8 @@ public class IssueAPI {
         objectMapper.registerModule(new JavaTimeModule());
         Issue issue = objectMapper.readValue(issueJson,Issue.class);
         issue.setCreator("Project Manager");
-        issue.set_active(true);
-        issue.set_assigned(false);
+        issue.setIs_active(true);
+        issue.setIs_assigned(false);
 
         List<String> fileNames = saveAttachments(files);
         Issue newIssue = issueService.save(issue);
@@ -112,4 +112,20 @@ public class IssueAPI {
             issueFilesService.save(issueFiles);
         }
     }
+
+//    @GetMapping("/issue/{id}")
+//    public ResponseEntity<List<Issue>> getIssueByUserId(@PathVariable("id") long userId){
+//
+//        List<Issue> issues= issueService.getIssueByUserId(userId);
+//       return ResponseEntity.ok(issues);
+//
+//    }
+
+    @GetMapping("/issueList")
+    public ResponseEntity<List<Issue>> getIssueList(){
+
+        List<Issue> issues= issueService.getAllIssues();
+         return ResponseEntity.ok(issues);
+    }
+
 }

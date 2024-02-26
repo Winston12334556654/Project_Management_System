@@ -14,4 +14,7 @@ public interface IssueService {
 
     IssueDetailsDto getIssueDetailsById(Long id);
 
+//    List<Issue> getIssueByUserId(Long id);
+
+
 }

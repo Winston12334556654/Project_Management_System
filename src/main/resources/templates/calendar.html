@@ -46,20 +46,45 @@
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            events: [
-                {
-                    title: 'Issue 1 ',
-                    start: '2024-02-06T10:00:00',
-                    end: '2024-02-08T12:00:00'
-                },
-                {
-                    title: 'Issue 2 ',
-                    start: '2024-02-08T14:00:00',
-                    end: '2024-02-12T16:00:00'
-                }
-                // Add more events as needed
-            ]
+            events: [],
+
         });
+        fetch("/issueList")
+            .then(response=> response.json())
+            .then(data=>{
+                console.log('All Issue object Lists in Array Response: '+ data);
+
+                // Assuming data is an array of issues
+                var events = data.map(function(issue, index) {
+
+                    // Define colors for each issue (you can customize these colors)
+                    var colors = ["#FF5733", "#33FF57", "#3366FF", "#FF33A1", "#A133FF"];
+
+                    // Format dates to include the time portion
+                    var formattedStartDate = issue.planStartDate + "T00:00:00";
+                    var formattedEndDate = issue.planDueDate + "T23:59:59";
+
+                    console.log('formattedStartDate : '+ formattedStartDate);
+                    console.log('formattedEndDate : '+ formattedEndDate);
+
+                    return {
+                        title: issue.title,
+                        start: formattedStartDate,
+                        end: formattedEndDate,
+                        color: colors[index % colors.length]
+                    };
+                });
+
+                // Set the events in the calendar
+                calendar.setOption('events', events);
+
+                // Log the data to the console (for debugging purposes)
+                console.log('All Issue List: ', data);
+            })
+
+            .catch(error => {
+                console.log('Error: ', error);
+            });
         calendar.render();
     });
 

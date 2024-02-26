@@ -20,7 +20,6 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
             "where ie.id = :issueId and u.role = :role", nativeQuery = true)
     List<Long> getUsersByIssueId(@Param("issueId") Long issueId, @Param("role") String role);
 
-
-
+//    List<Issue> getIssueByUserId(long id);
 
 }

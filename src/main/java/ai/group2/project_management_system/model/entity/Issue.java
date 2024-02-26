@@ -81,4 +81,163 @@ public class Issue implements Serializable {
     @OneToMany(mappedBy = "issue")
     private Set<AssignIssue> assignIssues;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getIssueType() {
+        return issueType;
+    }
+
+    public void setIssueType(String issueType) {
+        this.issueType = issueType;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public IssueCategory getIssueCategory() {
+        return issueCategory;
+    }
+
+    public void setIssueCategory(IssueCategory issueCategory) {
+        this.issueCategory = issueCategory;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public boolean isIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(boolean is_active) {
+        this.is_active = is_active;
+    }
+
+    public boolean isIs_assigned() {
+        return is_assigned;
+    }
+
+    public void setIs_assigned(boolean is_assigned) {
+        this.is_assigned = is_assigned;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public LocalDate getPlanStartDate() {
+        return planStartDate;
+    }
+
+    public void setPlanStartDate(LocalDate planStartDate) {
+        this.planStartDate = planStartDate;
+    }
+
+    public LocalDate getPlanDueDate() {
+        return planDueDate;
+    }
+
+    public void setPlanDueDate(LocalDate planDueDate) {
+        this.planDueDate = planDueDate;
+    }
+
+    public LocalDate getActualStartDate() {
+        return actualStartDate;
+    }
+
+    public void setActualStartDate(LocalDate actualStartDate) {
+        this.actualStartDate = actualStartDate;
+    }
+
+    public LocalDate getActualDueDate() {
+        return actualDueDate;
+    }
+
+    public void setActualDueDate(LocalDate actualDueDate) {
+        this.actualDueDate = actualDueDate;
+    }
+
+    public List<IssueFiles> getFilesList() {
+        return filesList;
+    }
+
+    public void setFilesList(List<IssueFiles> filesList) {
+        this.filesList = filesList;
+    }
+
+    public Long getTeamLeaderId() {
+        return teamLeaderId;
+    }
+
+    public void setTeamLeaderId(Long teamLeaderId) {
+        this.teamLeaderId = teamLeaderId;
+    }
+
+    public List<MultipartFile> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<MultipartFile> files) {
+        this.files = files;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Set<AssignIssue> getAssignIssues() {
+        return assignIssues;
+    }
+
+    public void setAssignIssues(Set<AssignIssue> assignIssues) {
+        this.assignIssues = assignIssues;
+    }
 }

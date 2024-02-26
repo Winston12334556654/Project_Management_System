@@ -57,4 +57,10 @@ public class IssueServiceImpl implements IssueService {
                 .projectName(issue.getProject().getTitle())
                 .build();
     }
+
+//
+//    @Override
+//    public List<Issue> getIssueByUserId(long id) {
+//        return issueRepository.getIssueByUserId(id);
+//    }
 }

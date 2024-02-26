@@ -157,14 +157,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error toggling department:', error);
         }
-<<<<<<< HEAD
-=======
+
 
         // Show Bootstrap modal for confirmation
-        const actionText = department.active ? 'Block' : 'Active';
-        document.getElementById('confirmationDepartmentAction').textContent = actionText;
-        const confirmationModal = document.getElementById('confirmationDepartmentModal');
-        confirmationModal.classList.add('show');
+        // const actionText = department.active ? 'Block' : 'Active';
+        // document.getElementById('confirmationDepartmentAction').textContent = actionText;
+        // const confirmationModal = document.getElementById('confirmationDepartmentModal');
+        // confirmationModal.classList.add('show');
     //
     //     // Promise to wait for confirmation
     //     await new Promise((resolve, reject) => {
@@ -207,8 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //
     //     // Reload the page
     //     location.reload();
-    } catch (error) {
-        console.error('Error toggling department:', error);
->>>>>>> f47cad866feae928af1466f1e8035c004eb5f0f6
+    // } catch (error) {
+    //     console.error('Error toggling department:', error);
+    //
     }
 });

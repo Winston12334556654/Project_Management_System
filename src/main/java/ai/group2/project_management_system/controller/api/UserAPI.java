@@ -127,7 +127,7 @@ public class UserAPI {
 
 
     @PutMapping("/updateStatus/{id}")
-    public ResponseEntity<User> updateStatus(@PathVariable("id") int userId) {
+    public ResponseEntity<User> updateStatus(@PathVariable("id") long userId) {
         User user = userService.getUserById(userId);
         System.out.println("USer Id : "+ userId);
         System.out.println("USer former status : "+ user.isActive());
@@ -146,7 +146,7 @@ public class UserAPI {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUserWithImage(
-            @PathVariable("id") int userId,
+            @PathVariable("id") long userId,
             @RequestParam("name") String name,
             @RequestParam("email") String email,
             @RequestParam("phone") String phone,

@@ -1,13 +1,41 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <title>WebSocket Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <style>
+        #messageBox {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        #notificationCount {
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 4px 8px;
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
+    </style>
 </head>
 <body>
 
 <div id="chat">
+    <div id="messageBox">
+        <span id="notificationCount">0</span>
+        <!-- Use the chat box icon -->
+        <i class="fas fa-comments" onclick="openMessageBox(event)"></i>
+    </div>
     <form id="messageForm">
         <input type="text" id="sender" placeholder="Your name" required>
         <input type="text" id="content" placeholder="Your message" required>
@@ -15,8 +43,12 @@
     </form>
     <ul id="messages"></ul>
 </div>
+<audio id="notificationSound" src="/static/tweet.mp3"></audio>
+<audio id="notificationSound2" src="/static/relax-message-tone.mp3"></audio>
+
 
 <script>
+    let notificationCount = 0;
     const socket = new SockJS('/ws');
 
     const stompClient = Stomp.over(socket);
@@ -24,6 +56,7 @@
         console.log('Connected to WebSocket');
     stompClient.subscribe('/topic/messages', (message) => {
         showMessage(JSON.parse(message.body));
+        updateNotificationCount(JSON.parse(message.body));
     });
     });
 
@@ -32,21 +65,70 @@
         const content = document.getElementById('content').value;
         const message = { sender, content };
         stompClient.send('/app/chat', {}, JSON.stringify(message));
+        playNotificationSound2();
     }
 
-    function showMessage(message) {
-        const messages = document.getElementById('messages');
-        const li = document.createElement('li');
 
-        const sender = message.sender || "Unknown";  // Check for undefined
-        const content = message.content || "No content";  // Check for undefined
+    function showMessage(message) {
+       const messages = document.getElementById('messages');
+     const li = document.createElement('li');
+
+      //const sender = message.sender || "Unknown";  // Check for undefined
+       const content = message.content || "No content";  // Check for undefined
+
 
         console.log(sender);
         console.log(content);
         li.textContent = `${message.sender}: ${message.content}`;
         messages.appendChild(li);
     }
+    function updateNotificationCount(message) {
+
+
+        // Increment notification count and update the UI
+        // Increment notification count and update the UI
+        if (`${message.sender}` !== document.getElementById('sender').value) {
+            notificationCount++;
+            playNotificationSound();
+            document.getElementById('notificationCount').innerText = notificationCount;
+
+            // Show the notification count span
+            document.getElementById('notificationCount').style.display = 'block';
+        } else {
+            // Hide the notification count span when the sender is the current user
+            document.getElementById('notificationCount').style.display = 'none';
+        }
+
+    }
+
+    window.openMessageBox = function() {
+        // Stop the event propagation to prevent the default behavior
+        event.stopPropagation();
+        // Reset notification count and handle opening the message box
+        notificationCount = 0;
+        document.getElementById('notificationCount').innerText = notificationCount;
+
+        //မော်ဒယ်ဘောက် ကျနေတဲ့ အချိန်ဆိုလည်း display none ဖြစ်ရမယ်
+        if(notificationCount==0){
+            document.getElementById('notificationCount').style.display = 'none';
+        }
+        // Add your logic for opening the message box, for example, showing chat history
+        // You can implement your own logic here based on your application requirements
+    }
+
+    function playNotificationSound() {
+        // Play the notification sound
+        const audioElement = document.getElementById('notificationSound');
+        audioElement.play();
+    }
+    function playNotificationSound2() {
+        // Play the notification sound
+        const audioElement = document.getElementById('notificationSound2');
+        audioElement.play();
+    }
 </script>
+
 
 </body>
 </html>
+
