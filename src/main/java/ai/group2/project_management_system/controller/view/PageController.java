@@ -122,26 +122,7 @@ public class PageController {
 
         return "login";
     }
-    @GetMapping("/aaa/testChat")
-    public String index() {
-        return "chat-box";
-    }
 
-    @MessageMapping("/chat")
-    @SendTo("/topic/messages")
-    public Message sendMessage(Message message) {
-
-
-        String sender = message.getSender();
-        String content = message.getContent();
-
-
-        System.out.println("sender   : "+ sender);
-        System.out.println("message   : "+ content);
-
-        // Process the incoming message (e.g., store in a database) and return it
-        return message;
-    }
 
 
 

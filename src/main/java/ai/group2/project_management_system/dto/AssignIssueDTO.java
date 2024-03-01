@@ -17,7 +17,7 @@ public class AssignIssueDTO {
     private Long id;
     private Issue issue;
     private String assignName;
-    private boolean is_active;
+    private boolean isActive;
     private User user;
     private String status;
     private String priority;

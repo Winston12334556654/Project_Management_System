@@ -4,6 +4,7 @@ import ai.group2.project_management_system.model.Enum.Role;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -57,6 +58,7 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -102,8 +104,8 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.isActive;
-    }
 
+    }
     public String getProfilePictureFileName() {
         return profilePictureFileName;
     }
@@ -200,10 +202,6 @@ public class User implements UserDetails {
         this.phone = phone;
     }
 
-
-
-
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -241,8 +239,6 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-
-
     @Override
     public String toString() {
         return "User{" +
@@ -255,13 +251,11 @@ public class User implements UserDetails {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
-
+                ", position='" + position + '\'' +
                 ", photo='" + profilePictureFileName + '\'' +
                 ", isActive=" +isActive +
-
                 ", password='" + password + '\'' +
                 ", role=" + role+
                 '}';
     }
-
 }

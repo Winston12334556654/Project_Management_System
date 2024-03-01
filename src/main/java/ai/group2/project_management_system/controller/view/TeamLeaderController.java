@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class TeamLeaderController {
     private final AssignIssueRepository assignIssueRepository;
     private final AssignIssueMapper assignIssueMapper;
     @GetMapping("/teamleader-issueboard")
-    public String DepartmentHeaderIssueBoard(Model model) {
+    public String TeamLeaderIssueBoard(Model model) {
 
        // Long teamleaderId= (Long) httpSession.getAttribute("id");
         var user = userService.getCurrentUser();
@@ -62,6 +63,41 @@ public class TeamLeaderController {
      //   Long teamleaderId = (Long) httpSession.getAttribute("id");
         if (teamleaderId != null) {
             List<Issue> issues = issueService.getIssuesByTeamleaderId(teamleaderId);
+
+            for(Issue issue:issues){
+                boolean anyInProgress = false;
+                boolean allCompleted = true;
+                boolean assignIssuesFound = false;
+                if(issue.getStatus()==Status.PENDING || issue.getStatus()==Status.COMPLETED){
+                    issue.setAssigned(true);
+                }else {
+                    if(issue.getAssignIssues().size()>0){
+                        assignIssuesFound=true;
+                        for (AssignIssue assignIssue : issue.getAssignIssues()) {
+                            if (assignIssue.getStatus() == Status.INPROGRESS) {
+                                anyInProgress = true;
+                                break; // Break if any assign issue is in progress
+                            } else if (assignIssue.getStatus() != Status.COMPLETED) {
+                                allCompleted = false; // Not all assign issues are completed
+                            }
+                        }
+                    }
+
+                    if (!assignIssuesFound) {
+                        issue.setStatus(Status.TODO);
+                    } else {
+
+                        if (anyInProgress) {
+                            issue.setStatus(Status.INPROGRESS);
+                            issue.setActualStartDate(LocalDate.now());
+                        } else if (allCompleted) {
+                            issue.setStatus(Status.PENDING);
+                        }
+                    }
+                }
+                issueRepository.save(issue);
+            }
+
             model.addAttribute("issues", issues);
             model.addAttribute("assignIssue", new AssignIssueDTO());
             return "teamleader-issuelist";
@@ -78,29 +114,10 @@ public class TeamLeaderController {
         return "redirect:/teamleader-issueboard";
     }
 
-    @GetMapping("/member-issuelist")
+    @GetMapping("/teamleader-member-issuelist")
     public String MemberIssueList(Model model) {
         var user = userService.getCurrentUser();
         List<AssignIssue> assignIssues=assignIssueService.getAssignIssuesByTeamleaderId(user.getId());
-        System.out.println("Assign Issue:"+assignIssues.size());
-        /*List<Issue> issues = issueService.getIssuesByTeamleaderId(user.getId());
-        List<Issue> currentIssueList = new ArrayList<>();
-
-        for (Issue issue : issues) {
-            Status status = issue.getStatus();
-            if (status != Status.COMPLETED && issue.is_active()) {
-              //  System.out.println(status);
-                currentIssueList.add(issue);
-            }
-        }
-
-        for(Issue issue1:currentIssueList){
-            System.out.println("Issue Id:"+issue1.getId());
-        }*/
-
-     //   List<AssignIssue> assignIssues=assignIssueService.getAssignIssuesByTeamleaderId(user.getId());
-     //   System.out.println("AssignIssues:"+assignIssues.size());
-
         model.addAttribute("user",user);
         model.addAttribute("assignIssues",assignIssues);
         return "members-view";

@@ -11,7 +11,7 @@ public class AssignIssueMapper {
     public static AssignIssue mapAssignIssueToAssignIssue1(AssignIssueDTO assignIssueDTO) {
         AssignIssue assignIssue = new AssignIssue();
         assignIssue.setName(assignIssueDTO.getAssignName());
-        assignIssue.set_active(true);
+        assignIssue.setActive(true);
         assignIssue.setUser(assignIssueDTO.getUser());
         assignIssue.setStatus(Status.valueOf(assignIssueDTO.getStatus()));
         assignIssue.setPriority(Priority.valueOf(assignIssueDTO.getPriority()));

@@ -4,13 +4,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Position {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String positionName;
 
     // Default constructor
@@ -18,22 +22,15 @@ public class Position {
     }
 
     // Constructor for creating Position from ID
-    public Position(int id) {
+    public Position(Long id) {
         this.id = id;
     }
-
-    // Constructor for converting String ID from user create form
-    public Position(String id) {
-        // Convert the String ID to an integer
-        this.id = Integer.parseInt(id);
-    }
-
     // getters and setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -44,4 +41,10 @@ public class Position {
     public void setPositionName(String positionName) {
         this.positionName = positionName;
     }
+
+    @Override
+    public String toString() {
+        return positionName;
+    }
+
 }

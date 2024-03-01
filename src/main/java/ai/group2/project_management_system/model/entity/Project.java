@@ -15,6 +15,7 @@ import ai.group2.project_management_system.model.entity.User;
 
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -60,26 +61,27 @@ public class Project implements Serializable {
         return isActive;
     }
 
+
     public void setIsActive(boolean isActive) {
+
         this.isActive = isActive;
     }
 
     private boolean isActive;
 
-    @ElementCollection
     @Transient
     private List<Long> userIds;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Department department;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "project_member",  // Specify the name of the join table
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
             inverseJoinColumns = @JoinColumn(name = "user_id", nullable = false)  // Column in the join table for Architecture
     )
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     public Long getId() {
         return id;

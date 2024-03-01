@@ -90,10 +90,10 @@
                                             </td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
-                                                    <button type="button" th:unless="${issue.is_assigned()}" class="btn btn-sm btn-success add-btn" th:attr="data-issue-id=${issue.getId()}" onclick="assignIssueBox(this.getAttribute('data-issue-id'))">
+                                                    <button type="button" th:unless="${issue.isAssigned()}" class="btn btn-sm btn-success add-btn" th:attr="data-issue-id=${issue.getId()}" onclick="assignIssueBox(this.getAttribute('data-issue-id'))">
                                                         <i class="ri-add-line align-bottom me-1"></i> Assign Issue
                                                     </button>
-                                                    <button type="button" th:if="${issue.is_assigned()}" class="btn btn-sm btn-primary add-btn">
+                                                    <button type="button" th:if="${issue.isAssigned()}" class="btn btn-sm btn-primary add-btn">
                                                          Assigned
                                                     </button>
 

@@ -17,11 +17,10 @@ public class UserMapping {
         dto.setEmail(users.getEmail());
         dto.setAddress(users.getAddress());
         dto.setPhone(users.getPhone());
-        dto.setPhoto(users.getProfilePictureFileName());
+        dto.setProfilePictureName(users.getProfilePictureFileName());
         dto.setPassword(users.getPassword());
         dto.setRole(users.getRole());
         dto.setPosition(users.getPosition());
-
         return dto;
     }
 

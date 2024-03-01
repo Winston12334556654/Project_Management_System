@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" >
+
+<!-- Mirrored from themesbrand.com/velzon/html/material/apps-ecommerce-customers.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:39 GMT -->
+<head  th:replace="~{layout :: head}">
+    <!-- Sweet Alert css-->
+    <link  rel="stylesheet" th:href="@{/assets/libs/sweetalert2/sweetalert2.min.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+    <!-- Include Flatpickr CSS (you can use a CDN or include it locally) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+</head>
+
+<body>
+<!-- Begin page -->
+<div id="layout-wrapper">
+    <div id="header-container">
+        <header th:replace="~{header :: header}"></header>
+    </div>
+
+
+    <!-- ========== App Menu ========== -->
+    <div id="navbar-container">
+        <div th:replace="~{navbar :: navbar}"></div>
+    </div>
+</div>
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Issues</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card" id="customerList">
+                        <div class="card-header border-bottom-dashed">
+
+                            <div class="row g-4 align-items-center">
+                                <div class="col-sm">
+                                    <div>
+                                        <h5 class="card-title mb-0">Issue List</h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <div class="d-flex flex-wrap align-items-start gap-2">
+                                        <button type="button" class="btn btn-info" onclick='location.href="/teamleader-issueboard"'><i class=" ri-bar-chart-2-fill align-bottom me-1"></i> Issue Board</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div>
+                                <div class="table-responsive table-card mb-1">
+                                    <table id="example" class="table align-middle table-striped table-hover table1 display" >
+                                        <thead class="table-light text-muted">
+                                        <tr>
+
+                                            <th class="sort" data-sort="">Project Name</th>
+                                            <th class="sort" data-sort="">Issue Name</th>
+                                            <th class="sort" data-sort="">Assigned Issue</th>
+                                            <th class="sort" data-sort="">Start Date</th>
+                                            <th class="sort" data-sort="">Due Date</th>
+                                            <th class="sort" data-sort="">Status</th>
+                                            <th class="sort" data-sort="">Details</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="list form-check-all">
+                                        <tr th:each="assignIssue : ${assignIssues}">
+
+                                            <td class="" th:text="${assignIssue.getIssue().getProject().getTitle()}"></td>
+                                            <td class="" th:text="${assignIssue.getIssue().getTitle()}"></td>
+                                            <td class="" th:text="${assignIssue.getName()}"></td>
+                                            <td class="" th:text="${assignIssue.getPlanStartDate()}"></td>
+                                            <td class="" th:text="${assignIssue.getPlanDueDate()}"></td>
+                                            <td class=""><span class="badge bg-danger-subtle text-warning text-uppercase" th:text="${assignIssue.getStatus()}"></span>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-sm btn-light" th:href="@{'/member-issuedetails/'+${assignIssue.getId()}}"> View</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="noresult" style="display: none">
+                                        <div class="text-center">
+                                            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
+                                            <h5 class="mt-2">Sorry! No Result Found</h5>
+                                            <p class="text-muted mb-0">We've searched more than 150+ customer We did not find any customer for you search.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+</div>
+<!-- end main content-->
+<div th:replace="~{layout :: footer}"></div>
+
+<!--<script src="assets/js/file.js"></script>-->
+<script>
+    initializeFileUpload('file-input', 'fileNames');
+</script>
+
+<!--Add Member Toggle-->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- JavaScript to close the modal using jQuery -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" ></script>
+<script>
+    $(document).ready(function() {
+        new DataTable('#example', {
+            pagingType: 'full_numbers'
+
+        });
+    });
+
+</script>
+
+<!-- Include Flatpickr JS (you can use a CDN or include it locally) -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- dropzone js -->
+<script src="assets/libs/dropzone/dropzone-min.js"></script>
+<!-- project-create init -->
+<script src="assets/js/pages/project-create.init.js"></script>
+<!-- ckeditor -->
+<script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+<script th:src="@{/assets/js/teamleader-issuelist.js}"></script>
+</body>
+
+</html>

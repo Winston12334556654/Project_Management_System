@@ -47,8 +47,8 @@ public class Issue implements Serializable {
 
     @Column(nullable = false)
     private String creator;
-    private boolean is_active;
-    private boolean is_assigned;
+    private boolean isActive;
+    private boolean isAssigned;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -145,20 +145,21 @@ public class Issue implements Serializable {
         this.creator = creator;
     }
 
-    public boolean isIs_active() {
-        return is_active;
+
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setIs_active(boolean is_active) {
-        this.is_active = is_active;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
-    public boolean isIs_assigned() {
-        return is_assigned;
+    public boolean isAssigned() {
+        return isAssigned;
     }
 
-    public void setIs_assigned(boolean is_assigned) {
-        this.is_assigned = is_assigned;
+    public void setAssigned(boolean assigned) {
+        isAssigned = assigned;
     }
 
     public Status getStatus() {

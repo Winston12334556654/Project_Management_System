@@ -44,8 +44,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-md">
+
                                                 <div>
-                                                    <h4 class="fw-bold">Velzon - Admin & Dashboard</h4>
+                                                    <h4 class="fw-bold" th:text="${project.title}"></h4>
+
                                                     <div class="hstack gap-3 flex-wrap">
 
                                                         <div class="vr"></div>
@@ -53,8 +55,14 @@
                                                         <div class="vr"></div>
                                                         <div>Due Date : <span class="fw-medium" th:text="${project.planEndDate}"></span></div>
                                                         <div class="vr"></div>
+                                                        <div class="text-end">
+                                                            <span th:if="${project.isActive()}" class="badge bg-success">Active</span>
+                                                            <span th:unless="${project.isActive()}" class="badge bg-danger">Inactive</span>
+                                                            <!-- You can customize the color and text as needed -->
+                                                        </div>
 
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -147,7 +155,7 @@
                                 <!-- end row -->
 
                                 <div class="team-list list-view-filter" id="member-list">
-                                    <!--the html card-->
+                                    <!--Member List-->
                                 </div>
                                 <!-- end team list -->
                             </div>
@@ -184,13 +192,38 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        memberGetter();
+        const pjId = [[${project.id}]];
+        memberGetter(pjId);
     });
 
-    function memberGetter(){
-        const userId = [[${project.userIds}]];
-        console.log(userId);
-        const url = `/user-getter?userIds=${userId.join(',')}`;
+
+    function memberGetter(projectId) {
+        // Construct the URL with the projectId as a query parameter
+        const url = `/member?projectId=${projectId}`;
+
+        // Make a GET request using Fetch API
+        return fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Return the response data, which will contain user IDs
+                console.log(data);
+                getUserData(data);
+                return data;
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('There was a problem with the fetch operation:', error);
+                throw error; // Rethrow the error for the caller to handle
+            });
+    }
+
+    function getUserData(userIds) {
+        const url = `/users?userIds=${userIds.join(',')}`;
         fetch(url, {
             method: 'GET',
             credentials: 'include',
@@ -204,17 +237,16 @@
                 }
                 return response.json();
             })
-            .then(data => {
-                // Display the users returned by the server in the member list
-                console.log(data);
-                displayMemberList(data);
+            .then(users => {
+                // Process the user data and display it as needed
+                console.log(users);
+                displayMemberList(users);
             })
             .catch(error => {
                 console.error('Error fetching user data:', error);
             });
     }
-
-const member=[];
+    const member=[];
     function displayMemberList(dto) {
         const memberListContainer = document.getElementById('member-list');
         // Clear existing member list content
@@ -235,7 +267,7 @@ const member=[];
                                                 <div class="col-lg-4 col">
                                                     <div class="team-profile-img">
                                                         <div class="avatar-lg img-thumbnail rounded-circle shadow">
-                                                            <img src="assets/images/users/${user.photo}" alt="" class="img-fluid d-block rounded-circle" />
+                                                            <img src="assets/images/users/about" alt="" class="img-fluid d-block rounded-circle" />
                                                         </div>
                                                         <div class="team-content">
                                                             <a href="#" class="d-block">

@@ -16,7 +16,9 @@ import java.util.Set;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
+
      @Query("SELECT p FROM Project p WHERE p.id = :projectId")
      Project findProjectById(@Param("projectId") Long projectId);
+     List<Project> findProjectsByCreator(String creator);
 
 }

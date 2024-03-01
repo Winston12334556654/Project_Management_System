@@ -16,4 +16,12 @@ public interface AssignIssueRepository extends JpaRepository<AssignIssue,Integer
             "JOIN project ON issue.project_id = project.id\n" +
             "WHERE issue.team_leader_id = :teamleaderId AND project.status != 'COMPLETED'",nativeQuery = true)
     List<AssignIssue> getAssignIssuesByTeamLeaderId(@Param("teamleaderId") Long teamleaderId);
+
+
+    @Query("SELECT ai FROM AssignIssue ai WHERE ai.user.id = :userId")
+    List<AssignIssue> getAssignIssuesByMemberId(@Param("userId") Long userId);
+
+    AssignIssue getAssignIssueById(Long id);
+
+
 }

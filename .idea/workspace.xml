@@ -1,300 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="ALL" />
+    <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84f24c3b-6342-4d89-929d-01adf3cae5a7" name="Default Changelist" comment="">
+    <list default="true" id="31e389ec-65c9-4d82-805c-a979f4f2a2b1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ai/group2/project_management_system/controller/view/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ai/group2/project_management_system/controller/view/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/assets/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/assets/js/chat.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/1708539872971." beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/1708855794634." beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/teamleader-issueboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/teamleader-issueboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ai/group2/project_management_system/controller/view/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ai/group2/project_management_system/controller/view/HomeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/assets/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/assets/js/chat.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/teamleader-issueboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/teamleader-issueboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ai/group2/project_management_system/controller/view/TeamLeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ai/group2/project_management_system/controller/view/TeamLeaderController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="CSS File" />
-        <option value="Enum" />
-        <option value="Interface" />
-        <option value="HTML File" />
-        <option value="Class" />
-        <option value="JavaScript File" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="InvalidFacetManager">
-    <ignored-facets>
-      <facet id="ProjectManagementSystem/invalid/Web" />
-    </ignored-facets>
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="alwaysUpdateSnapshots" value="true" />
-        <option name="workOffline" value="true" />
-      </MavenGeneralSettings>
-    </option>
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="vmOptionsForImporter" value="-Xmx768m" />
-        <option name="workspaceImportForciblyTurnedOn" value="true" />
-      </MavenImportingSettings>
-    </option>
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 6
-}</component>
-  <component name="ProjectId" id="2ayaFAWPrqRfepnH9LIai2wEEpH" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.ProjectManagementSystemApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;demo-main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "git-widget-placeholder": "demo-main",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources/static" />
-      <recent name="C:\Users\User\Desktop\Git Project\ProjectManagementSystem\src\main\resources\static\assets\userPhoto" />
-      <recent name="$PROJECT_DIR$/src/main/resources/templates" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources/templates" />
-      <recent name="$PROJECT_DIR$/src/main/resources/static/assets/css" />
-      <recent name="$PROJECT_DIR$/src/main/resources/static/assets/js" />
-      <recent name="C:\Users\User\Desktop\Git Project\ProjectManagementSystem\src\main\resources\static\assets\projectFiles" />
-      <recent name="C:\Users\User\Desktop\Git Project\ProjectManagementSystem\src\main\resources\static\assets\files\userPhoto" />
-    </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="configurationTypes">
-      <set>
-        <option value="SpringBootApplicationConfigurationType" />
-      </set>
-    </option>
-  </component>
+}]]></component>
   <component name="RunManager" selected="Spring Boot.ProjectManagementSystemApplication">
-    <configuration name="IssueManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="ProjectManagementSystem" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="ai.group2.IssueManagementSystem.IssueManagementSystemApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="issue-create.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="issue-create.js" working-dir="$PROJECT_DIR$/src/main/resources/static/assets/js">
+      <method v="2" />
     </configuration>
-    <configuration name="ProjectManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <configuration name="ProjectManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="ProjectManagementSystem" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="ai.group2.project_management_system.ProjectManagementSystemApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ai.group2.project_management_system.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="allServicesViewState">
-      <serviceView>
-        <option name="contentProportion" value="0.0125" />
-        <treeState>
-          <expand>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@2534a29c" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-            </path>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@2534a29c" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@593c0eae" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-            </path>
-          </expand>
-          <select />
-        </treeState>
-      </serviceView>
-    </option>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-25a4bffe" />
-      </set>
-    </attachedChunks>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="SvnConfiguration">
-    <configuration />
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.ProjectManagementSystemApplication" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="84f24c3b-6342-4d89-929d-01adf3cae5a7" name="Default Changelist" comment="" />
-      <created>1705293166524</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1705293166524</updated>
-      <workItem from="1705293167564" duration="20712000" />
-      <workItem from="1705376200048" duration="21000" />
-      <workItem from="1705376333349" duration="1086000" />
-      <workItem from="1705379688428" duration="4224000" />
-      <workItem from="1705460935679" duration="19000" />
-      <workItem from="1705461006666" duration="11828000" />
-      <workItem from="1705547874996" duration="18362000" />
-      <workItem from="1705630415045" duration="24000" />
-      <workItem from="1705630464511" duration="10917000" />
-      <workItem from="1705770519330" duration="1782000" />
-      <workItem from="1705811475535" duration="5659000" />
-      <workItem from="1705846149355" duration="6870000" />
-      <workItem from="1705892803246" duration="8677000" />
-      <workItem from="1705910109194" duration="19000" />
-      <workItem from="1705910150895" duration="4604000" />
-      <workItem from="1705933179662" duration="11518000" />
-      <workItem from="1705984518678" duration="4770000" />
-      <workItem from="1705993550355" duration="3962000" />
-      <workItem from="1706019758389" duration="612000" />
-      <workItem from="1706023815624" duration="1834000" />
-      <workItem from="1706061152012" duration="26000" />
-      <workItem from="1706061199365" duration="719000" />
-      <workItem from="1706065707759" duration="8474000" />
-      <workItem from="1706153004417" duration="4671000" />
-      <workItem from="1706163820723" duration="4374000" />
-      <workItem from="1706196570113" duration="5721000" />
-      <workItem from="1706232126018" duration="15187000" />
-      <workItem from="1706336789709" duration="3468000" />
-      <workItem from="1706413716642" duration="2265000" />
-      <workItem from="1706425791478" duration="8270000" />
-      <workItem from="1706497929292" duration="5353000" />
-      <workItem from="1706514425430" duration="5508000" />
-      <workItem from="1706530481254" duration="22570000" />
-      <workItem from="1706671126734" duration="46000" />
-      <workItem from="1706672632576" duration="1207000" />
-      <workItem from="1706688025532" duration="7126000" />
-      <workItem from="1706757454981" duration="11701000" />
-      <workItem from="1706796676115" duration="92000" />
-      <workItem from="1706796788088" duration="8668000" />
-      <workItem from="1706845413137" duration="127000" />
-      <workItem from="1706845572409" duration="9614000" />
-      <workItem from="1706873381420" duration="27000" />
-      <workItem from="1706873919095" duration="2353000" />
-      <workItem from="1706937310593" duration="496000" />
-      <workItem from="1706966619386" duration="1241000" />
-      <workItem from="1706974901728" duration="5596000" />
-      <workItem from="1707064344061" duration="4949000" />
-      <workItem from="1707075758465" duration="4776000" />
-      <workItem from="1707106757390" duration="22020000" />
-      <workItem from="1707150868006" duration="7736000" />
-      <workItem from="1707189975855" duration="1862000" />
-      <workItem from="1707202359208" duration="7587000" />
-      <workItem from="1707239347817" duration="708000" />
-      <workItem from="1707289176373" duration="6885000" />
-      <workItem from="1707297581296" duration="267000" />
-      <workItem from="1707301222101" duration="2595000" />
-      <workItem from="1707314497620" duration="12472000" />
-      <workItem from="1707354211161" duration="551000" />
-      <workItem from="1707359773915" duration="3840000" />
-      <workItem from="1707366421275" duration="3029000" />
-      <workItem from="1707376113717" duration="5374000" />
-      <workItem from="1707459235618" duration="2784000" />
-      <workItem from="1707668042002" duration="7203000" />
-      <workItem from="1707676842771" duration="505000" />
-      <workItem from="1707794367353" duration="1351000" />
-      <workItem from="1707796698268" duration="35000" />
-      <workItem from="1707796738276" duration="21000" />
-      <workItem from="1707796800957" duration="32000" />
-      <workItem from="1707796880573" duration="779000" />
-      <workItem from="1707880843734" duration="11846000" />
-      <workItem from="1707952498789" duration="14932000" />
-      <workItem from="1708064972128" duration="50834000" />
-      <workItem from="1708399599452" duration="1463000" />
-      <workItem from="1708401109723" duration="13529000" />
-      <workItem from="1708485314753" duration="37811000" />
-      <workItem from="1708574249578" duration="2446000" />
-      <workItem from="1708577731650" duration="631000" />
-      <workItem from="1708579900805" duration="12000" />
-      <workItem from="1708587741753" duration="23674000" />
-      <workItem from="1708657263976" duration="610000" />
-      <workItem from="1708674594189" duration="2302000" />
-      <workItem from="1708690742117" duration="7134000" />
-      <workItem from="1708742004579" duration="3393000" />
-      <workItem from="1708752535802" duration="7595000" />
-      <workItem from="1708854895306" duration="879000" />
-      <workItem from="1708921775724" duration="11538000" />
-    </task>
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="BEK_SORT_TYPE" value="1" />
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/demoMain" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ai/group2/project_management_system/model/entity/User.java</url>
-          <line>48</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

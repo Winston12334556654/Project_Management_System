@@ -74,11 +74,11 @@
 
                                 <div class="d-flex  col-xxl-4 col-sm-4 ms-auto justify-content-center align-items-center">
                                     <div class="flex-shrink-0  " >
-                                        <img th:src="@{/assets/userPhoto/{photo}(photo=${user.photo})}" alt="" class="avatar-xs rounded-circle shadow">
+                                        <img th:src="@{/assets/userPhoto/{photo}(photo=${user.profilePictureFileName})}" alt="" class="avatar-xs rounded-circle shadow">
                                     </div>
                                     <div class="flex-grow-1 ms-2">
                                         <h6 class="mb-1"><a href="#" class="text-body" th:text="${user.getName()}"></a></h6>
-                                        <p class="text-muted mb-0" th:text="${user.getPosition()}"></p>
+                                        <p class="text-muted mb-0" th:text="${user.getPosition().getPositionName()}"></p>
                                     </div>
                                 </div>
 
@@ -129,8 +129,8 @@
                                         <td class="priority"><span class="badge bg-primary-subtle text-uppercase text-primary" th:text="${assignIssue.getName()}"></span></td>
                                         <td class="assignedto">
                                             <div class="avatar-group">
-                                                <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
-                                                    <img th:src="@{'/assets/userPhoto/'+${assignIssue.getUser().getPhoto()}}" alt="" class="rounded-circle avatar-xxs" />
+                                                <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" th:title="${assignIssue.getUser().getName()}">
+                                                    <img th:src="@{'/assets/userPhoto/'+${assignIssue.getUser().getProfilePictureFileName()}}" alt="" class="rounded-circle avatar-xxs" />
                                                 </a>
 
                                             </div>

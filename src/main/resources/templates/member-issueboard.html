@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+
+
+<!-- Mirrored from themesbrand.com/velzon/html/material/apps-tasks-kanban.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:20 GMT -->
+<head  th:replace="~{layout :: head}">
+
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css}">
+
+</head>
+<style>
+
+    .dropdown-menu {
+        min-width: 300px; /* Adjust the minimum width as needed */
+    }
+
+    .dz-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+    }
+    .tasks-wrapper {
+        overflow: auto;
+
+    }
+    .tasks-wrapper::-webkit-scrollbar {
+        width: 7px;
+    }
+
+    .tasks-wrapper::-webkit-scrollbar-thumb {
+        background-color: #C7C8CC;
+        border-radius: 25px;
+    }
+
+    .tasks-wrapper::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+    }
+    .simplebar-content {
+        padding: 0px 16px;
+    }
+
+</style>
+<body>
+<div id="layout-wrapper">
+    <div id="header-container">
+        <header th:replace="~{header :: header}"></header>
+    </div>
+    <!-- ========== App Menu ========== -->
+    <div id="navbar-container">
+        <div th:replace="~{navbar :: navbar}"></div>
+    </div>
+</div>
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-xxl-3 col-sm-4">
+                            <div class="input-light">
+
+                                <select class="form-control" data-choices data-choices-search-false name="choices-single-default" th:id="issueId">
+                                    <option value="" selected disabled>Search Projects</option>
+                                    <option th:each="issue : ${issues}" th:value="${issue.id}" th:text="${issue.title}"  ></option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="d-flex  col-xxl-4 col-sm-4 mx-auto">
+                            <div class="flex-shrink-0">
+                                <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle shadow">
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h6 class="mb-1"><a href="" class="text-body" >Tonya Noble</a></h6>
+                                <p class="text-muted mb-0">Full Stack Developer</p>
+                            </div>
+                        </div>
+
+                        <!--<div class="col-auto ms-sm-auto ">
+                            <button class="btn btn-primary " type="button" >Live Chat</button>
+
+                        </div>-->
+
+                        <div class="col-auto ms-sm-auto ">
+                            <button class="btn btn-primary " type="button" onclick="location.href='/chatlist'">Live Chat</button>
+                        </div>
+                    </div>
+                    <!--End col-->
+
+                    <!--end row-->
+                </div>
+                <!--end card-body-->
+            </div>
+            <!--end card-->
+
+            <div class="tasks-board " id="kanbanboard" >
+
+                <!--end tasks-list-->
+                <div class="tasks-list">
+                    <div class="status">
+                        <div class="d-flex mb-3">
+                            <div class="flex-grow-1">
+                                <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist" >TODO <small class="badge bg-secondary align-bottom ms-1 totaltask-badge">2</small></h6>
+                            </div>
+
+                        </div>
+                        <div data-simplebar="init" class="tasks-wrapper px-3 mx-n3">
+                            <th:block th:each="currentIssue : ${currentIssues}">
+                                <div th:if="${currentIssue.status.toString() == 'TODO'}" class="card tasks-box todo " draggable="true">
+                                    <div class="card tasks-box todo mt-3" draggable="true" th:data-id="${currentIssue.getStatus()}">
+                                        <div class="card-body">
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="currentIssueId" th:text="${currentIssue.getId()}" th:attr="style='display: none;'"></h5>
+                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${currentIssue.getIssue().getTitle()}">
+                                                    </a></h6>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a type="button" class="btn btn-sm btn-light" th:href="@{'/member-issuedetails/'+${currentIssue.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+
+                                                </div>
+                                            </div>
+                                            <p class="text-muted" th:text="${currentIssue.getIssue().getDescription()}"></p>
+
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1">
+                                                    <!--<th:block th:each="assignIssue : ${issue.getAssignIssues()}">-->
+                                                        <span class="badge bg-primary-subtle text-primary" th:text="${currentIssue.getName()}"></span>
+                                                    <!--</th:block>-->
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-group">
+                                                        <!--<th:block th:each="assignIssue : ${issue.getAssignIssues()}">-->
+                                                            <a href="" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" th:title="${currentIssue.getUser().name}">
+                                                                <img th:src="@{'/assets/userPhoto/'+${currentIssue.getUser().getProfilePictureFileName()}}" alt="" class="rounded-circle avatar-xxs">
+                                                            </a>
+                                                       <!-- </th:block>-->
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                        <div class="card-footer border-top-dashed">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${currentIssue.planStartDate}"><i class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </th:block>
+
+                        </div>
+                    </div>
+
+                    <div class="my-3">
+                        <button class="btn btn-soft-info w-100" onclick='location.href="/member-issuelist"'>See More</button>
+                    </div>
+                </div>
+                <!--end tasks-list-->
+
+                <div class="tasks-list mb-3">
+                    <div class="status">
+                        <div class="d-flex mb-3">
+                            <div class="flex-grow-1">
+                                <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">INPROGRESS <small class="badge bg-warning align-bottom ms-1 totaltask-badge">2</small></h6>
+                            </div>
+
+                        </div>
+                        <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                            <th:block th:each="currentIssue : ${currentIssues}">
+                                <div th:if="${currentIssue.status.toString() == 'INPROGRESS'}" class="card tasks-box todo" draggable="true">
+                                    <div class="card tasks-box todo mt-3" draggable="true" th:data-id="${currentIssue.getStatus()}" >
+                                        <div class="card-body">
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="currentIssueId" th:text="${currentIssue.getId()}" th:attr="style='display: none;'"></h5>
+                                                    <h6 class="fs-15 mb-0 text-truncate task-title" ><a class="text-body d-block" th:text="${currentIssue.getIssue().getTitle()}">
+
+                                                    </a></h6>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a type="button" class="btn btn-sm btn-light" th:href="@{'/member-issuedetails/'+${currentIssue.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+
+                                                </div>
+                                            </div>
+                                            <p class="text-muted" th:text="${currentIssue.getIssue().getDescription()}"></p>
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1">
+
+                                                        <span class="badge bg-primary-subtle text-primary" th:text="${currentIssue.getName()}"></span>
+
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-group">
+                                                            <a href="" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" th:title="${currentIssue.getUser().name}">
+                                                                <img th:src="@{'/assets/userPhoto/'+${currentIssue.getUser().profilePictureFileName}}" alt="" class="rounded-circle avatar-xxs">
+                                                            </a>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                        <div class="card-footer border-top-dashed">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${currentIssue.planStartDate}"><i class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="my-3">
+                        <button class="btn btn-soft-info w-100" onclick='location.href="/member-issuelist"'>See More</button>
+                    </div>
+
+
+                </div>
+                <!--end tasks-list-->
+
+                <div class="tasks-list">
+                    <div class="status">
+                        <div class="d-flex mb-3">
+                            <div class="flex-grow-1">
+                                <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">COMPLETED <small class="badge bg-success align-bottom ms-1 totaltask-badge">1</small></h6>
+                            </div>
+
+                        </div>
+                        <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                            <th:block th:each="currentIssue : ${currentIssues}">
+                                <div th:if="${currentIssue.status.toString() == 'COMPLETED'}" class="card tasks-box todo" draggable="true">
+                                    <div class="card tasks-box todo mt-3" draggable="true" th:data-id="${currentIssue.getStatus()}">
+                                        <div class="card-body">
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="currentIssueId" th:text="${currentIssue.getId()}" th:attr="style='display: none;'"></h5>
+                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${currentIssue.getIssue().getTitle()}">
+                                                    </a></h6>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a type="button" class="btn btn-sm btn-light" th:href="@{'/member-issuedetails/'+${currentIssue.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+
+                                                </div>
+                                            </div>
+                                            <p class="text-muted" th:text="${currentIssue.getIssue().getDescription()}"></p>
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1">
+
+                                                        <span class="badge bg-primary-subtle text-primary" th:text="${currentIssue.name}"></span>
+
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-group">
+
+                                                            <a href="" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" th:title="${currentIssue.getUser().name}">
+                                                                <img th:src="@{'/assets/userPhoto/'+${currentIssue.getUser().profilePictureFileName}}" alt="" class="rounded-circle avatar-xxs">
+                                                            </a>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                        <div class="card-footer border-top-dashed">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${currentIssue.planStartDate}"><i class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="my-3">
+                        <button class="btn btn-soft-info w-100" onclick='location.href="/member-issuelist"'>See More</button>
+                    </div>
+                </div>
+                <!--end tasks-list-->
+                <div class="tasks-list">
+                    <div class="status">
+                        <div class="d-flex mb-3">
+                            <div class="flex-grow-1">
+                                <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">OVERDUE <small class="badge bg-success align-bottom ms-1 totaltask-badge">1</small></h6>
+                            </div>
+
+                        </div>
+                        <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                            <th:block th:each="currentIssue : ${currentIssues}">
+                                <div th:if="${currentIssue.status.toString() == 'OVERDUE'}" class="card tasks-box todo" draggable="true">
+                                    <div class="card tasks-box todo mt-3" draggable="true" th:data-id="${currentIssue.getStatus()}">
+                                        <div class="card-body">
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="currentIssueId" th:text="${currentIssue.getId()}" th:attr="style='display: none;'"></h5>
+                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${currentIssue.getIssue().getTitle()}">
+                                                    </a></h6>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a type="button" class="btn btn-sm btn-light" th:href="@{'/member-issuedetails/'+${currentIssue.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+
+                                                </div>
+                                            </div>
+                                            <p class="text-muted" th:text="${currentIssue.getIssue().getDescription()}"></p>
+
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1">
+
+                                                        <span class="badge bg-primary-subtle text-primary" th:text="${currentIssue.name}"></span>
+
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-group">
+
+                                                            <a href="" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" th:title="${currentIssue.getUser().name}">
+                                                                <img th:src="@{'/assets/userPhoto/'+${currentIssue.getUser().profilePictureFileName}}" alt="" class="rounded-circle avatar-xxs">
+                                                            </a>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                        <div class="card-footer border-top-dashed">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${currentIssue.planStartDate}"><i class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="my-3">
+                        <button class="btn btn-soft-info w-100" onclick='location.href="/member-issuelist"'>See More</button>
+                    </div>
+                </div>
+                <!--end tasks-list-->
+            </div>
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+</div><!-- end main content-->
+<!-- END layout-wrapper -->
+<!-- JAVASCRIPT -->
+
+<div th:replace="~{layout :: footer}"></div>
+<script th:src="@{/assets/js/member-issueboard.js}"></script>
+<!--taks-kanban-->
+<script  th:src="@{/assets/js/pages/tasks-kanban.init.js}"></script>
+
+<!-- ckeditor -->
+<script th:src="@{/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js}"></script>
+
+<!-- dragula init js -->
+<script th:src="@{/assets/libs/dragula/dragula.min.js}"></script>
+
+<!-- dom autoscroll -->
+<script th:src="@{/assets/libs/dom-autoscroller/dom-autoscroller.min.js}"></script>
+
+<!-- dropzone js -->
+<script th:src="@{/assets/libs/dropzone/dropzone-min.js}"></script>
+<!-- project-create init -->
+<script th:src="@{/assets/js/pages/project-create.init.js}"></script>
+
+
+
+</body>
+
+</html>

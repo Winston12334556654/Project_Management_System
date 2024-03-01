@@ -4,12 +4,14 @@ import ai.group2.project_management_system.model.Enum.Category;
 import ai.group2.project_management_system.model.Enum.Priority;
 import ai.group2.project_management_system.model.Enum.Status;
 import ai.group2.project_management_system.model.entity.Project;
+import ai.group2.project_management_system.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -26,11 +28,13 @@ public class ProjectDTO {
     private Category category;
     private Priority priority;
 
-    private boolean is_active;
+    private boolean isActive;
 
     private LocalDate actualStartDate;
     private LocalDate actualEndDate;
     private List<Long> userIds;
+
+    private Set<User> users;
 
     public ProjectDTO(Project project) {
         id = project.getId();
@@ -43,13 +47,15 @@ public class ProjectDTO {
         status = project.getStatus();
         category = project.getCategory();
         priority = project.getPriority();
-        is_active = project.isActive();
+
+        isActive = project.isIsActive();
+
         actualStartDate = project.getActualStartDate();
         actualEndDate = project.getActualEndDate();
         userIds = project.getUserIds().stream().toList();
+        users = project.getUsers();
 
     }
-
     public Long getId() {
         return id;
     }
@@ -130,13 +136,6 @@ public class ProjectDTO {
         this.priority = priority;
     }
 
-    public boolean isIs_active() {
-        return is_active;
-    }
-
-    public void setIs_active(boolean is_active) {
-        this.is_active = is_active;
-    }
 
     public LocalDate getActualStartDate() {
         return actualStartDate;
@@ -154,6 +153,14 @@ public class ProjectDTO {
         this.actualEndDate = actualEndDate;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     public List<Long> getUserIds() {
         return userIds;
     }
@@ -162,3 +169,4 @@ public class ProjectDTO {
         this.userIds = userIds;
     }
 }
+

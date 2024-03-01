@@ -17,7 +17,6 @@ public class IssueFiles implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String fileName;
 
     @ManyToOne

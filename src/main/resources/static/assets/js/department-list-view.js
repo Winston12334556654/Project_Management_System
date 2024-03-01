@@ -13,10 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.log('Error: ', error);
         });
+<<<<<<< HEAD
+});
+=======
 
     // Render Department list Table
     function refreshDepartmentListTable(items) {
         const table = document.getElementById('department-table');
+>>>>>>> d639aad4abf1e8697c9b88a784f56f938e385d37
 
         // Check if DataTable is already initialized and destroy it
         if (table && table.DataTable) {
@@ -157,6 +161,15 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error toggling department:', error);
         }
+<<<<<<< HEAD
+        // Show Bootstrap modal for confirmation
+        const actionText = department.active ? 'Block' : 'Active';
+        document.getElementById('confirmationDepartmentAction').textContent = actionText;
+        const confirmationModal = document.getElementById('confirmationDepartmentModal');
+        confirmationModal.classList.add('show');
+    } catch (error) {
+        console.error('Error toggling department:', error);
+=======
 
 
         // Show Bootstrap modal for confirmation
@@ -209,5 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // } catch (error) {
     //     console.error('Error toggling department:', error);
     //
+>>>>>>> d639aad4abf1e8697c9b88a784f56f938e385d37
     }
 });

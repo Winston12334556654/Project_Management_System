@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+
+
+<!-- Mirrored from themesbrand.com/velzon/html/material/apps-tasks-list-view.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:43 GMT -->
+<head th:replace="~{layout :: head}">
+    <!-- Sweet Alert css-->
+    <link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+</head>
+<style>
+    .additional-content {
+        display: none;
+    }
+
+    .form-check-label:hover .additional-content {
+        display: block;
+    }
+
+    .hidden-input {
+        display: none;
+    }
+
+    .teamLeaderImage {
+        width: 50px; /* Adjust the width as needed */
+        height: 50px; /* Adjust the height as needed */
+        display: block;
+        margin: 0 auto; /* Center the image */
+    }
+
+
+</style>
+<body>
+<!-- Begin page -->
+<div id="layout-wrapper">
+    <div id="header-container">
+        <header th:replace="~{header :: header}"></header>
+    </div>
+
+
+    <!-- ========== App Menu ========== -->
+    <div id="navbar-container">
+        <div th:replace="~{navbar :: navbar}"></div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Issues List</h4>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card" id="tasksList">
+                        <div class="card-header border-0">
+                            <div class="d-flex ">
+
+                                <div class="col-xxl-3 col-sm-4">
+                                    <!--<div class="input-light">
+                                        <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
+                                            <option selected disabled>Search Projects</option>
+                                            <option value="New">All</option>
+                                            <option value="New">A</option>
+                                            <option value="Pending">B</option>
+                                            <option value="Inprogress">C</option>
+                                            <option value="Completed">D</option>
+                                        </select>
+                                    </div>-->
+                                </div>
+
+                                <div class="d-flex  col-xxl-4 col-sm-4 ms-auto justify-content-center align-items-center">
+                                    <div class="flex-shrink-0  " >
+                                        <img th:src="@{/assets/userPhoto/{photo}(photo=${user.profilePictureFileName})}" alt="" class="avatar-xs rounded-circle shadow">
+                                    </div>
+                                    <div class="flex-grow-1 ms-2">
+                                        <h6 class="mb-1"><a href="#" class="text-body" th:text="${user.getName()}"></a></h6>
+                                        <p class="text-muted mb-0" th:text="${user.getPosition().getPositionName()}"></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 ms-sm-auto">
+                                    <!-- <div class="input-light">
+                                         <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
+                                             <option selected disabled>Search Issues</option>
+                                             <option value="New">All</option>
+                                             <option value="New">A</option>
+                                             <option value="Pending">B</option>
+                                             <option value="Inprogress">C</option>
+                                             <option value="Completed">D</option>
+                                         </select>
+                                     </div>-->
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive table-card mb-4">
+                                <table class="table align-middle table-striped table-hover table1 display" id="example">
+                                    <thead class="table-light text-muted">
+                                    <tr>
+
+                                        <th class="sort" data-sort="">PM Name</th>
+                                        <th class="sort" data-sort="">Project</th>
+                                        <th class="sort" data-sort="">Issue Title</th>
+                                        <th class="sort" data-sort="">Team Leader</th>
+                                        <th class="sort" data-sort="">Start Date</th>
+                                        <th class="sort" data-sort="">Due Date</th>
+                                        <th class="sort" data-sort="">Status</th>
+                                        <th class="sort" data-sort="">Priority</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="list form-check-all">
+                                    <tr th:each="currentIssue : ${currentIssues}">
+                                        <td class="id"><a href="#" class="fw-medium link-primary" th:text="${currentIssue.getCreator()}"></a></td>
+                                        <td class="due_date"><a href="#" class="fw-medium link-primary" th:text="${currentIssue.getProject().getTitle()}"></a></td>
+
+                                        <td>
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1 tasks_name" th:text="${currentIssue.getTitle()}"></div>
+                                            </div>
+                                        </td>
+                                        <td class="assignedto">
+                                            <div class="avatar-group">
+                                                <!--<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
+                                                    <img th:src="@{'/assets/userPhoto/A.jpg'}" alt="" class="rounded-circle avatar-xxs" />
+                                                </a>-->
+
+                                                <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${currentIssue.getTeamLeaderId()}">
+                                                    <img src="" alt="" class="rounded-circle avatar-xxs teamLeaderImage">
+                                                </a>
+
+
+                                            </div>
+                                        </td>
+                                        <td class="due_date" th:text="${currentIssue.getPlanStartDate()}"></td>
+                                        <td class="due_date" th:text="${currentIssue.getPlanDueDate()}"></td>
+                                        <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase" th:text="${currentIssue.getStatus()}"></span></td>
+                                        <td class="priority"><span class="badge bg-danger text-uppercase" th:text="${currentIssue.getPriority()}"></span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                    <!--end card-->
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+</div>
+<!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+<div th:replace="~{layout :: footer}"></div>
+
+<!--Update Issue Script-->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#userLabel1").click(function () {
+            $("#hiddenInputContainer1").toggle();
+        });
+    });
+</script>
+<!-- JAVASCRIPT -->
+<script src="assets/libs/list.js/list.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" ></script>
+<script>
+    $(document).ready(function() {
+        new DataTable('#example', {
+            pagingType: 'full_numbers'
+
+        });
+    });
+
+</script>
+<!--list pagination js-->
+<script src="assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+<!-- titcket init js -->
+<script src="assets/js/pages/tasks-list.init.js"></script>
+
+<!-- Sweet Alerts js -->
+<script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
+<script th:src="@{assets/js/pm-teamleader-list.js}"></script>
+</body>
+</html>

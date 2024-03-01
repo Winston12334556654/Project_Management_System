@@ -1,5 +1,6 @@
 package ai.group2.project_management_system.controller.view;
 
+import ai.group2.project_management_system.dto.ProjectDTO;
 import ai.group2.project_management_system.model.entity.Project;
 import ai.group2.project_management_system.model.entity.User;
 import ai.group2.project_management_system.service.ProjectService;
@@ -34,6 +35,7 @@ public class ProjectController {
         System.out.println(projectId);
 
         Project project = projectService.getProjectBy_Id(projectId);
+
         System.out.println(project);
 
         map.addAttribute("project", project);

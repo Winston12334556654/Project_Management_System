@@ -19,165 +19,160 @@
     <div th:replace="~{navbar :: navbar}"></div>
   </div>
 </div>
-  <!-- ============================================================== -->
-  <div class="main-content">
+<!-- ============================================================== -->
+<div class="main-content">
 
-    <div class="page-content">
-      <div class="container-fluid">
+  <div class="page-content">
+    <div class="container-fluid">
 
-        <!-- start page title -->
-        <div class="row">
-          <div class="col-12">
-            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-              <h4 class="mb-sm-0">Issue Details</h4>
+      <!-- start page title -->
+      <div class="row">
+        <div class="col-12">
+          <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Issue Details</h4>
 
-            </div>
           </div>
         </div>
-        <!-- end page title -->
+      </div>
+      <!-- end page title -->
 
-        <div class="row">
-          <div class=" col-xxl-12 d-flex justify-content-between">
-            <div class="col-lg-4">
-              <div class="card mb-3 ">
-                <div class="card-body">
+      <div class="row">
+        <div class=" col-xxl-12 d-flex justify-content-between">
+          <div class="col-lg-4">
+            <div class="card mb-3 ">
+              <div class="card-body">
 
-                  <div class="table-card">
-                    <table class="table mb-0">
-                      <tbody>
-                      <tr>
-                        <td class="fw-medium">PM Name</td>
-                        <td>Daw Aye Thwe</td>
-                      </tr>
+                <div class="table-card">
+                  <table class="table mb-0">
+                    <tbody>
+                    <tr>
+                      <td class="fw-medium" >PM Name</td>
+                      <td th:text="${issue.pmName}"></td>
+                    </tr>
 
-                      <tr>
-                        <td class="fw-medium">Project Name</td>
-                        <td>Velzon - Admin Dashboard</td>
-                      </tr>
-                      <tr>
-                        <td class="fw-medium">Issue Title</td>
-                        <td>Profile Page Structure</td>
-                      </tr>
-                      <tr>
-                        <td class="fw-medium">Priority</td>
-                        <td><span class="badge bg-danger-subtle text-danger">High</span></td>
-                      </tr>
-                      <tr>
-                        <td class="fw-medium">Status</td>
-                        <td><span class="badge bg-secondary-subtle text-secondary">Inprogress</span></td>
-                      </tr>
-                      <tr>
-                        <td class="fw-medium">Due Date</td>
-                        <td>05 Jan, 2022</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                    <!--  end table-->
-                  </div>
+                    <tr>
+                      <td class="fw-medium">Project Name</td>
+                      <td th:text="${issue.projectName}"></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Issue Title</td>
+                      <td th:text="${issue.issueTitle}"></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Priority</td>
+                      <td><span class="badge bg-danger-subtle text-danger" th:text="${issue.priority}"></span></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Status</td>
+                      <td><span class="badge bg-secondary-subtle text-secondary" th:text="${issue.status}"></span></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Start Date</td>
+                      <td th:text="${issue.startDate}"></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Due Date</td>
+                      <td th:text="${issue.dueDate}"></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <!--  end table-->
                 </div>
               </div>
             </div>
+          </div>
 
-            <!--end card-->
-            <div class="col-lg-3">
-              <div class="card mb-3 ">
-                <div class="card-body">
-                  <div class="d-flex mb-3">
-                    <h6 class="card-title mb-0 flex-grow-1">Assigned To</h6>
+          <!--end card-->
+          <div class="col-lg-3">
+            <div class="card mb-3 ">
+              <div class="card-body">
+                <div class="text-muted">
+                  <h6 class="mb-3 fw-semibold text-uppercase" >Issue Type</h6>
+                  <p th:text="${issue.issueType}"></p>
+                </div>
+                <div class="text-muted">
+                  <h6 class="mb-3 fw-semibold text-uppercase">Issue Category</h6>
+                  <p th:text="${issue.issueCategory}"></p>
+                </div>
+                <div class="text-muted">
+                  <h6 class="mb-3 fw-semibold text-uppercase">Actual Start Date</h6>
+                  <p th:text="${issue.actualStartDate != null ? issue.actualStartDate : 'Not Now'}"></p>
+                </div>
+                <div class="text-muted">
+                  <h6 class="mb-3 fw-semibold text-uppercase">Actual End Date</h6>
+                  <p th:text="${issue.actualEndDate != null ? issue.actualEndDate : 'Not Now'}"></p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                  </div>
-                  <ul class="list-unstyled vstack gap-3 mb-3">
-                    <li>
-                      <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                          <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle shadow">
+          <!--end card-->
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title mb-3">Attachments</h5>
+                <div class="vstack gap-2">
+
+                  <div class="border rounded border-dashed p-2" th:each="fileName, index : ${issue.fileNameList}">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                          <div class="avatar-title bg-light text-secondary rounded fs-24">
+                            <i class="ri-folder-zip-line"></i>
+                          </div>
                         </div>
-                        <div class="flex-grow-1 ms-2">
-                          <h6 class="mb-1"><a href="pages-profile.html" class="text-body">Tonya Noble</a></h6>
-                          <p class="text-muted mb-0">Full Stack Developer</p>
-                        </div>
+                      </div>
+                      <div class="flex-grow-1 overflow-hidden">
+                        <h5 class="fs-13 mb-1">
+                          <a href="javascript:void(0);" class="text-body text-truncate d-block" th:text="${fileName}"></a>
+                        </h5>
 
                       </div>
-                    </li>
-
-                  </ul>
-                  <div class="text-muted">
-                    <h6 class="mb-3 fw-semibold text-uppercase">Issue Type</h6>
-                    <p>Thfksfs</p>
-                  </div>
-                  <div class="text-muted">
-                    <h6 class="mb-3 fw-semibold text-uppercase">Issue Category</h6>
-                    <p>kseeure</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!--end card-->
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title mb-3">Attachments</h5>
-                  <div class="vstack gap-2">
-                    <div class="border rounded border-dashed p-2">
-                      <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 me-3">
-                          <div class="avatar-sm">
-                            <div class="avatar-title bg-light text-secondary rounded fs-24">
-                              <i class="ri-folder-zip-line"></i>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="flex-grow-1 ">
-                          <h5 class="fs-13 mb-1"><a href="#" class="text-body text-truncate d-block">App pages.zip</a></h5>
-                          <div>2.2MB</div>
-                        </div>
-                        <div class="flex-shrink-0 ms-2">
-                          <div class="d-flex gap-1">
-                            <button type="button" class="btn btn-icon text-muted btn-sm fs-18 shadow-none"><i class="ri-download-2-line"></i></button>
-
-                          </div>
+                      <div class="flex-shrink-0 ms-2">
+                        <div class="d-flex gap-1">
+                          <button type="button" class="btn btn-icon text-muted btn-sm fs-18 shadow-none">
+                            <i class="ri-download-2-line"></i>
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <!--end card-->
-          </div>
-          <!---end col-->
-          <div class="col-xxl-12">
-            <div class="card">
-              <div class="card-body">
-
-                <div class="text-muted">
-                  <h6 class="mb-3 fw-semibold text-uppercase">Subject</h6>
-                  <p>cnveffdnff</p>
-                </div>
-                <div class="text-muted">
-                  <h6 class="mb-3 fw-semibold text-uppercase">Issue Description</h6>
-                  <p>It will be as simple as occidental in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental is. The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words.</p>
-
 
                 </div>
               </div>
             </div>
-            <!--end card-->
-
           </div>
-          <!--end col-->
+
+          <!--end card-->
         </div>
+        <!---end col-->
+        <div class="col-xxl-12">
+          <div class="card">
+            <div class="card-body">
 
+              <div class="text-muted">
+                <h6 class="mb-3 fw-semibold text-uppercase">Subject</h6>
+                <p th:text="${issue.subject}"></p>
+              </div>
+              <div class="text-muted">
+                <h6 class="mb-3 fw-semibold text-uppercase">Issue Description</h6>
+                <p th:text="${issue.issueDescription}"></p>
+              </div>
+            </div>
+          </div>
+          <!--end card-->
+
+        </div>
+        <!--end col-->
       </div>
+
     </div>
-    <!-- End Page-content -->
   </div>
 </div>
-<div th:replace="~{layout :: footer}"></div>
+<!-- end main content-->
 <!-- END layout-wrapper -->
-<!--end back-to-top-->
+<div th:replace="~{layout :: footer}"></div>
+
 </body>
 <!-- Mirrored from themesbrand.com/velzon/html/material/apps-tasks-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:43 GMT -->
 </html>

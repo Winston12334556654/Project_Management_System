@@ -60,12 +60,12 @@ function populateMemberList(memberUsers) {
                     <input class="form-check-input mt-3" type="radio" name="user.id" value="${member.id}" id="${member.id}" >
                     <label class="form-check-label d-flex align-items-center" for="${member.id}">
                         <span class="flex-shrink-0">
-                                <img src="/assets/userPhoto/${member.photo}" alt="" class="avatar-xs rounded-circle shadow" />
+                                <img src="/assets/userPhoto/${member.profilePictureFileName}" alt="" class="avatar-xs rounded-circle shadow" />
                             </span>
                         <div class="d-flex justify-content-between flex-grow-1 ms-2 user-label-container">
                             <div>
                                 <span>${member.name}</span>
-                                <div><h6>${member.position}</h6></div>
+                                <div><h6>${member.position.positionName}</h6></div>
                             </div>
                             
                         </div>

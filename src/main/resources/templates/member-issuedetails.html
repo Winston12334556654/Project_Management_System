@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+
+
+<!-- Mirrored from themesbrand.com/velzon/html/material/apps-tasks-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:43 GMT -->
+<head th:replace="~{layout :: head}">
+</head>
+
+<body>
+<!-- Begin page -->
+<div id="layout-wrapper">
+  <div id="header-container">
+    <header th:replace="~{header :: header}"></header>
+  </div>
+
+
+  <!-- ========== App Menu ========== -->
+  <div id="navbar-container">
+    <div th:replace="~{navbar :: navbar}"></div>
+  </div>
+</div>
+<!-- ============================================================== -->
+<div class="main-content">
+
+  <div class="page-content">
+    <div class="container-fluid">
+
+      <!-- start page title -->
+      <div class="row">
+        <div class="col-12">
+          <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Assign Issue Details</h4>
+
+          </div>
+        </div>
+      </div>
+      <!-- end page title -->
+
+      <div class="row">
+        <div class=" col-xxl-12 d-flex justify-content-between">
+          <div class="col-lg-4">
+            <div class="card mb-3 ">
+              <div class="card-body">
+
+                <div class="table-card">
+                  <table class="table mb-0">
+                    <tbody>
+                    <tr>
+                      <td class="fw-medium" >PM Name</td>
+                      <td th:text="${assignIssue.getIssue().getCreator()}"></td>
+                    </tr>
+
+                    <tr>
+                      <td class="fw-medium">Project Name</td>
+                      <td th:text="${assignIssue.getIssue().getProject().getTitle()}"></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Issue Title</td>
+                      <td th:text="${assignIssue.getIssue().getTitle()}"></td>
+                    </tr>
+                    <!--<tr>
+                      <td class="fw-medium">Team Leader</td>
+                      <td th:text="${assignIssue.getIssue().getTeamLeaderId()}"></td>
+                    </tr>-->
+                    <tr>
+                      <td class="fw-medium">Assigned Issue</td>
+                      <td th:text="${assignIssue.getName()}"></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Priority</td>
+                      <td><span class="badge bg-danger-subtle text-danger" th:text="${assignIssue.getPriority()}"></span></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Status</td>
+                      <td><span class="badge bg-secondary-subtle text-secondary" th:text="${assignIssue.getStatus()}"></span></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Start Date</td>
+                      <td th:text="${assignIssue.getPlanStartDate()}"></td>
+                    </tr>
+                    <tr>
+                      <td class="fw-medium">Due Date</td>
+                      <td th:text="${assignIssue.getPlanDueDate()}"></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <!--  end table-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--end card-->
+          <div class="col-lg-3">
+            <div class="card mb-3 ">
+              <div class="card-body">
+                <div class="text-muted">
+                  <h6 class="mb-3 fw-semibold text-uppercase" >Issue Type</h6>
+                  <p th:text="${assignIssue.getIssue().getIssueType()}"></p>
+                </div>
+                <div class="text-muted">
+                  <h6 class="mb-3 fw-semibold text-uppercase">Issue Category</h6>
+                  <p th:text="${assignIssue.getIssue().getIssueCategory().getName()}"></p>
+                </div>
+                <div class="text-muted">
+                  <h6 class="mb-3 fw-semibold text-uppercase">Actual Start Date</h6>
+                  <p th:text="${assignIssue.actualStartDate != null ? assignIssue.actualStartDate : 'Not Now'}"></p>
+                </div>
+                <div class="text-muted">
+                  <h6 class="mb-3 fw-semibold text-uppercase">Actual End Date</h6>
+                  <p th:text="${assignIssue.actualDueDate != null ? assignIssue.actualDueDate : 'Not Now'}"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--end card-->
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title mb-3">Attachments</h5>
+                <div class="vstack gap-2">
+                  <!--                                        <div class="border rounded border-dashed p-2" th:each="fileName : ${issue.fileNameList}">-->
+                  <!--                                            <div class="d-flex align-items-center">-->
+                  <!--                                                <div class="flex-shrink-0 me-3">-->
+                  <!--                                                    <div class="avatar-sm">-->
+                  <!--                                                        <div class="avatar-title bg-light text-secondary rounded fs-24">-->
+                  <!--                                                            <i class="ri-folder-zip-line"></i>-->
+                  <!--                                                        </div>-->
+                  <!--                                                    </div>-->
+                  <!--                                                </div>-->
+                  <!--                                                <div class="flex-grow-1 overflow-hidden">-->
+                  <!--                                                    <h5 class="fs-13 mb-1">-->
+                  <!--                                                        <a th:href="@{'/files/' + ${fileName}}" class="text-body text-truncate d-block" th:text="${fileName}"></a>-->
+                  <!--                                                    </h5>-->
+                  <!--                                                    <div>2.2MB</div>-->
+                  <!--                                                </div>-->
+                  <!--                                                <div class="flex-shrink-0 ms-2">-->
+                  <!--                                                    <div class="d-flex gap-1">-->
+                  <!--                                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18 shadow-none">-->
+                  <!--                                                            <i class="ri-download-2-line"></i>-->
+                  <!--                                                        </button>-->
+                  <!--                                                    </div>-->
+                  <!--                                                </div>-->
+                  <!--                                            </div>-->
+                  <!--                                        </div>-->
+
+
+                  <div class="border rounded border-dashed p-2" th:each="fileName, index : ${assignIssue.getIssue().getFilesList()}">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                          <div class="avatar-title bg-light text-secondary rounded fs-24">
+                            <i class="ri-folder-zip-line"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flex-grow-1 overflow-hidden">
+                        <h5 class="fs-13 mb-1">
+                          <a href="javascript:void(0);" class="text-body text-truncate d-block" th:text="${fileName.getFileName()}"></a>
+                        </h5>
+                        <div>2.2MB</div>
+                      </div>
+                      <div class="flex-shrink-0 ms-2">
+                        <div class="d-flex gap-1">
+                          <button type="button" class="btn btn-icon text-muted btn-sm fs-18 shadow-none">
+                            <i class="ri-download-2-line"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--end card-->
+        </div>
+        <!---end col-->
+        <div class="col-xxl-12">
+          <div class="card">
+            <div class="card-body">
+
+              <div class="text-muted">
+                <h6 class="mb-3 fw-semibold text-uppercase">Subject</h6>
+                <p th:text="${assignIssue.getIssue().getSubject()}"></p>
+              </div>
+              <div class="text-muted">
+                <h6 class="mb-3 fw-semibold text-uppercase">Issue Description</h6>
+                <p th:text="${assignIssue.getIssue().getDescription()}"></p>
+              </div>
+            </div>
+          </div>
+          <!--end card-->
+
+        </div>
+        <!--end col-->
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- end main content-->
+<!-- END layout-wrapper -->
+<div th:replace="~{layout :: footer}"></div>
+
+</body>
+<!-- Mirrored from themesbrand.com/velzon/html/material/apps-tasks-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:43 GMT -->
+</html>

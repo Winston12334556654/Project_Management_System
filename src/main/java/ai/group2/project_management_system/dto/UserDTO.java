@@ -3,13 +3,10 @@ package ai.group2.project_management_system.dto;
 import ai.group2.project_management_system.model.Enum.Role;
 import ai.group2.project_management_system.model.entity.Position;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.Date;
 
     @NoArgsConstructor
     @AllArgsConstructor
@@ -22,7 +19,7 @@ public class UserDTO {
     private String email;
     private String address;
     private String phone;
-    private String photo;
+    private String profilePictureName;
     private boolean isActive;
     private String password;
     private Position position;
@@ -93,12 +90,12 @@ public class UserDTO {
             this.phone = phone;
         }
 
-        public String getPhoto() {
-            return photo;
+        public String getProfilePictureName() {
+            return profilePictureName;
         }
 
-        public void setPhoto(String photo) {
-            this.photo = photo;
+        public void setProfilePictureName(String profilePictureName) {
+            this.profilePictureName = profilePictureName;
         }
 
         public boolean isActive() {
@@ -139,5 +136,22 @@ public class UserDTO {
 
         public void setFile(MultipartFile file) {
             this.file = file;
+        }
+        @Override
+        public String toString() {
+            return "User{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    ", Education='" + education + '\'' +
+                    ", dob=" + dob +
+                    ", gender='" + gender + '\'' +
+                    ", email='" + email + '\'' +
+                    ", address='" + address + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", position='" + position + '\'' +
+                    ", isActive=" +isActive +
+                    ", password='" + password + '\'' +
+                    ", role=" + role+
+                    '}';
         }
     }

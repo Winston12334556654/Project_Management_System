@@ -66,7 +66,12 @@ function dragDrop() {
         if(status=="COMPLETED"){
             if (existingTasksWrapper) {
                 existingTasksWrapper.appendChild(draggableTodo);
-
+                let currentText=draggableTodo.getElementsByClassName('currentIssueId').item(0);
+                console.log("currentId:",currentText.innerHTML);
+                let currentIssueId=currentText.innerHTML;
+                updateIssueStatus(currentIssueId, status).then(()=>{
+                    console.log("It is  ok Status Update!");
+                });
             }
 
         }else{
@@ -76,5 +81,26 @@ function dragDrop() {
         console.log("Dropping is not allowed!");
     }
 
+}
+
+async function updateIssueStatus(issueId, newStatus) {
+    try {
+        // Assuming you have an endpoint on the server to handle the update
+        const response = await fetch(`/team-leader-issue/${issueId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus }),
+        });
+
+        if (response.ok) {
+            console.log(`AssignIssue ${issueId} status updated to ${newStatus}`);
+        } else {
+            console.error(`Failed to update AssignIssue ${issueId} status`);
+        }
+    } catch (error) {
+        console.error('Error updating AssignIssue status:', error);
+    }
 }
 

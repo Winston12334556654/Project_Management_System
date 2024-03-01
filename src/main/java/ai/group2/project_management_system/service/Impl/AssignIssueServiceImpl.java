@@ -57,4 +57,14 @@ public class AssignIssueServiceImpl implements AssignIssueService {
         return assignIssueRepository.getAssignIssuesByTeamLeaderId(id);
     }
 
+    @Override
+    public List<AssignIssue> getAssignIssuesByMemberId(Long id) {
+        return assignIssueRepository.getAssignIssuesByMemberId(id);
+    }
+
+    @Override
+    public AssignIssue getAssignIssueDetailsByAssignIssueId(Long id) {
+        return assignIssueRepository.getAssignIssueById(id);
+    }
+
 }

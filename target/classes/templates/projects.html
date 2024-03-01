@@ -128,7 +128,7 @@
 </div>
 <!-- END layout-wrapper -->
 <!-- removeProjectModal -->
-<div id="removeProjectModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
+<div th:id="removeProjectModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -139,12 +139,13 @@
                     <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
                     <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
                         <h4>Are you Sure?</h4>
-                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Project ?</p>
+                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove  <span id="confirmationProjectAction" class="fw-bold"></span>
+                            this Project?</p>
                     </div>
                 </div>
                 <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                     <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn w-sm btn-danger" id="remove-project">Yes, Delete It!</button>
+                    <button type="button" class="btn w-sm btn-danger" id="remove-project" onclick="deleteProject()" data-bs-dismiss="modal">Yes, Delete It!</button>
                 </div>
             </div>
 
@@ -189,6 +190,7 @@
                             ClassicEditor
                                 .create(document.querySelector('#ckeditor'))
                                 .then(newEditor  => {
+                                    console.log(newEditor);
                                     window.ckeditor = newEditor;
                                 })
                                 .catch(error => {
@@ -202,16 +204,16 @@
                         <select class="form-select" data-choices data-choices-search-false id="project-department-input" name="department" onchange="userGetter()"></select>
                     </div>
 
-
                     <div class="mb-3">
                         <label class="form-label" th:for="project-category-input">Category</label>
 
-                        <select class="form-select" data-choices data-choices-search-false th:id="project-category-input" name="category">
+                        <select class="form-select" data-choices data-choices-search-false th:id="project-category-input">
                             <option value="BANKING" selected>Banking</option>
                             <option value="HEALTHCARE">Healthcare</option>
                             <option value="EDUCATION">Education</option>
                             <option value="TELECOMMUNICATION">Telecommunication</option>
                             <option value="TRAVEL">Travel And Tourism</option>
+                            <option value="DEVELOPMENT">Development</option>
                         </select>
                     </div>
 
@@ -266,240 +268,149 @@
                     <div class="text-end mb-4">
                         <button type="button" class="btn btn-danger w-sm" data-bs-dismiss="modal">Close</button>
                         <button type="reset" class="btn btn-secondary w-sm">Reset</button>
-                        <button type="submit" class="btn btn-success w-sm" onclick="showData()">Create</button>
+                        <button type="submit" class="btn btn-success w-sm" data-bs-dismiss="modal" onclick="showData()">Create</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </form>
+
 <!--Update Modal-->
-<!--<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog modal-lg">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="mb-3 image-preview-container">-->
-<!--                <img id="image-preview" class="image-preview" src="" alt="Image Preview">-->
-<!--            </div>-->
+<form th:id="updateProject">
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:id="exampleModalLabel">Project edit form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="hidden" class="form-control" th:id="project-id" name="id">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" th:for="project-title-update">Project Title</label>
+                        <input type="text" class="form-control" th:id="project-title-update" placeholder="Enter project title" name="title">
+                    </div>
 
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="updateModalLabel">Project Edit Form</h5>-->
-<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                <div class="mb-3">-->
-<!--                    <label class="form-label" for="project-title-input">Project Title</label>-->
-<!--                    <input type="text" class="form-control" id="project-title-input" placeholder="Enter project title" value="">-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                    <label class="form-label" for="project-title-input">Category</label>-->
+                    <div class="mb-3">
+                        <label class="form-label" th:for="project-objective-input">Objective</label>
+                        <input type="text" class="form-control" th:id="project-objective-update" placeholder="Enter Objective" name="objective">
+                    </div>
 
-<!--                    <select class="form-select" data-choices data-choices-search-false id="project-title-input">-->
-<!--                        <option value="High" selected>A</option>-->
-<!--                        <option value="Medium">B</option>-->
-<!--                        <option value="Low">C</option>-->
-<!--                    </select>-->
-<!--                </div>-->
+                    <div class="mb-3">
+                        <label class="form-label" th:for="project-creator-name">Project Creator</label>
+                        <input class="form-control" th:id="project-creator-update" type="text" name="creator" placeholder="Enter creator">
+                    </div>
 
-<!--                <div class="mb-3">-->
-<!--                    <label class="form-label" for="project-thumbnail-img">Project Image</label>-->
-<!--                    <input class="form-control" id="project-thumbnail-img" type="file" accept="image/png, image/gif, image/jpeg" onchange="previewImage(event)">-->
-<!--                </div>-->
+                    <div class="mb-3">
+                        <label class="form-label">Project Description</label>
+                        <input type="hidden" th:id="ckeditorHiddenInput-update" name="description">
+                        <div th:id="ckeditorUpdate"></div>
+                    </div>
+                    <!-- CKEditor script from local resources -->
+                    <script th:src="@{/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js}"></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            ClassicEditor
+                                .create(document.querySelector('#ckeditorUpdate'))
+                                .then(newEditor  => {
+                                    window.ckeditorUpdate  = newEditor;
+                                    window.ckeditorUpdate.setData(project.description);
+                                    console.log("CKEditor content set successfully:", project.description);
+                                })
+                                .catch(error => {
+                                    console.error('Error initializing CKEditor:', error);
+                                });
+                            const descriptionInput = document.getElementById('ckeditorHiddenInput-update');
+                            if (descriptionInput) {
+                                descriptionInput.value = project.description;
+                                console.log("Hidden input value set successfully:", project.description);
+                            } else {
+                                console.error("Hidden input not found");
+                            }
+                        });
+                    </script>
+                    <!--Departments-->
+                    <div class="mb-3">
+                        <label class="form-label" for="project-department-input">Department</label>
+                        <input type="text" th:id="project-department-update" disabled></input>
+                    </div>
 
-<!--                &lt;!&ndash; <div class="mb-3 image-preview-container">-->
-<!--                    <img id="image-preview" class="image-preview" src="" alt="Image Preview">-->
-<!--                </div> &ndash;&gt;-->
+                    <div class="mb-3">
+                        <label class="form-label" th:for="project-category-update">Category</label>
 
-<!--                <div class="mb-3">-->
-<!--                    <label class="form-label">Project Description</label>-->
-<!--                    <div id="ckeditor-custom"></div>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; CKEditor script from local resources &ndash;&gt;-->
-<!--                <script th:src="@{/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js}"></script>-->
+                        <select class="form-select" data-choices data-choices-search-false th:id="project-category-update">
+                            <option value="BANKING" selected>Banking</option>
+                            <option value="HEALTHCARE">Healthcare</option>
+                            <option value="EDUCATION">Education</option>
+                            <option value="TELECOMMUNICATION">Telecommunication</option>
+                            <option value="TRAVEL">Travel And Tourism</option>
+                            <option value="DEVELOPMENT">Development</option>
+                        </select>
+                    </div>
 
-<!--                <script>-->
-<!--                    document.addEventListener('DOMContentLoaded', function () {-->
-<!--                        ClassicEditor.create(document.querySelector('#ckeditor-custom'))-->
-<!--                            .catch(error => {-->
-<!--                                console.error(error);-->
-<!--                            });-->
-<!--                    });-->
-<!--                </script>-->
+                    <div class="mb-3">
+                        <label class="form-label" th:for="project-status-update">Status</label>
 
-<!--                <div class="row">-->
-<!--                    <div class="col-lg-4">-->
-<!--                        <div class="mb-3 mb-lg-0">-->
-<!--                            <label for="choices-priority-input" class="form-label">Priority</label>-->
-<!--                            <select class="form-select" data-choices data-choices-search-false id="choices-priority-input">-->
-<!--                                <option value="High" selected>High</option>-->
-<!--                                <option value="Medium">Medium</option>-->
-<!--                                <option value="Low">Low</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-lg-4">-->
-<!--                        <div>-->
-<!--                            <label for="datepicker-start-date-input" class="form-label">Start Date</label>-->
-<!--                            <input type="date" class="form-control" id="datepicker-start-date-input" placeholder="Select start date" data-provider="datepicker" value="">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-lg-4">-->
-<!--                        <div>-->
-<!--                            <label for="datepicker-end-date-input" class="form-label">End Date</label>-->
-<!--                            <input type="date" class="form-control" id="datepicker-end-date-input" placeholder="Enter end date" data-provider="datepicker" value="">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+                        <select class="form-select" data-choices data-choices-search-false th:id="project-status-update" name="status">
+                            <option value="TODO" selected>To do</option>
+                            <option value="INPROGRESS">In progress</option>
+                            <option value="PENDING">Pending</option>
+                            <option value="FINISH">Finish</option>
+                        </select>
+                    </div>
 
-<!--            &lt;!&ndash;Members&ndash;&gt;-->
-<!--            <div class="card">-->
-<!--                <div class="card-header">-->
-<!--                    <h5 class="card-title mb-0">Add Team Members</h5>-->
-<!--                </div>-->
-<!--                <div class="card-body">-->
-<!--                    <div class="col-lg-12">-->
-<!--                        <div data-simplebar style="height: 95px;">-->
-<!--                            <ul class="list-unstyled vstack gap-2 mb-0">-->
-<!--                                <li>-->
-<!--                                    <div class="form-check d-flex align-items-center justify-content-between">-->
-<!--                                        <div>-->
-<!--                                            <input class="form-check-input mt-3" type="checkbox" value="" id="anna2">-->
-<!--                                            <label class="form-check-label d-flex align-items-center" for="anna2"  >-->
-
-<!--                                                <div class="flex-shrink-0">-->
-<!--                                                    <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle shadow">-->
-<!--                                                </div>-->
-<!--                                                <div class="flex-grow-1 ms-2">-->
-<!--                                                    <h6 class="mb-1 text-body">Tonya Noble</h6>-->
-<!--                                                    <p class="text-muted mb-0">Full Stack Developer</p>-->
-<!--                                                </div>-->
-
-<!--                                        </div>-->
-
-<!--                                        </label>-->
-
-<!--                                    </div>-->
-
-
-<!--                                </li>-->
-
-<!--                                <li>-->
-<!--                                    <div class="form-check d-flex align-items-center justify-content-between">-->
-<!--                                        <div>-->
-<!--                                            <input class="form-check-input mt-3" type="checkbox" value="" id="anna1">-->
-<!--                                            <label class="form-check-label d-flex align-items-center" for="anna1"  >-->
-
-<!--                                                <div class="flex-shrink-0">-->
-<!--                                                    <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle shadow">-->
-<!--                                                </div>-->
-<!--                                                <div class="flex-grow-1 ms-2">-->
-<!--                                                    <h6 class="mb-1 text-body">Tonya Noble</h6>-->
-<!--                                                    <p class="text-muted mb-0">Full Stack Developer</p>-->
-<!--                                                </div>-->
-
-<!--                                        </div>-->
-
-<!--                                        </label>-->
-
-<!--                                    </div>-->
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3 mb-lg-0">
+                                <label th:for="choices-priority-input" class="form-label">Priority</label>
+                                <select class="form-select" data-choices data-choices-search-false th:id="choices-priority-update" name="priority">
+                                    <option value="HIGH" selected>High</option>
+                                    <option value="MEDIUM">Medium</option>
+                                    <option value="LOW">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div>
+                                <label th:for="datepicker-start-date-input" class="form-label">Start Date</label>
+                                <input type="text" class="form-control" name="planStartDate" th:id="datepicker-start-date-update" placeholder="Select start date" data-provider="datepicker">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div>
+                                <label th:for="datepicker-end-date-input" class="form-label">End Date</label>
+                                <input type="text" class="form-control" name="planEndDate" th:id="datepicker-end-date-update" placeholder="Enter end date" data-provider="datepicker">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Members-->
+                <div class="col-lg-12">
+                    <label th:for="tasks-progress" class="form-label">Update Team Member</label>
+                    <div data-simplebar style="height: 95px;">
+                        <ul class="list-unstyled vstack gap-2 mb-0" th:id="team-member-list-update">
+                            <!-- Placeholder for dynamic content -->
+                        </ul>
+                    </div>
+                </div>
 
 
-<!--                                </li>-->
-<!--                                <li>-->
-<!--                                    <div class="form-check d-flex align-items-center">-->
-<!--                                        <input class="form-check-input me-3" type="checkbox" value="" id="alexis">-->
-<!--                                        <label class="form-check-label d-flex align-items-center" for="alexis">-->
-<!--                                        <span class="flex-shrink-0">-->
-<!--                                            <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                        </span>-->
-<!--                                            <span class="flex-grow-1 ms-2">-->
-<!--                                            Alexis Clarke-->
-<!--                                        </span>-->
-<!--                                        </label>-->
-<!--                                    </div>-->
-<!--                                </li>-->
-<!--                                <li>-->
-<!--                                    <div class="form-check d-flex align-items-center">-->
-<!--                                        <input class="form-check-input me-3" type="checkbox" value="" id="herbert-stokes">-->
-<!--                                        <label class="form-check-label d-flex align-items-center" for="herbert-stokes">-->
-<!--                                        <span class="flex-shrink-0">-->
-<!--                                            <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                        </span>-->
-<!--                                            <span class="flex-grow-1 ms-2">-->
-<!--                                            Herbert Stokes-->
-<!--                                        </span>-->
-<!--                                        </label>-->
-<!--                                    </div>-->
-<!--                                </li>-->
-<!--                                <li>-->
-<!--                                    <div class="form-check d-flex align-items-center">-->
-<!--                                        <input class="form-check-input me-3" type="checkbox" value="" id="michael-morris">-->
-<!--                                        <label class="form-check-label d-flex align-items-center" for="michael-morris">-->
-<!--                                        <span class="flex-shrink-0">-->
-<!--                                            <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                        </span>-->
-<!--                                            <span class="flex-grow-1 ms-2">-->
-<!--                                            Michael Morris-->
-<!--                                        </span>-->
-<!--                                        </label>-->
-<!--                                    </div>-->
-<!--                                </li>-->
-<!--                                <li>-->
-<!--                                    <div class="form-check d-flex align-items-center">-->
-<!--                                        <input class="form-check-input me-3" type="checkbox" value="" id="nancy-martino">-->
-<!--                                        <label class="form-check-label d-flex align-items-center" for="nancy-martino">-->
-<!--                                        <span class="flex-shrink-0">-->
-<!--                                            <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                        </span>-->
-<!--                                            <span class="flex-grow-1 ms-2">-->
-<!--                                            Nancy Martino-->
-<!--                                        </span>-->
-<!--                                        </label>-->
-<!--                                    </div>-->
-<!--                                </li>-->
-<!--                                <li>-->
-<!--                                    <div class="form-check d-flex align-items-center">-->
-<!--                                        <input class="form-check-input me-3" type="checkbox" value="" id="thomas-taylor">-->
-<!--                                        <label class="form-check-label d-flex align-items-center" for="thomas-taylor">-->
-<!--                                        <span class="flex-shrink-0">-->
-<!--                                            <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                        </span>-->
-<!--                                            <span class="flex-grow-1 ms-2">-->
-<!--                                            Thomas Taylor-->
-<!--                                        </span>-->
-<!--                                        </label>-->
-<!--                                    </div>-->
-<!--                                </li>-->
-<!--                                <li>-->
-<!--                                    <div class="form-check d-flex align-items-center">-->
-<!--                                        <input class="form-check-input me-3" type="checkbox" value="" id="tonya-noble">-->
-<!--                                        <label class="form-check-label d-flex align-items-center" for="tonya-noble">-->
-<!--                                        <span class="flex-shrink-0">-->
-<!--                                            <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                        </span>-->
-<!--                                            <span class="flex-grow-1 ms-2">-->
-<!--                                            Tonya Noble-->
-<!--                                        </span>-->
-<!--                                        </label>-->
-<!--                                    </div>-->
-<!--                                </li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="modal-footer">
+                    <div class="text-end mb-4">
+                        <button type="button" class="btn btn-danger w-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="reset" class="btn btn-secondary w-sm">Reset</button>
+                        <button type="submit" class="btn btn-success w-sm" data-bs-dismiss="modal">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
-<!--            </div>-->
 
-<!--            <div class="modal-footer">-->
-<!--                <div class="text-end mb-4">-->
-<!--                    <button type="button" class="btn btn-danger w-sm" data-bs-dismiss="modal">Close</button>-->
-<!--                    <button type="reset" class="btn btn-secondary w-sm">Reset</button>-->
-<!--                    <button type="submit" class="btn btn-success w-sm">Edit</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 <!--JavaScript files-->
 <div th:replace="~{layout :: footer}"></div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -530,17 +441,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    // Initialize Flatpickr for date inputs
-    const startDateInput = document.getElementById('datepicker-start-date-input');
-    const endDateInput = document.getElementById('datepicker-end-date-input');
+    // Initialize Flatpickr for the first set of date inputs
+    const startDateInput1 = document.getElementById('datepicker-start-date-input');
+    const endDateInput1 = document.getElementById('datepicker-end-date-input');
 
-    const startDatePicker = flatpickr(startDateInput, {
+    const startDatePicker1 = flatpickr(startDateInput1, {
         enableTime: false,
         dateFormat: "Y-m-d",
         theme: "custom-theme", // Use the custom theme
     });
 
-    const endDatePicker = flatpickr(endDateInput, {
+    const endDatePicker1 = flatpickr(endDateInput1, {
         enableTime: false,
         dateFormat: "Y-m-d",
         minDate: "today", // Restrict end date to today or later
@@ -548,11 +459,34 @@
     });
 
     // Set minDate of end date picker based on the selected start date
-    startDatePicker.config.onChange.push(function(selectedDates, dateStr, instance) {
-        endDatePicker.set("minDate", dateStr);
+    startDatePicker1.config.onChange.push(function(selectedDates, dateStr, instance) {
+        endDatePicker1.set("minDate", dateStr);
+    });
+
+    // Initialize Flatpickr for the second set of date inputs
+    const startDateInput2 = document.getElementById('datepicker-start-date-update');
+    const endDateInput2 = document.getElementById('datepicker-end-date-update');
+
+    const startDatePicker2 = flatpickr(startDateInput2, {
+        enableTime: false,
+        dateFormat: "Y-m-d",
+        theme: "custom-theme", // Use the custom theme
+    });
+
+    const endDatePicker2 = flatpickr(endDateInput2, {
+        enableTime: false,
+        dateFormat: "Y-m-d",
+        minDate: "today", // Restrict end date to today or later
+        theme: "custom-theme", // Use the custom theme
+    });
+
+    // Set minDate of end date picker based on the selected start date
+    startDatePicker2.config.onChange.push(function(selectedDates, dateStr, instance) {
+        endDatePicker2.set("minDate", dateStr);
     });
 
 </script>
+<script th:src="@{/assets/js/project-update.js}"></script>
 
 
 </body>

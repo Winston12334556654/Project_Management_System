@@ -125,280 +125,392 @@
                     <!--end card-->
 
                     <div class="tasks-board " id="kanbanboard" >
-                      
+
                         <!--end tasks-list-->
-                        <div class="tasks-list" >
+                        <div class="tasks-list">
                             <div class="status">
                                 <div class="d-flex mb-3">
                                     <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 ">To Do <small class="badge bg-secondary align-bottom ms-1 totaltask-badge">2</small></h6>
+                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist" >TODO <small class="badge bg-secondary align-bottom ms-1 totaltask-badge">2</small></h6>
                                     </div>
-                                    
-                                </div>
 
-                                <div data-simplebar="init" class="tasks-wrapper px-3 mx-n3  mb-3">
-                                   
-                                    <div class="card tasks-box  todo" draggable="true">
-                                        <div class="card-body">
-                                            <div class="d-flex mb-2">
-                                                <div class="flex-grow-1">
-                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a  class="text-body d-block">Admin
-                                                            Layout Design 1</a></h6>
-                                                </div>
-                                                    <div class="flex-shrink-0">
-                                                    <a href="javascript:void(0);" class="text-muted" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-fill"></i></a>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink3">
-                                                        <li><a class="dropdown-item" href="/issue-details"><i class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                                View</a></li>
-                                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateissueModal"><i class="ri-edit-2-line align-bottom me-2 text-muted"></i>
-                                                                Edit</a></li>
-                                                        <li><a class="dropdown-item" data-bs-toggle="modal" href="#deleteRecordModal"><i class="ri-delete-bin-5-line align-bottom me-2 text-muted"></i>
-                                                                Delete</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <p class="text-muted">Landing page template with clean, minimal and modern
-                                                design.</p>
-                                                <div class="mb-3">
-                                                    <div class="d-flex mb-1">
+                                </div>
+                                <div data-simplebar="init" class="tasks-wrapper px-3 mx-n3">
+                                    <th:block th:each="project : ${projects}">
+                                        <div th:if="${project.status.toString() == 'TODO'}" class="card tasks-box todo " draggable="true">
+                                            <div class="card tasks-box todo" draggable="true" th:data-id="${project.getStatus()}">
+                                                <div class="card-body">
+                                                    <div class="d-flex mb-2">
                                                         <div class="flex-grow-1">
-                                                            <h6 class="text-muted mb-0"><span class="text-info">35%</span> of 100%</h6>
+                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
+                                                            <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${project.title}">
+                                                            </a></h6>
                                                         </div>
-                                                        
+                                                        <div class="flex-shrink-0">
+                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+
+                                                        </div>
                                                     </div>
-                                                    <div class="progress rounded-3 progress-sm bg-danger-subtle">
-                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
+                                                    <div class="mb-3">
+                                                        <div class="d-flex mb-1">
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
+                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-grow-1">
-                                                    <span class="badge bg-primary-subtle text-primary">High</span>
-                                                    
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <div class="avatar-group">
-                                                        <a href="javascript: void(0);" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tonya">
-                                                            <img src="assets/images/users/avatar-10.jpg" alt="" class="rounded-circle avatar-xxs">
-                                                        </a>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="card-footer border-top-dashed">
-                                            <div class="d-flex">
-                                                <div class="flex-grow-1">
-                                                    <span class="text-muted"><i class="ri-time-line align-bottom"></i>
-                                                        07 Jan, 2022</span>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card tasks-box  todo" draggable="true">
-                                        <div class="card-body">
-                                            <div class="d-flex mb-2">
-                                                <div class="flex-grow-1">
-                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a  class="text-body d-block">Admin
-                                                            Layout Design 2</a></h6>
-                                                </div>
-                                                    <div class="flex-shrink-0">
-                                                    <a href="javascript:void(0);" class="text-muted" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-fill"></i></a>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink3">
-                                                        <li><a class="dropdown-item" href="issue_details.html"><i class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                                View</a></li>
-                                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateissueModal"><i class="ri-edit-2-line align-bottom me-2 text-muted"></i>
-                                                                Edit</a></li>
-                                                        <li><a class="dropdown-item" data-bs-toggle="modal" href="#deleteRecordModal"><i class="ri-delete-bin-5-line align-bottom me-2 text-muted"></i>
-                                                                Delete</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <p class="text-muted">Landing page template with clean, minimal and modern
-                                                design.</p>
-                                                <div class="mb-3">
-                                                    <div class="d-flex mb-1">
+                                                    <div class="d-flex align-items-center">
                                                         <div class="flex-grow-1">
-                                                            <h6 class="text-muted mb-0"><span class="text-info">35%</span> of 100%</h6>
+                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString()=='TODO' and issue.getProject().getTitle() == project.title}">
+                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
+                                                            </th:block>
                                                         </div>
-                                                        
-                                                    </div>
-                                                    <div class="progress rounded-3 progress-sm bg-danger-subtle">
-                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-grow-1">
-                                                    <span class="badge bg-primary-subtle text-primary">High</span>
-                                                    
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <div class="avatar-group">
-                                                        <a href="javascript: void(0);" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tonya">
-                                                            <img src="assets/images/users/avatar-10.jpg" alt="" class="rounded-circle avatar-xxs">
-                                                        </a>
-                                                        
+                                                        <div class="flex-shrink-0">
+                                                            <div class="avatar-group">
+                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'TODO' and issue.getProject().getTitle() == project.title}">
+                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}" title="" >
+                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
+                                                                    </a>
+                                                                </th:block>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="card-footer border-top-dashed">
-                                            <div class="d-flex">
-                                                <div class="flex-grow-1">
-                                                    <span class="text-muted"><i class="ri-time-line align-bottom"></i>
-                                                        07 Jan, 2022</span>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card tasks-box  todo" draggable="true">
-                                        <div class="card-body">
-                                            <div class="d-flex mb-2">
-                                                <div class="flex-grow-1">
-                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a  class="text-body d-block">Admin
-                                                            Layout Design 3</a></h6>
-                                                </div>
-                                                    <div class="flex-shrink-0">
-                                                    <a href="javascript:void(0);" class="text-muted" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-fill"></i></a>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink3">
-                                                        <li><a class="dropdown-item" href="issue_details.html"><i class="ri-eye-fill align-bottom me-2 text-muted"></i>
-                                                                View</a></li>
-                                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateissueModal"><i class="ri-edit-2-line align-bottom me-2 text-muted"></i>
-                                                                Edit</a></li>
-                                                        <li><a class="dropdown-item" data-bs-toggle="modal" href="#deleteRecordModal"><i class="ri-delete-bin-5-line align-bottom me-2 text-muted"></i>
-                                                                Delete</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <p class="text-muted">Landing page template with clean, minimal and modern
-                                                design.</p>
-                                                <div class="mb-3">
-                                                    <div class="d-flex mb-1">
+                                                <!--end card-body-->
+                                                <div class="card-footer border-top-dashed">
+                                                    <div class="d-flex">
                                                         <div class="flex-grow-1">
-                                                            <h6 class="text-muted mb-0"><span class="text-info">35%</span> of 100%</h6>
+                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
+                                                        </span>
                                                         </div>
-                                                        
-                                                    </div>
-                                                    <div class="progress rounded-3 progress-sm bg-danger-subtle">
-                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-grow-1">
-                                                    <span class="badge bg-primary-subtle text-primary">High</span>
-                                                    
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <div class="avatar-group">
-                                                        <a href="javascript: void(0);" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tonya">
-                                                            <img src="assets/images/users/avatar-10.jpg" alt="" class="rounded-circle avatar-xxs">
-                                                        </a>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
-                                        
-                                        <div class="card-footer border-top-dashed">
-                                            <div class="d-flex">
-                                                <div class="flex-grow-1">
-                                                    <span class="text-muted"><i class="ri-time-line align-bottom"></i>
-                                                        07 Jan, 2022</span>
+                                    </th:block>
+
+                                </div>
+                            </div>
+
+                            <div class="my-3">
+                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
+                            </div>
+                        </div>
+                        <!--end tasks-list-->
+
+                        <div class="tasks-list">
+                            <div class="status">
+                                <div class="d-flex mb-3">
+                                    <div class="flex-grow-1">
+                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">INPROGRESS <small class="badge bg-warning align-bottom ms-1 totaltask-badge">2</small></h6>
+                                    </div>
+
+                                </div>
+                                <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                                    <th:block th:each="project : ${projects}">
+                                        <div th:if="${project.status.toString() == 'INPROGRESS'}" class="card tasks-box todo" draggable="true">
+                                            <div class="card tasks-box todo " draggable="true" th:data-id="${project.getStatus()}" >
+                                                <div class="card-body">
+                                                    <div class="d-flex mb-2">
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
+                                                            <h6 class="fs-15 mb-0 text-truncate task-title" ><a class="text-body d-block" th:text="${project.title}">
+
+                                                            </a></h6>
+                                                        </div>
+                                                        <div class="flex-shrink-0">
+                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
+                                                    <div class="mb-3">
+                                                        <div class="d-flex mb-1">
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
+                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-grow-1">
+                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'INPROGRESS' and issue.getProject().getTitle() == project.title}">
+                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
+                                                            </th:block>
+                                                        </div>
+                                                        <div class="flex-shrink-0">
+                                                            <div class="avatar-group">
+                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'INPROGRESS' and issue.getProject().getTitle() == project.title}">
+                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
+                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
+                                                                    </a>
+                                                                </th:block>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                
+                                                <!--end card-body-->
+                                                <div class="card-footer border-top-dashed">
+                                                    <div class="d-flex">
+                                                        <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
                                             </div>
+
                                         </div>
-                                    </div>                               
-                                    
+                                    </th:block>
                                 </div>
-
-                                
                             </div>
-                        
                             <div class="my-3">
-                                <button class="btn btn-soft-info w-100" onclick='location.href="issue_list_view.html"'>See More</button>
+                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
+                            </div>
+
+                        </div>
+                        <!--end tasks-list-->
+
+                        <div class="tasks-list">
+                            <div class="status">
+                                <div class="d-flex mb-3">
+                                    <div class="flex-grow-1">
+                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">PENDING <small class="badge bg-warning align-bottom ms-1 totaltask-badge">2</small></h6>
+                                    </div>
+
+                                </div>
+                                <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                                    <th:block th:each="project : ${projects}">
+                                        <div th:if="${project.status.toString() == 'PENDING'}" class="card tasks-box todo" draggable="true">
+                                            <div class="card tasks-box todo" draggable="true" th:data-id="${project.getStatus()}">
+                                                <div class="card-body">
+                                                    <div class="d-flex mb-2">
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
+                                                            <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${project.title}">
+                                                            </a></h6>
+                                                        </div>
+                                                        <div class="flex-shrink-0">
+                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
+                                                    <div class="mb-3">
+                                                        <div class="d-flex mb-1">
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
+                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-grow-1">
+                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'PENDING' and issue.getProject().getTitle() == project.title}">
+                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
+                                                            </th:block>
+                                                        </div>
+                                                        <div class="flex-shrink-0">
+                                                            <div class="avatar-group">
+                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'PENDING' and issue.getProject().getTitle() == project.title}">
+                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
+                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
+                                                                    </a>
+                                                                </th:block>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end card-body-->
+                                                <div class="card-footer border-top-dashed">
+                                                    <div class="d-flex">
+                                                        <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+
+                            <div class="my-3">
+                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
                             </div>
                         </div>
                         <!--end tasks-list-->
+
                         <div class="tasks-list">
-                            <div class="status" >
+                            <div class="status">
                                 <div class="d-flex mb-3">
                                     <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">Inprogress <small class="badge bg-warning align-bottom ms-1 totaltask-badge">2</small></h6>
+                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">COMPLETED <small class="badge bg-success align-bottom ms-1 totaltask-badge">1</small></h6>
                                     </div>
-                                    
-                                </div>
-                                <div data-simplebar="init" class="tasks-wrapper px-3 mx-n3  mb-3 " >
 
                                 </div>
-                                
-                            </div>                               
+                                <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                                    <th:block th:each="project : ${projects}">
+                                        <div th:if="${project.status.toString() == 'COMPLETED'}" class="card tasks-box todo" draggable="true">
+                                            <div class="card tasks-box todo" draggable="true" th:data-id="${project.getStatus()}">
+                                                <div class="card-body">
+                                                    <div class="d-flex mb-2">
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
+                                                            <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${project.title}">
+                                                            </a></h6>
+                                                        </div>
+                                                        <div class="flex-shrink-0">
+                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
+                                                    <div class="mb-3">
+                                                        <div class="d-flex mb-1">
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
+                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-grow-1">
+                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'COMPLETED' and issue.getProject().getTitle() == project.title}">
+                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
+                                                            </th:block>
+                                                        </div>
+                                                        <div class="flex-shrink-0">
+                                                            <div class="avatar-group">
+                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'COMPLETED' and issue.getProject().getTitle() == project.title}">
+                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
+                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
+                                                                    </a>
+                                                                </th:block>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end card-body-->
+                                                <div class="card-footer border-top-dashed">
+                                                    <div class="d-flex">
+                                                        <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+
                             <div class="my-3">
-                                <button  class="btn btn-soft-info w-100" >See More</button>
-                            </div> 
+                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
+                            </div>
                         </div>
-
-                        
                         <!--end tasks-list-->
                         <div class="tasks-list">
                             <div class="status">
                                 <div class="d-flex mb-3">
                                     <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0">Pending <small class="badge bg-warning align-bottom ms-1 totaltask-badge">2</small></h6>
+                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">OVERDUE <small class="badge bg-success align-bottom ms-1 totaltask-badge">1</small></h6>
                                     </div>
-                                    
-                                </div>
-                                <div data-simplebar class="tasks-wrapper px-3 mx-n3  mb-3">
 
                                 </div>
-                              
-                            </div>
-                            <div class="my-3">
-                                <button class="btn btn-soft-info w-100" >See More</button>
-                            </div>
-                             
-                        </div>
-                        
-                        <!--end tasks-list-->
+                                <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                                    <th:block th:each="project : ${projects}">
+                                        <div th:if="${project.status.toString() == 'OVERDUE'}" class="card tasks-box todo" draggable="true">
+                                            <div class="card tasks-box todo" draggable="true" th:data-id="${project.getStatus()}">
+                                                <div class="card-body">
+                                                    <div class="d-flex mb-2">
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
+                                                            <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${project.title}">
+                                                            </a></h6>
+                                                        </div>
+                                                        <div class="flex-shrink-0">
+                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
 
-                        <!--end tasks-list-->
-                        <div class="tasks-list">
-                            <div class="status">
-                                <div class="d-flex mb-3">
-                                    <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0">Completed <small class="badge bg-success align-bottom ms-1 totaltask-badge">1</small></h6>
-                                    </div>
-                                    
-                                </div> 
-                                <div data-simplebar class="tasks-wrapper px-3 mx-n3  mb-3">
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
+                                                    <div class="mb-3">
+                                                        <div class="d-flex mb-1">
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
+                                                            </div>
 
-                                </div>  
+                                                        </div>
+                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
+                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-grow-1">
+                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'OVERDUE' and issue.getProject().getTitle() == project.title}">
+                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
+                                                            </th:block>
+                                                        </div>
+                                                        <div class="flex-shrink-0">
+                                                            <div class="avatar-group">
+                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'OVERDUE' and issue.getProject().getTitle() == project.title}">
+                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
+                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
+                                                                    </a>
+                                                                </th:block>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end card-body-->
+                                                <div class="card-footer border-top-dashed">
+                                                    <div class="d-flex">
+                                                        <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </th:block>
+                                </div>
                             </div>
+
                             <div class="my-3">
-                                <button class="btn btn-soft-info w-100" >See More</button>
+                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
                             </div>
                         </div>
-                        
                         <!--end tasks-list-->
-                        <div class="tasks-list">
-                            <div class="status">
-                                <div class="d-flex mb-3">
-                                    <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0">Over Due  <small class="badge bg-success align-bottom ms-1 totaltask-badge">1</small></h6>
-                                    </div>
-                                    
-                                </div> 
-                                <div data-simplebar class="tasks-wrapper px-3 mx-n3  mb-3">
-
-                                </div>   
-                            </div>
-                            <div class="my-3">
-                                <button class="btn btn-soft-info w-100" >See More</button>
-                            </div>
-                        </div>
                         
                        
                     </div>
@@ -501,7 +613,7 @@
                                             <div class="col-lg-12">
                                                 <label for="issue-priority-input" class="form-label">Priority</label>
                                                 <select class="form-control" id="issue-priority-input">
-                                                    <option value="">Priority</option>
+                                                    <option disabled>Priority</option>
                                                     <option value="HIGH">High</option>
                                                     <option value="MEDIUM">Medium</option>
                                                     <option value="LOW">Low</option>
@@ -1087,7 +1199,8 @@
     <!-- Add this script after your HTML content -->
 
 
-    <script th:src="@{assets/js/issue.js}"></script>
+    <script th:src="@{assets/js/issueboard.js}"></script>
+    <script th:src="@{assets/js/pm-issue-board.js}"></script>
     <script th:src="@{/assets/js/issue-modal-init.js}"></script>
     <script th:src="@{/assets/js/issue-create.js}"></script>
 <!--FIle Script-->
