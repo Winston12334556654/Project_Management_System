@@ -58,6 +58,11 @@ public class IssueServiceImpl implements IssueService {
                 .build();
     }
 
+    @Override
+    public List<Issue> getAllIssueByUserId(Long userId) {
+        return issueRepository.findAllIssueByUserId(userId);
+    }
+
 //
 //    @Override
 //    public List<Issue> getIssueByUserId(long id) {

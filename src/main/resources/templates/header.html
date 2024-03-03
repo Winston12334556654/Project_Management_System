@@ -1,15 +1,74 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" >
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <!-- Live Chat CSS-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">-->
+    <link rel="stylesheet" th:href="@{/assets/css/chatlist.css}" />
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+
+    <style>
+        .own-message {
+            float: right;
+            color: #ffffff;
+            background-color: #4b38b3;
+            border-radius: 15px;
+            padding: 12px 20px;
+            clear: both;
+            margin-bottom: 10px;
+        }
+
+        .other-message .sender {
+            color: black;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .other-message .content {
+            color: #ffffff;
+            background-color: #4b38b3;
+            border-radius: 15px;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+        }
+
+        #chatList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #chatList li {
+            background-color: #4b38b3;
+            color: white;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+        }
+
+        #chatList li:last-child {
+            margin-bottom: 0;
+        }
+
+        #chatList li:hover {
+            background-color: #5e4bb3;
+            cursor: pointer;
+        }
+    </style>
 </head>
+
+
 <body>
 <!-- Header fragment -->
 <header th:fragment="header" id="page-topbar">
+    <!--Notification -->
+    <audio id="notificationSound" src="/static/tweet.mp3"></audio>
+
     <div class="layout-width">
         <div class="navbar-header">
             <div class="d-flex">
@@ -54,7 +113,6 @@
             </div>
 
             <div class="d-flex align-items-center">
-
                 <div class="dropdown d-md-none topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none" id="page-header-search-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="bx bx-search fs-22"></i>
@@ -224,6 +282,16 @@
                     </div>
                 </div>
 
+                <!-- Chat Icon  -->
+                <div class=" ms-1 header-item d-none d-sm-flex">
+<!--                    <button type="button" onclick="/chat-list" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode shadow-none">-->
+                    <a href="/chat-list" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode shadow-none">
+                    <i class='bx bx-message-rounded fs-22'></i>
+                        <span class="position-absolute topbar-badge cartitem-badge fs-10 translate-middle badge rounded-pill bg-danger">5</span>
+                    </a>
+                </div>
+
+
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
@@ -247,7 +315,20 @@
             </div>
         </div>
     </div>
+
+    <!--New Live Chat Form -->
+    <!-- Button trigger modal -->
+
+    <!-- Chat Live Script-->
+    <script th:src="@{/assets/js/chat.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </header>
+
 
 <!-- removeNotificationModal -->
 <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
@@ -273,6 +354,5 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 </body>
 </html>

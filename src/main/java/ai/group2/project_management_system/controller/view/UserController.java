@@ -1,5 +1,6 @@
 package ai.group2.project_management_system.controller.view;
 
+import ai.group2.project_management_system.model.Enum.Role;
 import ai.group2.project_management_system.model.entity.User;
 import ai.group2.project_management_system.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,7 @@ private final UserService userService;
             //user.setPosition(position);
             // Set photo name in the User object
             user.setProfilePictureFileName(photoname);
+            user.setRole(Role.MEMBER);
             user.setActive(true);
             System.out.println(user.getName());
 

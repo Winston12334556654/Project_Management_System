@@ -1,5 +1,7 @@
 document.getElementById("createIssueForm").addEventListener('submit', function (event) {
     event.preventDefault();
+    const selectedTeamLeaderId = getSelectedTeamLeaderId();
+    console.log('Selected Team Leader ID:', selectedTeamLeaderId);
     function stripHtmlTags(html) {
         const doc = new DOMParser().parseFromString(html, 'text/html');
         return doc.body.textContent || "";
@@ -19,12 +21,13 @@ document.getElementById("createIssueForm").addEventListener('submit', function (
         },
         subject: document.getElementById('issue-subject-input').value,
         description: plainTextData,
-        teamLeaderId: document.getElementById('issue-teamleader-input').value,
+        /*teamLeaderId: document.getElementById('issue-teamleader-input').value,*/
+        teamLeaderId: getSelectedTeamLeaderId(),
         planStartDate: document.getElementById('issue-plan-start-date').value,
         planDueDate: document.getElementById('issue-plan-due-date').value,
         priority: document.getElementById('issue-priority-input').value,
     };
-
+    //formData.append('teamLeaderId', selectedTeamLeaderId);
     formData.append("issue", JSON.stringify(issueData));
     const fileInput = document.getElementById('file-input1');
     for (let i = 0; i < fileInput.files.length; i++) {
@@ -54,3 +57,16 @@ document.getElementById("createIssueForm").addEventListener('submit', function (
         })
         .catch(error => console.log("Error" + error));
 });
+
+function getSelectedTeamLeaderId() {
+    const radioButtons = document.querySelectorAll('input[name="user.id"]');
+
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+            return radioButton.value;
+        }
+    }
+
+    // Return a default value or handle the case where no team leader is selected
+    return null;
+}

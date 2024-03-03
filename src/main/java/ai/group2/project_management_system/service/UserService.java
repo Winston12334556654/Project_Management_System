@@ -2,6 +2,7 @@ package ai.group2.project_management_system.service;
 
 import ai.group2.project_management_system.dto.UserDTO;
 import ai.group2.project_management_system.model.entity.User;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public interface UserService {
     List<UserDTO> getUsersByDepartmentId(Long departmentId);
     User getCurrentUser();
     List<UserDTO> getUsersByProjectId(Long projectId);
+
+    List<User> getAllUserByIssueId(Long issueId);
 
 
 }

@@ -28,8 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     option.textContent = project.title;
                     selectElement.appendChild(option);
                 });
-                getTeamLeader();
-                getPlanDates();
+                selectElement.addEventListener('change', getTeamLeader);
+                /*getTeamLeader();*/
+                selectElement.addEventListener('change',getPlanDates);
+                /*getPlanDates();*/
             })
             .catch(error => {
                 console.log('Error: ', error);
@@ -39,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function getTeamLeader() {
         const projectId = document.getElementById('parent-project-input').value;
         const url = `/issue-members-selector/${projectId}`;
-
+        console.log("ProjectId:",projectId);
         fetch(url, {
             method: 'GET',
             credentials: 'include',
@@ -55,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(data => {
                 // Display the users returned by the server in the member list
+                console.log("Data",data);
                 showMemberList(data);
             })
             .catch(error => {
@@ -76,17 +79,28 @@ document.addEventListener('DOMContentLoaded', function () {
         dto.forEach(user => {
             console.log("user list: ", user);
             if(user.role.toString() === "TEAMLEADER") {
+                console.log("Photo name",user.profilePictureName);
                 const listItem = document.createElement('li');
                 listItem.innerHTML = `
     <div class="form-check d-flex align-items-center justify-content-between">
         <div>
-            <input class="form-check-input  me-3" type="radio" id="issue-teamleader-input" name="teamLeader" value="${user.id}">
-            <label class="form-check-label  d-flex align-items-center" for="user-${user.id}">
+            <input class="form-check-input  mt-3" type="radio"  name="user.id" value="${user.id}" id="${user.id}">
+            <label class="form-check-label  d-flex align-items-center" for="${user.id}">
                 <span class="flex-shrink-0">
-                    <img src="assets/images/${user.photo}" alt="" class="avatar-xxs rounded-circle" />
+
+                    <img src="/assets/userPhoto/${user.profilePictureName}" alt="" class="avatar-xxs rounded-circle" />
+
                 </span>
-                <span class="flex-grow-1 ms-2">${user.name}</span>
-                <span class="badge text-bg-success flex-grow-1 ms-2">${user.position}</span>
+              
+                <div class="d-flex justify-content-between flex-grow-1 ms-2 user-label-container">
+                            <div>
+                                <span >${user.name}</span>
+                                <div ><h6>${user.position.positionName}</h6></div>
+                            </div>
+                            
+                 </div>
+</div>
+       
                 <div class="flex-shrink-0 ms-4 additional-content">
                     <ul class="list-inline tasks-list-menu mb-0">
                         <li class="list-inline-item">
@@ -108,14 +122,17 @@ document.addEventListener('DOMContentLoaded', function () {
     let startDateFlatpickr;
     let dueDateFlatpickr;
     function getPlanDates(){
-        const projectId = document.getElementById('project-input').value;
+        const projectId = document.getElementById('parent-project-input').value;
         const url = `/get-project/${projectId}`;
         fetch(url)
             .then(response => response.json())
             .then(project => {
+                console.log("Project:",project);
                 // Display the users returned by the server in the member list
                 let planStartDate = project.planStartDate;
                 let planDueDate = project.planEndDate;
+                console.log("Plan Start Date:",planStartDate);
+                console.log("Plan Due Date:",planDueDate);
                 //For Start Date && Due Date
                  startDateFlatpickr = initializeStartDatePicker(planStartDate, planDueDate);
                  dueDateFlatpickr = initializeDueDatePicker(planStartDate, planDueDate);

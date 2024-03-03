@@ -21,6 +21,10 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
             "where ie.id = :issueId and u.role = :role", nativeQuery = true)
     List<Long> getUsersByIssueId(@Param("issueId") Long issueId, @Param("role") String role);
 
-//    List<Issue> getIssueByUserId(long id);
+    @Query(value = "select i.* from issue i join project p on p.id=i.project_id join project_member pm on pm.project_id = p.id where pm.user_id = :userId ", nativeQuery = true)
+    List<Issue> findAllIssueByUserId(@Param("userId") Long userId);
+
+
+
 
 }

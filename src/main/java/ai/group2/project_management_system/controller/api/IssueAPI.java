@@ -42,7 +42,13 @@ public class IssueAPI {
     @GetMapping("/get-projects")
     public ResponseEntity<List<Project>> getProjects(){
         List<Project> projectList = projectService.getAllProjects();
-        return ResponseEntity.ok(projectList);
+        List<Project> currentProjectList=new ArrayList<Project>();
+        for(Project project:projectList){
+            if(project.getStatus()!=Status.COMPLETED && project.getStatus()!=Status.PENDING){
+                currentProjectList.add(project);
+            }
+        }
+        return ResponseEntity.ok(currentProjectList);
     }
 
     @GetMapping("/get-categories")
@@ -69,9 +75,20 @@ public class IssueAPI {
         }
     }
 
-    @GetMapping("/get-project/{projectId}")
+    /*@GetMapping("/get-project/{projectId}")
     public ResponseEntity<ProjectDTO> getProject(@PathVariable Long projectId) {
         ProjectDTO project = projectService.getProjectById(projectId);
+
+        if (project != null) {
+            return ResponseEntity.ok(project);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }*/
+
+    @GetMapping("/get-project/{projectId}")
+    public ResponseEntity<Project> getProject(@PathVariable Long projectId) {
+        Project project = projectService.getProjectBy_Id(projectId);
 
         if (project != null) {
             return ResponseEntity.ok(project);
@@ -90,6 +107,7 @@ public class IssueAPI {
         issue.setStatus(Status.TODO);
         issue.setActive(true);
         issue.setAssigned(false);
+        issue.setStatus(Status.TODO);
 
 
         List<String> fileNames = saveAttachments(files);

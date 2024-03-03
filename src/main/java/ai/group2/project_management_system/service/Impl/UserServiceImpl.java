@@ -41,6 +41,11 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<User> getAllUserByIssueId(Long issueId) {
+        return userRepository.findAllUserByIssueId(issueId);
+    }
+
 
     @Override
     public User save(User user) {
