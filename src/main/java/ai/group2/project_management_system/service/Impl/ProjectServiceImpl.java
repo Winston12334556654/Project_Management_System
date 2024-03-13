@@ -158,6 +158,10 @@ public  class ProjectServiceImpl implements ProjectService {
         return projectRepository.findProjectsByUserName(name);
     }
 
+    @Override
+    public List<User> getTeamLeaders(long projectId) {
+        return projectRepository.findTeamLeadersByProjectId(projectId);
+    }
 
 
 }

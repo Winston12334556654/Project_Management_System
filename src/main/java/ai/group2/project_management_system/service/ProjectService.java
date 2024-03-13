@@ -2,6 +2,7 @@ package ai.group2.project_management_system.service;
 
 import ai.group2.project_management_system.dto.ProjectDTO;
 import ai.group2.project_management_system.model.entity.Project;
+import ai.group2.project_management_system.model.entity.User;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +31,6 @@ public interface ProjectService {
     List<Project> getProjectsByUserId(Long userId);
     Project getProjectByTitle(String title);
     List<Project> getProjectsByUserName(String name);
+
+    List<User> getTeamLeaders(long projectId);
 }

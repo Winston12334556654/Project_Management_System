@@ -2,8 +2,11 @@ package ai.group2.project_management_system.controller.view;
 
 
 import ai.group2.project_management_system.model.Enum.Role;
-import ai.group2.project_management_system.model.entity.Department;
-import ai.group2.project_management_system.model.entity.User;
+import ai.group2.project_management_system.model.entity.*;
+import ai.group2.project_management_system.repository.AssignIssueRepository;
+import ai.group2.project_management_system.service.AssignIssueService;
+import ai.group2.project_management_system.service.IssueService;
+import ai.group2.project_management_system.service.ProjectService;
 import ai.group2.project_management_system.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +17,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
 public class HomeController {
     private final UserService userService;
-
+    private final ProjectService projectService;
+    private final IssueService issueService;
+    private final AssignIssueService assignIssueService;
+    private final AssignIssueRepository assignIssueRepository;
     @ModelAttribute("user")
     public User getUserFromSession(HttpSession session) {
         User user = userService.getCurrentUser();
@@ -41,8 +51,23 @@ public class HomeController {
                 System.out.println("There is no department!");
             }
         }
-        session.setAttribute("user", user);
+//        session.setAttribute("user", user);
+        List<Project> activeProjects=projectService.getActiveProjects();
+        List<Issue> issues=issueService.getAllIssues();
+        List<Issue> activeIssues = issues.stream()
+                .filter(Issue::isActive)
+                .collect(Collectors.toList());
 
+        List<AssignIssue> assignIssues=assignIssueRepository.findAll();
+        List<AssignIssue> activeAssignIssues=assignIssues.stream()
+                .filter(AssignIssue::isActive)
+                        .collect(Collectors.toList());
+
+
+       // System.out.println("TeamLeaders:"+teamLeaders.size());
+        model.addAttribute("activeProjects",activeProjects);
+        model.addAttribute("activeIssues",activeIssues);
+        model.addAttribute("activeAssignIssues",activeAssignIssues);
         return "index";
     }
 
