@@ -7,6 +7,7 @@ let filterMembers;
 document.addEventListener('DOMContentLoaded', function () {
 
 
+
     function  dropDownChangeListenerForTeamLeader(event,containerId){
         const departmentId = event.target?event.target.value:event;
 
@@ -15,10 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
             teamLeaderList = teamLeaders;
             // Clear issue list before fetching new data
             issueList = [];
+
             teamLeaders.forEach(teamLeader => {
                 getIssueByTeamLeader(teamLeader.id).then(issues => {
                     // Merge issues from different team leaders
-                    issueList = issues;
+                    issueList = [...issues];
 
                     if(event.target){
                         switch (event.target.id){
@@ -37,6 +39,50 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    // async function dropDownChangeListenerForTeamLeader(event, containerId) {
+    //     const departmentId = event.target ? event.target.value : event;
+    //
+    //     try {
+    //         const teamLeaders = await getTeamleader(departmentId);
+    //         const teamLeaderList = teamLeaders;
+    //
+    //         // Clear issue list before fetching new data
+    //         let issueList = [];
+    //
+    //         // Array to store promises for fetching issues
+    //         const issuePromises = teamLeaders.map(teamLeader => {
+    //             return getIssueByTeamLeader(teamLeader.id).then(issues => {
+    //                 // Merge issues from different team leaders
+    //                 issueList.push(...issues);
+    //             });
+    //         });
+    //
+    //         // Wait for all issue fetching promises to resolve
+    //         await Promise.all(issuePromises);
+    //
+    //         if (event.target) {
+    //             switch (event.target.id) {
+    //                 case 'department-select-input1':
+    //                     renderPieChart(issueList, teamLeaderList, 'teamleader-pie-chart-container');
+    //                     break;
+    //                 case 'department-select-input2':
+    //                     renderBarChart(issueList, teamLeaderList, 'teamleader-bar-chart-container');
+    //                     break;
+    //                 default:
+    //             }
+    //         } else {
+    //             if (containerId === 'department-select-input1') {
+    //                 renderPieChart(issueList, teamLeaderList, 'teamleader-pie-chart-container');
+    //             } else {
+    //                 renderBarChart(issueList, teamLeaderList, 'teamleader-bar-chart-container');
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error("Error:", error);
+    //     }
+    // }
+
 
     function  dropDownChangeListenerForMember(event,containerId){
         const departmentId = event.target?event.target.value:event;
@@ -187,6 +233,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             data.push(tmp);
         });
+
+        console.log("team pie chart:: data ",data);
+
         Highcharts.chart(containerId, {
             chart: {
                 type: 'pie'
