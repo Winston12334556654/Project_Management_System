@@ -5,6 +5,7 @@ import ai.group2.project_management_system.model.entity.Issue;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IssueService {
 
@@ -18,7 +19,19 @@ public interface IssueService {
 
     List<Issue> getAllIssueByUserId(Long userId);
 
+
+
+    List<Issue> findIssuesByProjectId(Long projectId);
+
 //    List<Issue> getIssueByUserId(Long id);
 
+    int getIssueCount();
 
+
+    int getActiveIssueCount();
+
+    int getInactiveIssueCount();
+    Issue getIssueById(Long id);
+
+    Map<String, Integer> getCountsByStatus();
 }

@@ -1,0 +1,247 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AssignIssueDTO</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.dto</a>
+</div>
+
+<h1>Coverage Summary for Class: AssignIssueDTO (ai.group2.project_management_system.dto)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AssignIssueDTO</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/26)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/26)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AssignIssueDTO$AssignIssueDTOBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/27)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/27)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.dto;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.model.entity.Issue;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Builder;
+&nbsp;import lombok.Data;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;
+<b class="nc">&nbsp;@Builder</b>
+<b class="nc">&nbsp;@NoArgsConstructor</b>
+<b class="nc">&nbsp;@AllArgsConstructor</b>
+<b class="nc">&nbsp;@Data</b>
+&nbsp;public class AssignIssueDTO {
+&nbsp;    private Long id;
+&nbsp;    private Issue issue;
+&nbsp;    private String assignName;
+&nbsp;    private boolean isActive;
+&nbsp;    private User user;
+&nbsp;    private String status;
+&nbsp;    private String priority;
+&nbsp;    private LocalDate planStartDate;
+&nbsp;    private LocalDate planDueDate;
+&nbsp;    private LocalDate actualStartDate;
+&nbsp;    private LocalDate actualDueDate;
+&nbsp;
+&nbsp;    public Long getId() {
+<b class="nc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Long id) {
+<b class="nc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Issue getIssue() {
+<b class="nc">&nbsp;        return issue;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setIssue(Issue issue) {
+<b class="nc">&nbsp;        this.issue = issue;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getAssignName() {
+<b class="nc">&nbsp;        return assignName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setAssignName(String assignName) {
+<b class="nc">&nbsp;        this.assignName = assignName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean isActive() {
+<b class="nc">&nbsp;        return isActive;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setActive(boolean active) {
+<b class="nc">&nbsp;        isActive = active;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public User getUser() {
+<b class="nc">&nbsp;        return user;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUser(User user) {
+<b class="nc">&nbsp;        this.user = user;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getStatus() {
+<b class="nc">&nbsp;        return status;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setStatus(String status) {
+<b class="nc">&nbsp;        this.status = status;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getPriority() {
+<b class="nc">&nbsp;        return priority;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPriority(String priority) {
+<b class="nc">&nbsp;        this.priority = priority;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getPlanStartDate() {
+<b class="nc">&nbsp;        return planStartDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPlanStartDate(LocalDate planStartDate) {
+<b class="nc">&nbsp;        this.planStartDate = planStartDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getPlanDueDate() {
+<b class="nc">&nbsp;        return planDueDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPlanDueDate(LocalDate planDueDate) {
+<b class="nc">&nbsp;        this.planDueDate = planDueDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getActualStartDate() {
+<b class="nc">&nbsp;        return actualStartDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setActualStartDate(LocalDate actualStartDate) {
+<b class="nc">&nbsp;        this.actualStartDate = actualStartDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getActualDueDate() {
+<b class="nc">&nbsp;        return actualDueDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setActualDueDate(LocalDate actualDueDate) {
+<b class="nc">&nbsp;        this.actualDueDate = actualDueDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

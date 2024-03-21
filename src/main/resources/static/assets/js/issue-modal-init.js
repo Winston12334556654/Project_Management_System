@@ -2,11 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let createIssueModal = new bootstrap.Modal(document.getElementById('createIssueModal'));
     let viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
 
-    // Handle the click event on the "View" button in the first modal
-    // document.getElementById('view-btn').addEventListener('click', function () {
-    //     viewModal.show();
-    // });
-
     document.getElementById('create-issue').addEventListener('click', function () {
         showCategoryDropdown();
         showProjectDropdown();
@@ -15,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function showProjectDropdown(){
-        const url = '/get-projects';
+        var creatorValue = document.getElementById('creator').textContent;
+        const url = '/get-projects/'+ creatorValue;
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -101,13 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
                  </div>
 </div>
        
-                <div class="flex-shrink-0 ms-4 additional-content">
-                    <ul class="list-inline tasks-list-menu mb-0">
-                        <li class="list-inline-item">
-                            <a href="issue_member_details.html"><button class="btn btn-sm btn-light" id="view-btn">View</button></a>
-                        </li>
-                    </ul>
-                </div>
+            
             </label>
         </div>
     </div>

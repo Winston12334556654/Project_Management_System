@@ -25,6 +25,10 @@ public class Position {
     public Position(Long id) {
         this.id = id;
     }
+
+    public Position(long l, String s) {
+    }
+
     // getters and setters
     public Long getId() {
         return id;

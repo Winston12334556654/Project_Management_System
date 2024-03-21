@@ -24,8 +24,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString(exclude = "users")
-//@EqualsAndHashCode(exclude = "users")
 public class Project implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,12 +38,39 @@ public class Project implements Serializable {
 
     private String creator;
 
+    private String percentage;
+
     private LocalDate planStartDate;
 
     private LocalDate planEndDate;
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    private boolean isOverDue;
+
+    public Project(boolean b) {
+    }
+
+    public Project(String s, String johnDoe) {
+    }
+
+    public boolean isOverDue() {
+        return isOverDue;
+    }
+
+    public void setOverDue(boolean overDue) {
+        isOverDue = overDue;
+    }
+
+    private boolean isActive;
+    public String getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(String percentage) {
+        this.percentage = percentage;
+    }
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -66,8 +91,6 @@ public class Project implements Serializable {
 
         this.isActive = isActive;
     }
-
-    private boolean isActive;
 
     @Transient
     private List<Long> userIds;
@@ -210,4 +233,7 @@ public class Project implements Serializable {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+
+
 }

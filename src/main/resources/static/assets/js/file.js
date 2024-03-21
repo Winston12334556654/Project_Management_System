@@ -174,9 +174,6 @@ function initializeFileUpload1(inputId, containerId){
                 fileNamesContainer.appendChild(li);
             }
         }
-
-        // Clear the input field value if you want to reset the selection
-        // e.target.value = '';
     });
 }
 

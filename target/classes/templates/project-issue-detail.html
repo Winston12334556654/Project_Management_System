@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<head th:replace="~{layout :: head}">
+  <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css}" />
+  <title>Project Management System</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+</head>
+<style>
+  .asigneeImage {
+    width: 50px;
+    height: 50px;
+    display: block;
+    margin: 0 auto;
+  }
+
+</style>
+<body>
+<div id="layout-wrapper">
+  <div id="header-container">
+    <header th:replace="~{header :: header}"></header>
+  </div>
+
+
+  <!-- ========== App Menu ========== -->
+  <div id="navbar-container">
+    <div th:replace="~{navbar :: navbar}"></div>
+  </div>
+</div>
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+  <div class="page-content">
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card mt-n4 mx-n4">
+            <div class="bg-warning-subtle">
+              <div class="card-body pb-0 px-4">
+                <div class="row mb-3">
+                  <div class="col-md">
+                    <div class="row align-items-center g-3">
+                      <div class="col-md-auto">
+                        <div class="avatar-md">
+                          <div class="avatar-title bg-white rounded-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#343a40" class="bi bi-folder-check" viewBox="0 0 16 16">
+                              <path fill="#343a40" d="m.5 3 .04.87a2 2 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2m5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19q-.362.002-.683.12L1.5 2.98a1 1 0 0 1 1-.98z"/>
+                              <path fill="#343a40" d="M15.854 10.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.707 0l-1.5-1.5a.5.5 0 0 1 .707-.708l1.146 1.147 2.646-2.647a.5.5 0 0 1 .708 0"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md">
+
+                        <div>
+                          <h4 class="fw-bold" th:text="${issue.title}"></h4>
+
+                          <div class="hstack gap-3 flex-wrap">
+
+                            <div class="vr"></div>
+                            <div>Plan Start Date : <span class="fw-medium" th:text="${issue.planStartDate}"></span></div>
+                            <div class="vr"></div>
+                            <div>Plan Due Date : <span class="fw-medium" th:text="${issue.planDueDate}"></span></div>
+                            <div class="vr"></div>
+                            <div class="text-end">
+                              <span th:if="${issue.isActive()}" class="badge bg-success">Active</span>
+                              <span th:unless="${issue.isActive()}" class="badge bg-danger">Inactive</span>
+                              <!-- You can customize the color and text as needed -->
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-auto">
+                    <div class="hstack gap-1 flex-wrap">
+                      <button type="button" class="btn py-0 fs-16 favourite-btn active shadow-none">
+                        <i class="ri-star-fill"></i>
+                      </button>
+                      <button type="button" class="btn py-0 fs-16 text-body shadow-none">
+                        <i class="ri-share-line"></i>
+                      </button>
+                      <button type="button" class="btn py-0 fs-16 text-body shadow-none">
+                        <i class="ri-flag-line"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end card body -->
+            </div>
+          </div>
+          <!-- end card -->
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end row -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="tab-content text-muted">
+            <div class="tab-pane fade show active" id="project-overview" role="tabpanel">
+              <div class="row">
+                <div >
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="text-muted">
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            <h6 class="mb-3 fw-semibold text-uppercase">Description</h6>
+                            <p th:text="${issue.description}"></p>
+                          </div>
+                         <div>
+                            <a class="btn btn-ghost-info"   th:href="@{'/project/project-detail/'+${issue.project.getId()}}">Back</a>
+                          </div>
+
+                        </div>
+
+
+                        <div class="pt-3 border-top border-top-dashed mt-4">
+                          <div class="row gy-3">
+
+                            <div class="col-lg-3 col-sm-6">
+                              <div>
+                                <p class="mb-2 text-uppercase fw-medium">Actual Start Date :</p>
+                                <h5 class="fs-15 mb-0" th:if="${issue.actualStartDate != null}" th:text="${issue.actualStartDate}"></h5>
+                                <h5 class="fs-15 mb-0" th:if="${issue.actualStartDate == null}">This project isn't started yet!</h5>
+                              </div>
+                            </div>
+
+                            <div class="col-lg-3 col-sm-6">
+                              <div>
+                                <p class="mb-2 text-uppercase fw-medium">Actual End Date :</p>
+                                <h5 class="fs-15 mb-0" th:if="${issue.actualDueDate != null}" th:text="${issue.actualDueDate}"></h5>
+                                <h5 class="fs-15 mb-0" th:if="${issue.actualDueDate == null}">This project isn't started yet!</h5>
+                              </div>
+                            </div>
+                            <div class="col-lg-2 col-sm-6">
+                              <div>
+                                <p class="mb-2 text-uppercase fw-medium">Priority :</p>
+                                <div class="badge bg-danger fs-12" th:text="${issue.priority}"></div>
+                              </div>
+                            </div>
+                            <div class="col-lg-2 col-sm-6">
+                              <div>
+                                <p class="mb-2 text-uppercase fw-medium">Status :</p>
+                                <div class="badge bg-warning fs-12" th:text="${issue.status}"></div>
+                              </div>
+                            </div>
+                            <div class="col-lg-2 col-sm-6">
+                              <div>
+                                <p class="mb-2 text-uppercase fw-medium display-none" > Announcement</p>
+                                <div class="badge bg-danger fs-12 " th:text="${issue.overDue ? 'OVERDUE' : 'Current'}"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- end card body -->
+
+                  </div>
+                  <!-- end card -->
+
+                </div>
+                <!-- ene col -->
+
+              </div>
+
+              <!-- end row -->
+            </div>
+            <!-- end tab pane -->
+
+
+          </div>
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end row -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" id="tasksList">
+            <div class="card-body">
+              <div class="table-responsive table-card mb-4">
+                <table class="table align-middle table-striped table-hover table1 display" id="example">
+                  <thead class="table-light text-muted">
+                  <tr>
+
+                    <th class="sort" data-sort="">PM Name</th>
+                    <th class="sort" data-sort="">Project</th>
+                    <th class="sort" data-sort="">Sub Issue</th>
+                    <th class="sort" data-sort="">Assignee</th>
+                    <th class="sort" data-sort="">Start Date</th>
+                    <th class="sort" data-sort="">Due Date</th>
+                    <th class="sort" data-sort="">Status</th>
+                    <th class="sort" data-sort="">Priority</th>
+                  </tr>
+                  </thead>
+                  <tbody class="list form-check-all">
+                  <tr th:each="assignIssue : ${assignIssues}">
+                    <td class="id"><a href="#" class="fw-medium link-primary" th:text="${issue.getCreator()}"></a></td>
+                    <td class="due_date"><a href="#" class="fw-medium link-primary" th:text="${issue.getProject().getTitle()}"></a></td>
+
+                    <td>
+                      <div class="d-flex">
+                        <div class="flex-grow-1 tasks_name" th:text="${assignIssue.getName()}"></div>
+                      </div>
+                    </td>
+                    <td class="assignedto">
+                      <div class="avatar-group">
+                        <!--<a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${assignIssue.getUser().}">
+                          <img src="" alt="" class="rounded-circle avatar-xxs teamLeaderImage">
+                        </a>-->
+                        <a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" th:title="${assignIssue.getUser().getName()}">
+                          <img th:src="@{'/assets/userPhoto/'+${assignIssue.getUser().getProfilePictureFileName()}}" alt="" class="rounded-circle avatar-xxs asigneeImage" />
+                        </a>
+
+                      </div>
+                    </td>
+                    <td class="due_date" th:text="${assignIssue.getPlanStartDate()}"></td>
+                    <td class="due_date" th:text="${assignIssue.getPlanDueDate()}"></td>
+                    <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase" th:text="${assignIssue.getStatus()}"></span></td>
+                    <td class="priority"><span class="badge bg-danger text-uppercase" th:text="${assignIssue.getPriority()}"></span></td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+            <!--end card-body-->
+          </div>
+          <!--end card-->
+        </div>
+        <!--end col-->
+      </div>
+    </div>
+    <!-- container-fluid -->
+  </div>
+  <!-- End Page-content -->
+</div>
+<div th:replace="~{layout :: footer}"></div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" ></script>
+<script>
+  $(document).ready(function() {
+    new DataTable('#example', {
+      pagingType: 'full_numbers'
+
+    });
+  });
+
+</script>
+<!--<script th:src="@{assets/js/pm-teamleader-list.js}"></script>-->
+</body>
+</html>

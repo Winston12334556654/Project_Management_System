@@ -33,7 +33,11 @@ public class Department implements Serializable {
         this.id = Long.parseLong(id);
     }
 
-
+    // Constructor with parameters
+    public Department(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public long getId() {
         return id;

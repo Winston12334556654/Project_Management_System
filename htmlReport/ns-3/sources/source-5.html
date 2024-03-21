@@ -1,0 +1,339 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > IssueAPI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.controller.api</a>
+</div>
+
+<h1>Coverage Summary for Class: IssueAPI (ai.group2.project_management_system.controller.api)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IssueAPI</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    13.3%
+  </span>
+  <span class="absValue">
+    (2/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2.1%
+  </span>
+  <span class="absValue">
+    (2/96)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.controller.api;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.dto.ProjectDTO;
+&nbsp;import ai.group2.project_management_system.dto.UserDTO;
+&nbsp;import ai.group2.project_management_system.model.Enum.Status;
+&nbsp;import ai.group2.project_management_system.model.entity.*;
+&nbsp;import ai.group2.project_management_system.repository.IssueRepository;
+&nbsp;import ai.group2.project_management_system.repository.ProjectRepository;
+&nbsp;import ai.group2.project_management_system.repository.UserRepository;
+&nbsp;import ai.group2.project_management_system.service.*;
+&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.beans.factory.annotation.Value;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.security.core.parameters.P;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.multipart.MultipartFile;
+&nbsp;
+&nbsp;import java.io.File;
+&nbsp;import java.io.FileNotFoundException;
+&nbsp;import java.io.IOException;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+<b class="fc">&nbsp;@Slf4j</b>
+&nbsp;public class IssueAPI {
+&nbsp;
+&nbsp;    private final ProjectService projectService;
+&nbsp;    private final ProjectRepository projectRepository;
+&nbsp;    private final IssueCategoryService issueCategoryService;
+&nbsp;    private final UserService userService;
+&nbsp;    private final UserRepository userRepository;
+&nbsp;    private final IssueService issueService;
+&nbsp;    private final IssueFilesService issueFilesService;
+&nbsp;    private final IssueRepository issueRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private EmailService service;
+&nbsp;    @Value(&quot;${upload.path}&quot;)
+&nbsp;    private String uploadPath;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/get-projects/{user}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Project&gt;&gt; getProjects(@PathVariable String user){
+<b class="nc">&nbsp;        List&lt;Project&gt; projectList =projectRepository.findProjectsByCreator(user);</b>
+&nbsp;        /*List&lt;Project&gt; projectList = projectService.getAllProjects();*/
+<b class="nc">&nbsp;        List&lt;Project&gt; currentProjectList=new ArrayList&lt;Project&gt;();</b>
+<b class="nc">&nbsp;        for(Project project:projectList){</b>
+<b class="nc">&nbsp;            if(project.getStatus()!=Status.COMPLETED &amp;&amp; project.getStatus()!=Status.PENDING){</b>
+<b class="nc">&nbsp;                currentProjectList.add(project);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(currentProjectList);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/get-categories&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;IssueCategory&gt;&gt; getIssueCategory() {
+<b class="nc">&nbsp;        List&lt;IssueCategory&gt; issueCategories = issueCategoryService.getAllIssueCategories();</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(issueCategories);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/add-category&quot;)
+&nbsp;    public ResponseEntity&lt;IssueCategory&gt; addIssueCategory(@RequestBody IssueCategory issueCategory){
+<b class="nc">&nbsp;        IssueCategory newIssueCategory = issueCategoryService.save(issueCategory);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(newIssueCategory);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/issue-members-selector/{projectId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;UserDTO&gt;&gt; getUsers(@PathVariable Long projectId) {
+<b class="nc">&nbsp;        List&lt;UserDTO&gt; users = userService.getUsersByProjectId(projectId);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!users.isEmpty()) {</b>
+<b class="nc">&nbsp;            users.forEach(System.out::println);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(users);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.noContent().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/get-project/{projectId}&quot;)
+&nbsp;    public ResponseEntity&lt;Project&gt; getProject(@PathVariable Long projectId) {
+<b class="nc">&nbsp;        Project project = projectService.getProjectBy_Id(projectId);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (project != null) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(project);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.noContent().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/create-issue&quot;)
+&nbsp;    public ResponseEntity&lt;Issue&gt; createIssue(@RequestParam(&quot;issue&quot;) String issueJson, @RequestParam(&quot;files&quot;) List&lt;MultipartFile&gt; files)  throws JsonProcessingException {
+<b class="nc">&nbsp;        User user=userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        ObjectMapper objectMapper = new ObjectMapper();</b>
+<b class="nc">&nbsp;        objectMapper.registerModule(new JavaTimeModule());</b>
+<b class="nc">&nbsp;        Issue issue = objectMapper.readValue(issueJson,Issue.class);</b>
+<b class="nc">&nbsp;        issue.setCreator(user.getName());</b>
+<b class="nc">&nbsp;        issue.setStatus(Status.TODO);</b>
+<b class="nc">&nbsp;        issue.setActive(true);</b>
+<b class="nc">&nbsp;        issue.setAssigned(false);</b>
+<b class="nc">&nbsp;        issue.setStatus(Status.TODO);</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Extracting specific fields
+<b class="nc">&nbsp;        Long projectId = issue.getProject().getId();</b>
+<b class="nc">&nbsp;        String title = issue.getTitle();</b>
+<b class="nc">&nbsp;        String projectName= projectService.getProjectNameById(projectId);</b>
+<b class="nc">&nbsp;        String projectManagerName= projectService.getProjectCreatorByPID(projectId);</b>
+<b class="nc">&nbsp;        String userEmailById= userService.getUserEmailById(issue.getTeamLeaderId());</b>
+<b class="nc">&nbsp;        String userNameById= userService.getUserNameById(issue.getTeamLeaderId());</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;projecId &quot;+ projectId);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Title &quot;+ title);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;projectName &quot;+ projectName);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;projectManagerName &quot;+ projectManagerName);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;userEmailById &quot;+ userEmailById);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;userNameById &quot;+ userNameById);</b>
+&nbsp;
+<b class="nc">&nbsp;        EmailDetail email= new EmailDetail();</b>
+<b class="nc">&nbsp;        email.setRecipients(Collections.singletonList(userEmailById));</b>
+<b class="nc">&nbsp;        email.setSubject(&quot;Issue Assign Announcements!&quot;);</b>
+<b class="nc">&nbsp;        email.setMsgBody(&quot;Dear Mr-&quot;+userNameById+&quot; You have been assigned in &quot;+title + &quot; Issue of &quot;+projectName+ &quot; Project By the Project Manager Mr-&quot;+projectManagerName+&quot;. FOR Further affairs, Please check in the website!&quot; + &quot;http://localhost:8080/home&quot;);</b>
+<b class="nc">&nbsp;        email.setAttachments(files);</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Emails :  &quot;+ email.getRecipients());</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Subject :  &quot;+ email.getSubject());</b>
+<b class="nc">&nbsp;        System.out.println(&quot;message :  &quot;+ email.getMsgBody());</b>
+<b class="nc">&nbsp;        service.sendMultipleEmail(email);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        List&lt;String&gt; fileNames = saveAttachments(files);</b>
+<b class="nc">&nbsp;        Issue newIssue = issueService.save(issue);</b>
+<b class="nc">&nbsp;        saveFileNames(newIssue, fileNames);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(newIssue);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private List&lt;String&gt; saveAttachments(List&lt;MultipartFile&gt; files) {
+<b class="nc">&nbsp;        List&lt;String&gt; fileNames = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (MultipartFile file : files) {</b>
+<b class="nc">&nbsp;            String fileName = UUID.randomUUID() + &quot;_&quot; + file.getOriginalFilename();</b>
+<b class="nc">&nbsp;            fileNames.add(fileName);</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                file.transferTo(new File(uploadPath + File.separator + fileName));</b>
+<b class="nc">&nbsp;            } catch (IOException e) {</b>
+<b class="nc">&nbsp;                e.printStackTrace();</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return fileNames;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void saveFileNames(Issue issue, List&lt;String&gt; fileNames) {
+<b class="nc">&nbsp;       for (String fileName : fileNames) {</b>
+<b class="nc">&nbsp;            IssueFiles issueFiles = new IssueFiles();</b>
+<b class="nc">&nbsp;            issueFiles.setIssue(issue);</b>
+<b class="nc">&nbsp;            issueFiles.setFileName(fileName);</b>
+<b class="nc">&nbsp;            issueFilesService.save(issueFiles);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PutMapping(&quot;/team-leader-issue/{issueId}&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; updateIssueStatus(@PathVariable(&quot;issueId&quot;) Long issueId,
+&nbsp;                                                          @RequestBody Issue requestIssue                                              ) {
+&nbsp;        //   String newStatus= String.valueOf(requestAssignIssue.getStatus());
+<b class="nc">&nbsp;        Issue issue = issueRepository.findById(Math.toIntExact(issueId)).orElse(null);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (issue != null) {</b>
+<b class="nc">&nbsp;            issue.setStatus(requestIssue.getStatus());</b>
+<b class="nc">&nbsp;            issue.setActualDueDate(LocalDate.now());</b>
+<b class="nc">&nbsp;            issueRepository.save(issue);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(String.format(&quot;Issue %d status updated to %s&quot;, issueId, requestIssue.getStatus()));</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/issueList&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Issue&gt;&gt; getIssueList(){
+&nbsp;
+<b class="nc">&nbsp;        List&lt;Issue&gt; issues= issueService.getAllIssues();</b>
+&nbsp;
+&nbsp;        // Print the list of issues to the console
+<b class="nc">&nbsp;        System.out.println(&quot;List of Issues: &quot; + issues);</b>
+<b class="nc">&nbsp;         return ResponseEntity.ok(issues);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/get-user/{teamLeaderId}&quot;)
+&nbsp;    public ResponseEntity&lt;User&gt; getUser(@PathVariable String teamLeaderId) {
+<b class="nc">&nbsp;        Long id = Long.valueOf(teamLeaderId);</b>
+<b class="nc">&nbsp;        User user=userService.getUserById(id</b>
+&nbsp;        );
+<b class="nc">&nbsp;        log.info(&quot;User -&gt; {}&quot;,user);</b>
+<b class="nc">&nbsp;        if (user != null) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(user);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.noContent().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/{projectId}/issues&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Issue&gt;&gt; getIssuesByProjectId(@PathVariable Long projectId) {
+<b class="nc">&nbsp;        List&lt;Issue&gt; issues = issueService.findIssuesByProjectId(projectId);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (issues.isEmpty()) {</b>
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return new ResponseEntity&lt;&gt;(issues, HttpStatus.OK);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/issueList/{userId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Issue&gt;&gt; getIssuesByUserId(@PathVariable Long userId) {
+<b class="nc">&nbsp;        List&lt;Issue&gt; issues = issueService.getIssuesByTeamleaderId(userId);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (issues != null &amp;&amp; !issues.isEmpty()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(issues);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

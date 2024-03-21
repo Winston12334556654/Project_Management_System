@@ -1,0 +1,275 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > IssueDetailsDto</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.dto</a>
+</div>
+
+<h1>Coverage Summary for Class: IssueDetailsDto (ai.group2.project_management_system.dto)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IssueDetailsDto</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/32)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">IssueDetailsDto$IssueDetailsDtoBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/33)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/33)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.dto;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.model.Enum.Priority;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Builder;
+&nbsp;import lombok.Data;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;
+<b class="nc">&nbsp;@Builder</b>
+<b class="nc">&nbsp;@NoArgsConstructor</b>
+<b class="nc">&nbsp;@AllArgsConstructor</b>
+<b class="nc">&nbsp;@Data</b>
+&nbsp;public class IssueDetailsDto {
+&nbsp;    private String pmName;
+&nbsp;    private String projectName;
+&nbsp;    private String issueTitle;
+&nbsp;    private String priority;
+&nbsp;    private String status;
+&nbsp;    private String issueType;
+&nbsp;    private String issueCategory;
+&nbsp;    private LocalDate startDate;
+&nbsp;    private LocalDate dueDate;
+&nbsp;    private LocalDate actualStartDate;
+&nbsp;    private LocalDate actualEndDate;
+&nbsp;    private List&lt;String&gt; fileNameList;
+&nbsp;    private String subject;
+&nbsp;    private String issueDescription;
+&nbsp;
+&nbsp;    public String getPmName() {
+<b class="nc">&nbsp;        return pmName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPmName(String pmName) {
+<b class="nc">&nbsp;        this.pmName = pmName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getProjectName() {
+<b class="nc">&nbsp;        return projectName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setProjectName(String projectName) {
+<b class="nc">&nbsp;        this.projectName = projectName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getIssueTitle() {
+<b class="nc">&nbsp;        return issueTitle;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setIssueTitle(String issueTitle) {
+<b class="nc">&nbsp;        this.issueTitle = issueTitle;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getPriority() {
+<b class="nc">&nbsp;        return priority;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPriority(String priority) {
+<b class="nc">&nbsp;        this.priority = priority;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getStatus() {
+<b class="nc">&nbsp;        return status;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setStatus(String status) {
+<b class="nc">&nbsp;        this.status = status;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getIssueType() {
+<b class="nc">&nbsp;        return issueType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setIssueType(String issueType) {
+<b class="nc">&nbsp;        this.issueType = issueType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getIssueCategory() {
+<b class="nc">&nbsp;        return issueCategory;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setIssueCategory(String issueCategory) {
+<b class="nc">&nbsp;        this.issueCategory = issueCategory;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getStartDate() {
+<b class="nc">&nbsp;        return startDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setStartDate(LocalDate startDate) {
+<b class="nc">&nbsp;        this.startDate = startDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getDueDate() {
+<b class="nc">&nbsp;        return dueDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDueDate(LocalDate dueDate) {
+<b class="nc">&nbsp;        this.dueDate = dueDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getActualStartDate() {
+<b class="nc">&nbsp;        return actualStartDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setActualStartDate(LocalDate actualStartDate) {
+<b class="nc">&nbsp;        this.actualStartDate = actualStartDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getActualEndDate() {
+<b class="nc">&nbsp;        return actualEndDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setActualEndDate(LocalDate actualEndDate) {
+<b class="nc">&nbsp;        this.actualEndDate = actualEndDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;String&gt; getFileNameList() {
+<b class="nc">&nbsp;        return fileNameList;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setFileNameList(List&lt;String&gt; fileNameList) {
+<b class="nc">&nbsp;        this.fileNameList = fileNameList;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getSubject() {
+<b class="nc">&nbsp;        return subject;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setSubject(String subject) {
+<b class="nc">&nbsp;        this.subject = subject;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getIssueDescription() {
+<b class="nc">&nbsp;        return issueDescription;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setIssueDescription(String issueDescription) {
+<b class="nc">&nbsp;        this.issueDescription = issueDescription;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

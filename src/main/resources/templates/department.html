@@ -14,14 +14,14 @@
     <div id="layout-wrapper">
 
         <div id="header-container">
-            <header th:replace="header :: header"></header>
+            <header th:replace="~{header :: header}"></header>
         </div>
 
         
 
         <!-- ========== App Menu ========== -->
         <div id="navbar-container">
-            <div th:replace="navbar :: navbar"></div>
+            <div th:replace="~{navbar :: navbar}"></div>
         </div>
 
 
@@ -108,13 +108,6 @@
                                             <div class="invalid-feedback">Please enter a phone.</div>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label  th:for="status" class="form-label">Status</label>
-                                            <select class="form-control" name="status" th:data-trigger th:name="status-field" th:id="status"  th:required="required">
-                                                <option value="true">Active</option>
-                                                <option value="false">Block</option>
-                                            </select>
-                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <div class="hstack gap-2 justify-content-end">
@@ -161,18 +154,10 @@
                                             <input type="text" name="phone" th:id="editPhone" th:class="form-control"   th:required="required" />
                                             <div class="invalid-feedback">Please enter a phone.</div>
                                         </div>
-
-                                        <div class="mb-3">
-                                            <label  th:for="editStatus" class="form-label">Status</label>
-                                            <select class="form-control" name="status" th:data-trigger th:id="editStatus"  th:required="required">
-                                                <option value="true">Active</option>
-                                                <option value="false">Block</option>
-                                            </select>
-                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <div class="hstack gap-2 justify-content-end">
-                                            <button type="button" class="btn btn-light" >Close</button>
+                                            <button type="button" class="btn btn-light"  onclick="closeModal()">Close</button>
                                             <button type="submit" class="btn btn-success">Confirm Update</button>
                                         </div>
                                     </div>
@@ -214,6 +199,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
                                 </div>
                                 <div class="modal-body">
+                                    <input type="hidden" id="deleteItemId" />
                                     <div class="mt-2 text-center">
                                         <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
                                         <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
@@ -225,12 +211,46 @@
                                         <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
                                         <button type="button" class="btn w-sm btn-danger " id="delete-record">Yes, Delete It!</button>
                                     </div>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
                     <!--end modal -->
+                    <!-- Modal -->
+                    <div class="modal fade zoomIn" id="enableRecordModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close1"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="enableItemId" />
+                                    <div class="mt-2 text-center">
+                                        <lord-icon
+                                                src="https://cdn.lordicon.com/vihyezfv.json"
+                                                trigger="loop"
+                                                delay="1500"
+                                                colors="primary:#e8e230"
+                                                style="width:100px;height:100px">
+                                        </lord-icon>
+                                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                            <h4>Are you Sure ?</h4>
+                                            <p class="text-muted mx-4 mb-0">Are you Sure You want to Enable this Record ?</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn w-sm btn-outline-primary " id="enable-record">Yes, Enable it</button>
+                                    </div>
 
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--end modal -->
                 </div>
                 <!-- container-fluid -->
             </div>
@@ -248,8 +268,75 @@
             console.log("submitting ....")
         }
     </script>
+<!--For Delete Department-->
+<script>
+    $(document).ready(function () {
+        $('#deleteRecordModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var itemId = button.data('item-id');
+            $('#deleteItemId').val(itemId);
+            console.log("DeleteItemId:",itemId);
+        });
 
+        $('#delete-record').on('click', function () {
+            var itemId = $('#deleteItemId').val();
+            var apiUrl = '/api/updateRecord/' + itemId;
+            var updatedData = {
+                // Your updated record fields here
+            };
 
+            $.ajax({
+                url: apiUrl,
+                type: 'PUT',
+                data: updatedData,
+                success: function (response) {
+                    console.log('Record updated successfully');
+                    $('#deleteRecordModal').modal('hide');
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Error updating record:', error);
+                }
+            });
+        });
+    });
+
+</script>
+
+    <!--For Enable Department-->
+    <script>
+        $(document).ready(function () {
+            $('#enableRecordModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var itemId = button.data('item-id');
+                $('#enableItemId').val(itemId);
+                console.log("EnableItemId:",itemId);
+            });
+
+            $('#enable-record').on('click', function () {
+                var itemId = $('#enableItemId').val();
+                var apiUrl = '/api/updateRecord/' + itemId;
+                var updatedData = {
+                    // Your updated record fields here
+                };
+
+                $.ajax({
+                    url: apiUrl,
+                    type: 'PUT',
+                    data: updatedData,
+                    success: function (response) {
+                        console.log('Record updated successfully');
+                        $('#enableRecordModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function (error) {
+                        console.error('Error updating record:', error);
+                    }
+                });
+            });
+        });
+
+    </script>
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
@@ -294,7 +381,7 @@
         // Render Department list Table
         function refreshDepartmentListTable(items) {
             const table = document.getElementById('department-table');
-
+            console.log("items",items);
             // Check if DataTable is already initialized and destroy it
             if (table && table.DataTable) {
                 table.DataTable.destroy();
@@ -309,18 +396,33 @@
                     { data: 'email' },
                     { data: 'phone' },
                     {
-                        data: 'status',
-                        render: (data, type, row) => `
-                        <span class="badge rounded-pill text-bg-${data ? 'success' : 'danger'}">${data ? 'Active' : 'Inactive'}</span>
-                    `,
+                        data: 'active',
+                        render: (data, type, row) =>{
+                            data = data ?? false;
+
+                            console.log('Current cell value:', data);
+
+                            return `
+            <span class="badge rounded-pill text-bg-${data ? 'success' : 'danger'}">${data ? 'Active' : 'Inactive'}</span>
+        `;
+                        }
                     },
                     {
-                        data: 'action',
-                        render: (data, type, row) => `
-                        <button class="btn btn-sm btn-primary edit-item-btn" onclick="displayEditDepartmentModal(${row.id})">Edit</button>
-                        <button class="btn btn-sm btn-${data ? 'danger' : 'success'} mx-2" onclick="toggleDepartment(${row.id})">${data ? 'Close' : 'Open'}</button>
-                        <button class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal">Remove</button>
-                    `,
+                        data: 'active',
+                         render: (data, type, row) =>{
+                            console.log("data",data);
+                             if (data) {
+                                 return `
+                <button class="btn btn-sm btn-primary edit-item-btn" onclick="displayEditDepartmentModal(${row.id})">Edit</button>
+                <button class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal" data-item-id="${row.id}">Disabled</button>
+            `;
+                             } else {
+                                 return `
+                <button class="btn btn-sm btn-primary edit-item-btn" disabled>Edit</button>
+                <button class="btn btn-sm btn-success enable-item-btn" data-bs-toggle="modal" data-bs-target="#enableRecordModal" data-item-id="${row.id}">Enable</button>
+            `;
+                             }
+                         },
                     }
                 ],
                 dom: 'Bfrtip',
@@ -337,7 +439,6 @@
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
-                status: document.getElementById('status').value
             };
 
             console.log(formData);
@@ -368,7 +469,7 @@
                 document.getElementById('editName').value = department.name;
                 document.getElementById('editEmail').value = department.email;
                 document.getElementById('editPhone').value = department.phone;
-                document.getElementById('editStatus').value = department.status;
+                // document.getElementById('editStatus').value = department.status;
 
                 const departmentEditModal = document.getElementById('editDepModal');
                 if (departmentEditModal) {
@@ -390,14 +491,13 @@
             const name = document.getElementById('editName').value;
             const email = document.getElementById('editEmail').value;
             const phone = document.getElementById('editPhone').value;
-            const status = document.getElementById('editStatus').value;
+            // const status = document.getElementById('editStatus').value;
 
             const updatedDepartment = {
                 id: id,
                 name: name,
                 email: email,
                 phone: phone,
-                status: status
             };
 
             console.log("updatedDepartment", updatedDepartment);
@@ -417,7 +517,7 @@
         });
 
         // Toggle Department status
-        async function toggleDepartment(departmentId) {
+     /*   async function toggleDepartment(departmentId) {
             console.log('function call......' + departmentId);
             try {
                 const department = departmentList.find(department => department.id === departmentId);
@@ -434,10 +534,18 @@
             } catch (error) {
                 console.error('Error toggling department:', error);
             }
-        }
+        }*/
 
 
 </script>
+    <script>
+        function closeModal() {
+            // Assuming your modal has an id="myModal"
+            var myModal = document.getElementById('editDepModal');
+            myModal.style.display="none";
+
+        }
+    </script>
 
     <!--    <script th:src="@{/assets/js/pages/jquery-3.7.0.js}"></script>-->
 <!--    <script th:src="@{/assets/js/pages/jquery.dataTables.min.js}"></script>-->

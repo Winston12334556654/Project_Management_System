@@ -4,10 +4,7 @@ import ai.group2.project_management_system.model.Enum.Priority;
 import ai.group2.project_management_system.model.Enum.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import java.io.Serializable;
@@ -27,6 +24,7 @@ public class AssignIssue implements Serializable {
     @Column(name = "name")
     private String name;
     private boolean isActive;
+    private boolean isOverDue;
 
     @ManyToOne
     @JsonIgnore
@@ -55,4 +53,92 @@ public class AssignIssue implements Serializable {
 
     @Column(name = "actual_due_date")
     private LocalDate actualDueDate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Issue getIssue() {
+        return issue;
+    }
+
+    public void setIssue(Issue issue) {
+        this.issue = issue;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    public LocalDate getPlanStartDate() {
+        return planStartDate;
+    }
+
+    public void setPlanStartDate(LocalDate planStartDate) {
+        this.planStartDate = planStartDate;
+    }
+
+    public LocalDate getPlanDueDate() {
+        return planDueDate;
+    }
+
+    public void setPlanDueDate(LocalDate planDueDate) {
+        this.planDueDate = planDueDate;
+    }
+
+    public LocalDate getActualStartDate() {
+        return actualStartDate;
+    }
+
+    public void setActualStartDate(LocalDate actualStartDate) {
+        this.actualStartDate = actualStartDate;
+    }
+
+    public LocalDate getActualDueDate() {
+        return actualDueDate;
+    }
+
+    public void setActualDueDate(LocalDate actualDueDate) {
+        this.actualDueDate = actualDueDate;
+    }
 }

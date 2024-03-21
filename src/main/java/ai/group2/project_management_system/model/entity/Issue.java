@@ -31,6 +31,7 @@ public class Issue implements Serializable {
     private String title;
 
     private String issueType;
+    private String percentage;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -49,6 +50,7 @@ public class Issue implements Serializable {
     private String creator;
     private boolean isActive;
     private boolean isAssigned;
+    private boolean isOverDue;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -80,6 +82,7 @@ public class Issue implements Serializable {
 
     @OneToMany(mappedBy = "issue")
     private Set<AssignIssue> assignIssues;
+
 
     public Long getId() {
         return id;

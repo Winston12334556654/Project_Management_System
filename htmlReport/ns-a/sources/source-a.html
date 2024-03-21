@@ -1,0 +1,270 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProjectServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.service.Impl</a>
+</div>
+
+<h1>Coverage Summary for Class: ProjectServiceImpl (ai.group2.project_management_system.service.Impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProjectServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4.8%
+  </span>
+  <span class="absValue">
+    (1/21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    1.8%
+  </span>
+  <span class="absValue">
+    (1/56)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.service.Impl;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.dto.ProjectDTO;
+&nbsp;import ai.group2.project_management_system.model.Enum.Status;
+&nbsp;import ai.group2.project_management_system.model.entity.Project;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import ai.group2.project_management_system.repository.ProjectRepository;
+&nbsp;import ai.group2.project_management_system.repository.*;
+&nbsp;import ai.group2.project_management_system.service.ProjectService;
+&nbsp;import jakarta.persistence.EntityManager;
+&nbsp;import jakarta.persistence.TypedQuery;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public  class ProjectServiceImpl implements ProjectService {
+&nbsp;
+&nbsp;    private final UserRepository userRepository;
+&nbsp;    private final ProjectRepository projectRepository;
+&nbsp;    private final EntityManager entityManager;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Project save(Project project) {
+<b class="nc">&nbsp;        return projectRepository.save(project);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Project&gt; getAllProjects() {
+<b class="nc">&nbsp;        return projectRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Project&gt; getAllProjectsWithUsers() {
+<b class="nc">&nbsp;        List&lt;Project&gt; projects = projectRepository.findAll();</b>
+&nbsp;        // Example: Fetch users for each project
+<b class="nc">&nbsp;        for (Project project : projects) {</b>
+<b class="nc">&nbsp;            Set&lt;User&gt; users = project.getUsers();</b>
+<b class="nc">&nbsp;            users.forEach(user -&gt; System.out.println(&quot;User: &quot; + user.getName() + &quot; &quot; + user.getId()));</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return projects;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Project getProjectBy_Id(Long projectId) {
+<b class="nc">&nbsp;       return projectRepository.findProjectById(projectId);</b>
+&nbsp;   }
+&nbsp;
+&nbsp;       @Override
+&nbsp;    public ProjectDTO getProjectById(Long id) {
+<b class="nc">&nbsp;        return new ProjectDTO(projectRepository.getReferenceById(id));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Long&gt; getUserIdsByProjectId(Long projectId) {
+<b class="nc">&nbsp;        System.out.println(&quot;Welcome Service&quot;+ projectId);</b>
+<b class="nc">&nbsp;        String jpql = &quot;SELECT u.id FROM Project p JOIN p.users u WHERE p.id = :projectId&quot;;</b>
+&nbsp;
+<b class="nc">&nbsp;        return entityManager.createQuery(jpql, Long.class)</b>
+<b class="nc">&nbsp;                .setParameter(&quot;projectId&quot;, projectId)</b>
+<b class="nc">&nbsp;                .getResultList();</b>
+&nbsp;    }
+&nbsp;    @Override
+&nbsp;    public Project findById(Long projectId) {
+<b class="nc">&nbsp;        return projectRepository.findProjectById(projectId) ;</b>
+&nbsp;    }
+&nbsp;    @Override
+&nbsp;    public int getProjectCount() {
+<b class="nc">&nbsp;        return (int) projectRepository.count();</b>
+&nbsp;    }
+&nbsp;    @Override
+&nbsp;    public int getActiveProjectCount() {
+<b class="nc">&nbsp;        List&lt;Project&gt; allProjects = projectRepository.findAll();</b>
+<b class="nc">&nbsp;        int activeProjects = 0;</b>
+<b class="nc">&nbsp;        for (Project project : allProjects){</b>
+<b class="nc">&nbsp;            if(project.isActive()){</b>
+<b class="nc">&nbsp;                activeProjects++;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return activeProjects;</b>
+&nbsp;    }
+&nbsp;    @Override
+&nbsp;    public int getInactiveProjectCount() {
+<b class="nc">&nbsp;        List&lt;Project&gt; allProjects = projectRepository.findAll();</b>
+<b class="nc">&nbsp;        int inActiveProjects = 0;</b>
+<b class="nc">&nbsp;        for (Project project : allProjects){</b>
+<b class="nc">&nbsp;            if(!project.isActive()){</b>
+<b class="nc">&nbsp;                inActiveProjects++;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return inActiveProjects;</b>
+&nbsp;    }
+&nbsp;    @Override
+&nbsp;    public List&lt;Project&gt; getActiveProjects() {
+<b class="nc">&nbsp;        List&lt;Project&gt; allProjects = projectRepository.findAll();</b>
+<b class="nc">&nbsp;        List&lt;Project&gt; activeProjects = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (Project project : allProjects) {</b>
+<b class="nc">&nbsp;            if (project.isActive()) {</b>
+<b class="nc">&nbsp;                activeProjects.add(project);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return activeProjects;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Project&gt; getProjectsByDepartmentId(Long departmentId) {
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Map&lt;String, Integer&gt; getCountsByStatus() {
+<b class="nc">&nbsp;        Map&lt;String, Integer&gt; countsByStatus = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        countsByStatus.put(&quot;todo&quot;, projectRepository.countByStatus(Status.TODO));</b>
+<b class="nc">&nbsp;        countsByStatus.put(&quot;inProgress&quot;, projectRepository.countByStatus(Status.INPROGRESS));</b>
+<b class="nc">&nbsp;        countsByStatus.put(&quot;pending&quot;, projectRepository.countByStatus(Status.PENDING));</b>
+&nbsp;       /* countsByStatus.put(&quot;overdue&quot;, projectRepository.countByStatus(Status.OVERDUE));*/
+<b class="nc">&nbsp;        countsByStatus.put(&quot;completed&quot;, projectRepository.countByStatus(Status.COMPLETED));</b>
+<b class="nc">&nbsp;        return countsByStatus;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Project&gt; getProjectsByCreator(String creatorName) {
+<b class="nc">&nbsp;        String jpql = &quot;SELECT p FROM Project p WHERE p.creator = :creatorName&quot;;</b>
+<b class="nc">&nbsp;        TypedQuery&lt;Project&gt; query = entityManager.createQuery(jpql, Project.class);</b>
+<b class="nc">&nbsp;        query.setParameter(&quot;creatorName&quot;, creatorName);</b>
+<b class="nc">&nbsp;        return query.getResultList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Long&gt; getAllProjectIds() {
+<b class="nc">&nbsp;        return projectRepository.findAllProjectIds();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getProjectNameById(Long projectId){
+<b class="nc">&nbsp;        return projectRepository.findProjectNameById(projectId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getProjectCreatorByPID(Long projectId){
+<b class="nc">&nbsp;        return projectRepository.findProjectCreatorById(projectId);</b>
+&nbsp;    }
+&nbsp;    @Override
+&nbsp;    public List&lt;Project&gt; getProjectsByUserId(Long userId) {
+<b class="nc">&nbsp;        return projectRepository.findProjectsByUserId(userId);</b>
+&nbsp;    }
+&nbsp;    @Override
+&nbsp;    public Project getProjectByTitle(String title) {
+<b class="nc">&nbsp;        return projectRepository.findProjectByTitle(title);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Project&gt; getProjectsByUserName(String name){
+<b class="nc">&nbsp;        return projectRepository.findProjectsByUserName(name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

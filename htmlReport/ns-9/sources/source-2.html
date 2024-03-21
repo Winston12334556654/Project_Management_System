@@ -1,0 +1,102 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProjectService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.service</a>
+</div>
+
+<h1>Coverage Summary for Class: ProjectService (ai.group2.project_management_system.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ProjectService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.service;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.dto.ProjectDTO;
+&nbsp;import ai.group2.project_management_system.model.entity.Project;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;public interface ProjectService {
+&nbsp;    Project save(Project project);
+&nbsp;    List&lt;Project&gt; getAllProjectsWithUsers();
+&nbsp;    Project getProjectBy_Id(Long projectId);
+&nbsp;    List&lt;Project&gt; getAllProjects();
+&nbsp;    ProjectDTO getProjectById(Long id);
+&nbsp;    List&lt;Long&gt; getUserIdsByProjectId(Long projectId);
+&nbsp;    Project findById(Long projectId);
+&nbsp;    int getProjectCount();
+&nbsp;    int getActiveProjectCount();
+&nbsp;    int getInactiveProjectCount();
+&nbsp;    List&lt;Project&gt; getActiveProjects();
+&nbsp;    List&lt;Project&gt; getProjectsByDepartmentId(Long departmentId);
+&nbsp;    List&lt;Long&gt; getAllProjectIds();
+&nbsp;    Map&lt;String, Integer&gt; getCountsByStatus();
+&nbsp;
+&nbsp;    // New method to get project name by ID
+&nbsp;    String getProjectNameById(Long projectId);
+&nbsp;    String getProjectCreatorByPID(Long projectId);
+&nbsp;    List&lt;Project&gt; getProjectsByCreator(String creatorName);
+&nbsp;
+&nbsp;    List&lt;Project&gt; getProjectsByUserId(Long userId);
+&nbsp;    Project getProjectByTitle(String title);
+&nbsp;    List&lt;Project&gt; getProjectsByUserName(String name);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

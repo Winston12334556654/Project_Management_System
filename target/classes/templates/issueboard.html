@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+      data-sidebar-image="none" data-preloader="disable" xmlns:th="http://www.thymeleaf.org">
 
 
 <!-- Mirrored from themesbrand.com/velzon/html/material/apps-tasks-kanban.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:20 GMT -->
 <head th:replace="~{layout :: head}">
-    <link rel="stylesheet" href="assets/libs/dragula/dragula.min.css" />
+    <link rel="stylesheet" href="assets/libs/dragula/dragula.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
 
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">-->
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">-->
 </head>
 <style>
-   
 
     .dz-message {
         display: flex;
@@ -21,26 +21,27 @@
         text-align: center;
     }
 
-     .tasks-wrapper {
-  overflow: auto; 
- 
-}  
-.tasks-wrapper::-webkit-scrollbar {
-  width: 7px;
-}
+    .tasks-wrapper {
+        overflow: auto;
 
-.tasks-wrapper::-webkit-scrollbar-thumb {
-  background-color: #C7C8CC;
-  border-radius: 25px;
-}
+    }
 
-.tasks-wrapper::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-}
+    .tasks-wrapper::-webkit-scrollbar {
+        width: 7px;
+    }
 
-.simplebar-content {
-  padding: 0px 16px;
-}  
+    .tasks-wrapper::-webkit-scrollbar-thumb {
+        background-color: #C7C8CC;
+        border-radius: 25px;
+    }
+
+    .tasks-wrapper::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+    }
+
+    .simplebar-content {
+        padding: 0px 16px;
+    }
 
 </style>
 <body>
@@ -56,1186 +57,1208 @@
         <div th:replace="~{navbar :: navbar}"></div>
     </div>
 </div>
-        <!-- ============================================================== -->
-        <div class="main-content">
+<!-- ============================================================== -->
+<div class="main-content">
 
-            <div class="page-content">
-                <div class="container-fluid">
-                    <div class="card">
-                        <div class="card-body">
-                             <div class="row g-2">
-                                <div class="col-lg-auto">
-                                    <div class="hstack gap-2">
-                                        <button class="btn btn-primary" id="create-issue"><i class="ri-add-line align-bottom me-1" ></i> Create Issue</button>
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-lg-auto">
+                            <div class="hstack gap-2">
+                                <button class="btn btn-primary" id="create-issue"><i
+                                        class="ri-add-line align-bottom me-1"></i> Create Issue
+                                </button>
+                            </div>
+                        </div>
+                        <!--end row-->
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+
+            <div class="tasks-board " id="kanbanboard">
+
+                <!--end tasks-list-->
+                <div class="tasks-list">
+                    <div class="status">
+                        <div class="d-flex mb-3">
+                            <div class="flex-grow-1">
+                                <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist mb-3">TODO <small
+                                        class="badge bg-secondary align-bottom ms-1 totaltask-badge" th:text="${todoCount}"></small></h6>
+                            </div>
+
+                        </div>
+                        <div data-simplebar="init" class="tasks-wrapper px-3 mx-n3">
+                            <th:block th:each="project : ${projects}">
+                                <div th:if="${project.status.toString() == 'TODO'}" class="card tasks-box todo "
+                                     draggable="true">
+                                    <div class="card tasks-box todo" draggable="true"
+                                         th:data-id="${project.getStatus()}">
+                                        <div class="card-body">
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="currentIssueId" th:text="${project.getId()}"
+                                                        th:attr="style='display: none;'"></h5>
+                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a
+                                                            class="text-body d-block" th:text="${project.title}">
+                                                    </a></h6>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a type="button" class="btn btn-sm btn-light"
+                                                       th:href="@{'/project/project-detail/'+${project.getId()}}"><i
+                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                        View</a>
+
+                                                </div>
+                                            </div>
+                                            <p class="text-muted" th:text="${project.getDescription()}"></p>
+                                            <div class="mb-3">
+                                                <div class="d-flex mb-1">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="text-muted mb-0"><span class="text-info"
+                                                                                          th:text="${project.getPercentage()+ '%'}"></span>
+                                                            of 100%</h6>
+                                                    </div>
+
+                                                </div>
+                                                <div class="progress rounded-3 progress-sm bg-danger-subtle">
+                                                    <div class="progress-bar bg-warning" role="progressbar"
+                                                         th:style="'width: ' + ${project.getPercentage()} + '%'"
+                                                         aria-valuenow="${project.getPercentage()}" aria-valuemin="0"
+                                                         aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1">
+                                                    <th:block th:each="issue : ${issues}"
+                                                              th:if="${issue.getProject().getStatus().toString()=='TODO' and issue.getProject().getTitle() == project.title}">
+                                                        <span class="badge bg-primary-subtle text-primary"
+                                                              th:text="${issue.title}"></span>
+                                                    </th:block>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-group">
+                                                        <th:block th:each="issue : ${issues}"
+                                                                  th:if="${issue.getProject().getStatus().toString() == 'TODO' and issue.getProject().getTitle() == project.title}">
+                                                            <a href="#" class="avatar-group-item shadow teamLeaderName"
+                                                               data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                               data-bs-placement="top"
+                                                               th:attr="data-team-leader-id=${issue.getTeamLeaderId()}"
+                                                               title="">
+                                                                <img src="" alt="" class="rounded-circle avatar-xxs">
+                                                            </a>
+                                                        </th:block>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                        <div class="card-footer border-top-dashed">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+
+                                                    <span class="text-muted" th:text="${project.planStartDate}"><i
+                                                            class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <span th:if="${project.isOverDue()}"
+                                                          class="badge bg-primary-subtle text-danger"
+                                                          th:text="OverDue"></span>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
-                                
-                                
-                                <div class="col-xxl-3 col-sm-4">
-                                    <div class="input-light">
-                                        <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                            <option selected disabled>Search Projects</option>
-                                            
-                                            <option value="New">A</option>
-                                            <option value="Pending">B</option>
-                                            <option value="Inprogress">C</option>
-                                            <option value="Completed">D</option>
+                            </th:block>
+
+                        </div>
+                    </div>
+
+                    <div class="my-3">
+                        <button class="btn btn-soft-info w-100" onclick="projectManagerRedirectToIssueListToDo()">See
+                            More
+                        </button>
+                    </div>
+                </div>
+                <!--end tasks-list-->
+
+                <div class="tasks-list">
+                    <div class="status">
+                        <div class="d-flex mb-3">
+                            <div class="flex-grow-1">
+                                <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist mb-3">INPROGRESS <small
+                                        class="badge bg-warning align-bottom ms-1 totaltask-badge" th:text="${inprogressCount}"></small></h6>
+                            </div>
+
+                        </div>
+                        <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                            <th:block th:each="project : ${projects}">
+                                <div th:if="${project.status.toString() == 'INPROGRESS'}" class="card tasks-box todo"
+                                     draggable="true">
+                                    <div class="card tasks-box todo " draggable="true"
+                                         th:data-id="${project.getStatus()}">
+                                        <div class="card-body">
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="currentIssueId" th:text="${project.getId()}"
+                                                        th:attr="style='display: none;'"></h5>
+                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a
+                                                            class="text-body d-block" th:text="${project.title}">
+
+                                                    </a></h6>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a type="button" class="btn btn-sm btn-light"
+                                                       th:href="@{'/project/project-detail/'+${project.getId()}}"><i
+                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                        View</a>
+
+                                                </div>
+                                            </div>
+                                            <p class="text-muted" th:text="${project.getDescription()}"></p>
+                                            <div class="mb-3">
+                                                <div class="d-flex mb-1">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="text-muted mb-0"><span class="text-info"
+                                                                                          th:text="${project.getPercentage()+ '%'}"></span>
+                                                            of 100%</h6>
+                                                    </div>
+
+                                                </div>
+                                                <div class="progress rounded-3 progress-sm bg-danger-subtle">
+                                                    <div class="progress-bar bg-warning" role="progressbar"
+                                                         th:style="'width: ' + ${project.getPercentage()} + '%'"
+                                                         aria-valuenow="${project.getPercentage()}" aria-valuemin="0"
+                                                         aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1">
+                                                    <th:block th:each="issue : ${issues}"
+                                                              th:if="${issue.getProject().getStatus().toString() == 'INPROGRESS' and issue.getProject().getTitle() == project.title}">
+                                                        <span class="badge bg-primary-subtle text-primary"
+                                                              th:text="${issue.title}"></span>
+                                                    </th:block>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-group">
+                                                        <th:block th:each="issue : ${issues}"
+                                                                  th:if="${issue.getProject().getStatus().toString() == 'INPROGRESS' and issue.getProject().getTitle() == project.title}">
+                                                            <a href="#" class="avatar-group-item shadow teamLeaderName"
+                                                               data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                               data-bs-placement="top" title=""
+                                                               th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
+                                                                <img src="" alt="" class="rounded-circle avatar-xxs">
+                                                            </a>
+                                                        </th:block>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                        <div class="card-footer border-top-dashed">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${project.planStartDate}"><i
+                                                            class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <span th:if="${project.isOverDue()}"
+                                                          class="badge bg-primary-subtle text-danger"
+                                                          th:text="OverDue"></span>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="my-3">
+                        <button class="btn btn-soft-info w-100"
+                                onclick="projectManagerRedirectToIssueListToDoInProgress()">See More
+                        </button>
+                    </div>
+
+                </div>
+                <!--end tasks-list-->
+
+                <div class="tasks-list">
+                    <div class="status">
+                        <div class="d-flex mb-3">
+                            <div class="flex-grow-1">
+                                <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist mb-3">PENDING <small
+                                        class="badge bg-warning align-bottom ms-1 totaltask-badge " th:text="${pendingCount}"></small></h6>
+                            </div>
+
+                        </div>
+                        <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                            <th:block th:each="project : ${projects}">
+                                <div th:if="${project.status.toString() == 'PENDING'}" class="card tasks-box todo"
+                                     draggable="true">
+                                    <div class="card tasks-box todo" draggable="true"
+                                         th:data-id="${project.getStatus()}">
+                                        <div class="card-body">
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="currentIssueId" th:text="${project.getId()}"
+                                                        th:attr="style='display: none;'"></h5>
+                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a
+                                                            class="text-body d-block" th:text="${project.title}">
+                                                    </a></h6>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a type="button" class="btn btn-sm btn-light"
+                                                       th:href="@{'/project/project-detail/'+${project.getId()}}"><i
+                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                        View</a>
+
+                                                </div>
+                                            </div>
+                                            <p class="text-muted" th:text="${project.getDescription()}"></p>
+                                            <div class="mb-3">
+                                                <div class="d-flex mb-1">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="text-muted mb-0"><span class="text-info"
+                                                                                          th:text="${project.getPercentage()+ '%'}"></span>
+                                                            of 100%</h6>
+                                                    </div>
+
+                                                </div>
+                                                <div class="progress rounded-3 progress-sm bg-danger-subtle">
+                                                    <div class="progress-bar bg-warning" role="progressbar"
+                                                         th:style="'width: ' + ${project.getPercentage()} + '%'"
+                                                         aria-valuenow="${project.getPercentage()}" aria-valuemin="0"
+                                                         aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1">
+                                                    <th:block th:each="issue : ${issues}"
+                                                              th:if="${issue.getProject().getStatus().toString() == 'PENDING' and issue.getProject().getTitle() == project.title}">
+                                                        <span class="badge bg-primary-subtle text-primary"
+                                                              th:text="${issue.title}"></span>
+                                                    </th:block>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-group">
+                                                        <th:block th:each="issue : ${issues}"
+                                                                  th:if="${issue.getProject().getStatus().toString() == 'PENDING' and issue.getProject().getTitle() == project.title}">
+                                                            <a href="#" class="avatar-group-item shadow teamLeaderName"
+                                                               data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                               data-bs-placement="top" title=""
+                                                               th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
+                                                                <img src="" alt="" class="rounded-circle avatar-xxs">
+                                                            </a>
+                                                        </th:block>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                        <div class="card-footer border-top-dashed">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${project.planStartDate}"><i
+                                                            class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <span th:if="${project.isOverDue()}"
+                                                          class="badge bg-primary-subtle text-danger"
+                                                          th:text="OverDue"></span>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="my-3">
+                        <button class="btn btn-soft-info w-100" onclick="projectManagerRedirectToIssueListPending()">See
+                            More
+                        </button>
+                    </div>
+                </div>
+                <!--end tasks-list-->
+
+                <div class="tasks-list">
+                    <div class="status">
+                        <div class="d-flex mb-3">
+                            <div class="flex-grow-1">
+                                <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist mb-3">COMPLETED <small
+                                        class="badge bg-success align-bottom ms-1 totaltask-badge" th:text="${completedCount}"></small></h6>
+                            </div>
+
+                        </div>
+                        <div data-simplebar class="tasks-wrapper px-3 mx-n3">
+                            <th:block th:each="project : ${projects}">
+                                <div th:if="${project.status.toString() == 'COMPLETED'}" class="card tasks-box todo"
+                                     draggable="true">
+                                    <div class="card tasks-box todo" draggable="true"
+                                         th:data-id="${project.getStatus()}">
+                                        <div class="card-body">
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="currentIssueId" th:text="${project.getId()}"
+                                                        th:attr="style='display: none;'"></h5>
+                                                    <h6 class="fs-15 mb-0 text-truncate task-title"><a
+                                                            class="text-body d-block" th:text="${project.title}">
+                                                    </a></h6>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <a type="button" class="btn btn-sm btn-light"
+                                                       th:href="@{'/project/project-detail/'+${project.getId()}}"><i
+                                                            class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                        View</a>
+
+                                                </div>
+                                            </div>
+                                            <p class="text-muted" th:text="${project.getDescription()}"></p>
+                                            <div class="mb-3">
+                                                <div class="d-flex mb-1">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="text-muted mb-0"><span class="text-info"
+                                                                                          th:text="${project.getPercentage()+ '%'}"></span>
+                                                            of 100%</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="progress rounded-3 progress-sm bg-danger-subtle">
+                                                    <div class="progress-bar bg-warning" role="progressbar"
+                                                         th:style="'width: ' + ${project.getPercentage()} + '%'"
+                                                         aria-valuenow="${project.getPercentage()}" aria-valuemin="0"
+                                                         aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1">
+                                                    <th:block th:each="issue : ${issues}"
+                                                              th:if="${issue.getProject().getStatus().toString() == 'COMPLETED' and issue.getProject().getTitle() == project.title}">
+                                                        <span class="badge bg-primary-subtle text-primary"
+                                                              th:text="${issue.title}"></span>
+                                                    </th:block>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-group">
+                                                        <th:block th:each="issue : ${issues}"
+                                                                  th:if="${issue.getProject().getStatus().toString() == 'COMPLETED' and issue.getProject().getTitle() == project.title}">
+                                                            <a href="#" class="avatar-group-item shadow teamLeaderName"
+                                                               data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                               data-bs-placement="top" title=""
+                                                               th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
+                                                                <img src="" alt="" class="rounded-circle avatar-xxs">
+                                                            </a>
+                                                        </th:block>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end card-body-->
+                                        <div class="card-footer border-top-dashed">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <span class="text-muted" th:text="${project.planStartDate}"><i
+                                                            class="ri-time-line align-bottom"></i>
+                                                        </span>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <span th:if="${project.isOverDue()}"
+                                                          class="badge bg-primary-subtle text-danger"
+                                                          th:text="OverDue"></span>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="my-3">
+                        <button class="btn btn-soft-info w-100" onclick="projectManagerRedirectToIssueListCompleted()">
+                            See More
+                        </button>
+                    </div>
+                </div>
+                <!--end tasks-list-->
+
+            </div>
+            <!--end task-board-->
+
+            <!--create issue modal form-->
+            <div class="modal fade" id="createIssueModal" tabindex="-1" aria-labelledby="createIssueModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-0">
+                        <div class="modal-header p-3 bg-info-subtle">
+                            <h5 class="modal-title" id="createIssueModalLabel">Create Issue</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form name="issue" id="createIssueForm" enctype="multipart/form-data" class="needs-validation" novalidate>
+                                <h3 th:text="${user.getName()}" id="creator" style="display: none;"></h3>
+                                <div class="row g-3">
+                                    <!--Project Name col-->
+                                    <div class="col-lg-12">
+                                        <label for="sub-tasks" class="form-label">Project Name</label>
+                                        <div class="input-light">
+                                            <select class="form-control" data-choices data-choices-search-false
+                                                    name="choices-single-default" id="parent-project-input" required>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+
+                                    <!--Issue title col-->
+                                    <div class="col-lg-12">
+                                        <label for="sub-tasks" class="form-label">Issue Title</label>
+                                        <input type="text" class="form-control" id="issue-title-input"
+                                               placeholder="Issue title" required>
+                                    </div>
+                                    <!--end col-->
+
+                                    <!--Issue type col-->
+                                    <div class="col-lg-12">
+                                        <label for="sub-tasks" class="form-label">Issue Type</label>
+                                        <div class="input-light">
+                                            <select class="form-control" data-choices data-choices-search-false
+                                                    name="choices-single-default" id="issue-type-input" required>
+                                                <option selected disabled>Issue Type</option>
+                                                <option value="Task">Task</option>
+                                                <option value="Request">Request</option>
+                                                <option value="QA">QA</option>
+                                                <option value="Coding Bug">Coding Bug</option>
+                                                <option value="Change Request">Change Request</option>
+                                                <option value="Problem">Problem</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+
+                                    <!--Issue category col-->
+                                    <div class="col-lg-12">
+                                        <label for="sub-tasks" class="form-label">Issue Category</label>
+                                        <div class="input-light">
+                                            <select class="form-control" data-choices data-choices-search-false
+                                                    name="choices-single-default" id="issue-category-input" required></select>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+
+                                    <!--Issue subject col-->
+                                    <div class="col-lg-12">
+                                        <label for="task-description" class="form-label">Subject</label>
+                                        <textarea class="form-control" id="issue-subject-input" rows="3"
+                                                  placeholder="Issue Subject" required></textarea>
+                                    </div>
+                                    <!--end col-->
+
+                                    <!--Issue description col-->
+                                    <div class="mb-3">
+                                        <label class="form-label">Issue Description</label>
+                                        <div id="ckeditor-classic-1">
+
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+
+                                    <!--Issue Teamleader-->
+                                    <div class="col-lg-12">
+                                        <label th:for="tasks-progress" class="form-label">Assign Team Leader</label>
+                                        <div data-simplebar style="height: 95px;">
+                                            <ul class="list-unstyled vstack gap-2 mb-0" th:id="teamleader-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!--Issue Plan Dates col-->
+                                    <div class="col-lg-6">
+                                        <label th:for="issue-plan-start-date" class="form-label">Plan Start Date</label>
+                                        <input type="date" th:id="issue-plan-start-date" class="form-control"
+                                               data-provider="flatpickr" placeholder="Plan Start date" required/>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-6">
+                                        <label th:for="issue-plan-due-date" class="form-label">Plan Due Date</label>
+                                        <input type="date" th:id="issue-plan-due-date" class="form-control"
+                                               data-provider="flatpickr" placeholder="Plan Due date" required/>
+                                    </div>
+                                    <!--end col-->
+
+                                    <!--issue-priority col-->
+                                    <div class="col-lg-12">
+                                        <label for="issue-priority-input" class="form-label">Priority</label>
+                                        <select class="form-control" id="issue-priority-input">
+                                            <option disabled>Priority</option>
+                                            <option value="HIGH">High</option>
+                                            <option value="MEDIUM">Medium</option>
+                                            <option value="LOW">Low</option>
                                         </select>
                                     </div>
-                                </div>
+                                    <!--end col-->
 
-                                <div class="d-flex  col-xxl-4 col-sm-4 mx-auto">
-                                    <div class="flex-shrink-0">
-                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xs rounded-circle shadow">
-                                    </div>
-                                    <div class="flex-grow-1 ms-2">
-                                        <h6 class="mb-1"><a href="issue_member_details.html" class="text-body">Tonya Noble</a></h6>
-                                        <p class="text-muted mb-0">Full Stack Developer</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-auto ms-sm-auto">
-                                    <div class="avatar-group" id="newMembar">
-                                        <a href="javascript: void(0);" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Nancy">
-                                            <img src="assets/images/users/avatar-5.jpg" alt="" class="rounded-circle avatar-xs">
-                                        </a>
-                                        <a href="javascript: void(0);" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
-                                            <img src="assets/images/users/avatar-3.jpg" alt="" class="rounded-circle avatar-xs">
-                                        </a>
-                                        <a href="javascript: void(0);" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Tonya">
-                                            <img src="assets/images/users/avatar-10.jpg" alt="" class="rounded-circle avatar-xs">
-                                        </a>
-                                        <a href="javascript: void(0);" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Thomas">
-                                            <img src="assets/images/users/avatar-8.jpg" alt="" class="rounded-circle avatar-xs">
-                                        </a>
-                                        <a href="javascript: void(0);" class="avatar-group-item shadow" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Herbert">
-                                            <img src="assets/images/users/avatar-2.jpg" alt="" class="rounded-circle avatar-xs">
-                                        </a>
-                                       
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            <!--End col-->
-                            
-                            <!--end row-->
-                        </div>
-                        <!--end card-body-->
-                    </div>
-                    <!--end card-->
-
-                    <div class="tasks-board " id="kanbanboard" >
-
-                        <!--end tasks-list-->
-                        <div class="tasks-list">
-                            <div class="status">
-                                <div class="d-flex mb-3">
-                                    <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist" >TODO <small class="badge bg-secondary align-bottom ms-1 totaltask-badge">2</small></h6>
-                                    </div>
-
-                                </div>
-                                <div data-simplebar="init" class="tasks-wrapper px-3 mx-n3">
-                                    <th:block th:each="project : ${projects}">
-                                        <div th:if="${project.status.toString() == 'TODO'}" class="card tasks-box todo " draggable="true">
-                                            <div class="card tasks-box todo" draggable="true" th:data-id="${project.getStatus()}">
-                                                <div class="card-body">
-                                                    <div class="d-flex mb-2">
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
-                                                            <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${project.title}">
-                                                            </a></h6>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
-
-                                                        </div>
-                                                    </div>
-                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
-                                                    <div class="mb-3">
-                                                        <div class="d-flex mb-1">
-                                                            <div class="flex-grow-1">
-                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
-                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1">
-                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString()=='TODO' and issue.getProject().getTitle() == project.title}">
-                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
-                                                            </th:block>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="avatar-group">
-                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'TODO' and issue.getProject().getTitle() == project.title}">
-                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}" title="" >
-                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
-                                                                    </a>
-                                                                </th:block>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--end card-body-->
-                                                <div class="card-footer border-top-dashed">
-                                                    <div class="d-flex">
-                                                        <div class="flex-grow-1">
-                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
-                                                        </span>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
+                                    <!--Attached files input col-->
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title mb-0">Attached files</h5>
                                             </div>
+                                            <div class="card-body">
+                                                <div>
+                                                    <p class="text-muted">Add Attached files here.</p>
 
-                                        </div>
-                                    </th:block>
+                                                    <div class="dropzone">
 
-                                </div>
-                            </div>
+                                                        <div class="dz-message needsclick">
 
-                            <div class="my-3">
-                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
-                            </div>
-                        </div>
-                        <!--end tasks-list-->
-
-                        <div class="tasks-list">
-                            <div class="status">
-                                <div class="d-flex mb-3">
-                                    <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">INPROGRESS <small class="badge bg-warning align-bottom ms-1 totaltask-badge">2</small></h6>
-                                    </div>
-
-                                </div>
-                                <div data-simplebar class="tasks-wrapper px-3 mx-n3">
-                                    <th:block th:each="project : ${projects}">
-                                        <div th:if="${project.status.toString() == 'INPROGRESS'}" class="card tasks-box todo" draggable="true">
-                                            <div class="card tasks-box todo " draggable="true" th:data-id="${project.getStatus()}" >
-                                                <div class="card-body">
-                                                    <div class="d-flex mb-2">
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
-                                                            <h6 class="fs-15 mb-0 text-truncate task-title" ><a class="text-body d-block" th:text="${project.title}">
-
-                                                            </a></h6>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
+                                                            <input type="file" id="file-input1" name="files"
+                                                                   multiple="multiple" style="display: none;" required>
+                                                            <label for="file-input1">
+                                                                <div class="mb-3">
+                                                                    <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                                </div>
+                                                                <h5>Drop files here or click to upload.</h5></label>
 
                                                         </div>
                                                     </div>
-                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
-                                                    <div class="mb-3">
-                                                        <div class="d-flex mb-1">
-                                                            <div class="flex-grow-1">
-                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
-                                                            </div>
+                                                    <ul class="list-unstyled mb-0">
+                                                        <li class="mt-2" id="fileNames1">
 
-                                                        </div>
-                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
-                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1">
-                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'INPROGRESS' and issue.getProject().getTitle() == project.title}">
-                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
-                                                            </th:block>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="avatar-group">
-                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'INPROGRESS' and issue.getProject().getTitle() == project.title}">
-                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
-                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
-                                                                    </a>
-                                                                </th:block>
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--end card-body-->
-                                                <div class="card-footer border-top-dashed">
-                                                    <div class="d-flex">
-                                                        <div class="flex-grow-1">
-                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
-                                                        </span>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </th:block>
-                                </div>
-                            </div>
-                            <div class="my-3">
-                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
-                            </div>
-
-                        </div>
-                        <!--end tasks-list-->
-
-                        <div class="tasks-list">
-                            <div class="status">
-                                <div class="d-flex mb-3">
-                                    <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">PENDING <small class="badge bg-warning align-bottom ms-1 totaltask-badge">2</small></h6>
-                                    </div>
-
-                                </div>
-                                <div data-simplebar class="tasks-wrapper px-3 mx-n3">
-                                    <th:block th:each="project : ${projects}">
-                                        <div th:if="${project.status.toString() == 'PENDING'}" class="card tasks-box todo" draggable="true">
-                                            <div class="card tasks-box todo" draggable="true" th:data-id="${project.getStatus()}">
-                                                <div class="card-body">
-                                                    <div class="d-flex mb-2">
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
-                                                            <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${project.title}">
-                                                            </a></h6>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
-
-                                                        </div>
-                                                    </div>
-                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
-                                                    <div class="mb-3">
-                                                        <div class="d-flex mb-1">
-                                                            <div class="flex-grow-1">
-                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
-                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1">
-                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'PENDING' and issue.getProject().getTitle() == project.title}">
-                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
-                                                            </th:block>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="avatar-group">
-                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'PENDING' and issue.getProject().getTitle() == project.title}">
-                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
-                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
-                                                                    </a>
-                                                                </th:block>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--end card-body-->
-                                                <div class="card-footer border-top-dashed">
-                                                    <div class="d-flex">
-                                                        <div class="flex-grow-1">
-                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
-                                                        </span>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </th:block>
-                                </div>
-                            </div>
-
-                            <div class="my-3">
-                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
-                            </div>
-                        </div>
-                        <!--end tasks-list-->
-
-                        <div class="tasks-list">
-                            <div class="status">
-                                <div class="d-flex mb-3">
-                                    <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">COMPLETED <small class="badge bg-success align-bottom ms-1 totaltask-badge">1</small></h6>
-                                    </div>
-
-                                </div>
-                                <div data-simplebar class="tasks-wrapper px-3 mx-n3">
-                                    <th:block th:each="project : ${projects}">
-                                        <div th:if="${project.status.toString() == 'COMPLETED'}" class="card tasks-box todo" draggable="true">
-                                            <div class="card tasks-box todo" draggable="true" th:data-id="${project.getStatus()}">
-                                                <div class="card-body">
-                                                    <div class="d-flex mb-2">
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
-                                                            <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${project.title}">
-                                                            </a></h6>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
-
-                                                        </div>
-                                                    </div>
-                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
-                                                    <div class="mb-3">
-                                                        <div class="d-flex mb-1">
-                                                            <div class="flex-grow-1">
-                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
-                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1">
-                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'COMPLETED' and issue.getProject().getTitle() == project.title}">
-                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
-                                                            </th:block>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="avatar-group">
-                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'COMPLETED' and issue.getProject().getTitle() == project.title}">
-                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
-                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
-                                                                    </a>
-                                                                </th:block>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--end card-body-->
-                                                <div class="card-footer border-top-dashed">
-                                                    <div class="d-flex">
-                                                        <div class="flex-grow-1">
-                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
-                                                        </span>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </th:block>
-                                </div>
-                            </div>
-
-                            <div class="my-3">
-                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
-                            </div>
-                        </div>
-                        <!--end tasks-list-->
-                        <div class="tasks-list">
-                            <div class="status">
-                                <div class="d-flex mb-3">
-                                    <div class="flex-grow-1">
-                                        <h6 class="fs-14 text-uppercase fw-semibold mb-0 textlist">OVERDUE <small class="badge bg-success align-bottom ms-1 totaltask-badge">1</small></h6>
-                                    </div>
-
-                                </div>
-                                <div data-simplebar class="tasks-wrapper px-3 mx-n3">
-                                    <th:block th:each="project : ${projects}">
-                                        <div th:if="${project.status.toString() == 'OVERDUE'}" class="card tasks-box todo" draggable="true">
-                                            <div class="card tasks-box todo" draggable="true" th:data-id="${project.getStatus()}">
-                                                <div class="card-body">
-                                                    <div class="d-flex mb-2">
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="currentIssueId" th:text="${project.getId()}" th:attr="style='display: none;'"></h5>
-                                                            <h6 class="fs-15 mb-0 text-truncate task-title"><a class="text-body d-block" th:text="${project.title}">
-                                                            </a></h6>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <a type="button" class="btn btn-sm btn-light" th:href="@{'/issuedetails/'+${project.getId()}}"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a>
-
-                                                        </div>
-                                                    </div>
-                                                    <p class="text-muted" th:text="${project.getDescription()}"></p>
-                                                    <div class="mb-3">
-                                                        <div class="d-flex mb-1">
-                                                            <div class="flex-grow-1">
-                                                                <h6 class="text-muted mb-0"><span class="text-info">0%</span> of 100%</h6>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="progress rounded-3 progress-sm bg-danger-subtle">
-                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-grow-1">
-                                                            <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'OVERDUE' and issue.getProject().getTitle() == project.title}">
-                                                                <span class="badge bg-primary-subtle text-primary" th:text="${issue.title}"></span>
-                                                            </th:block>
-                                                        </div>
-                                                        <div class="flex-shrink-0">
-                                                            <div class="avatar-group">
-                                                                <th:block th:each="issue : ${issues}" th:if="${issue.getProject().getStatus().toString() == 'OVERDUE' and issue.getProject().getTitle() == project.title}">
-                                                                    <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
-                                                                        <img src="" alt="" class="rounded-circle avatar-xxs">
-                                                                    </a>
-                                                                </th:block>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--end card-body-->
-                                                <div class="card-footer border-top-dashed">
-                                                    <div class="d-flex">
-                                                        <div class="flex-grow-1">
-                                                    <span class="text-muted" th:text="${project.planStartDate}"><i class="ri-time-line align-bottom"></i>
-                                                        </span>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </th:block>
-                                </div>
-                            </div>
-
-                            <div class="my-3">
-                                <button class="btn btn-soft-info w-100" onclick='location.href="/issuelist"'>See More</button>
-                            </div>
-                        </div>
-                        <!--end tasks-list-->
-                        
-                       
-                    </div>
-                    <!--end task-board-->
-
-                    <!--create issue modal form-->
-                    <div class="modal fade" id="createIssueModal" tabindex="-1" aria-labelledby="createIssueModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content border-0">
-                                <div class="modal-header p-3 bg-info-subtle">
-                                    <h5 class="modal-title" id="createIssueModalLabel">Create New Issue</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form name="issue" id="createIssueForm" enctype="multipart/form-data">
-                                        <div class="row g-3">
-                                            <!--Project Name col-->
-                                            <div class="col-lg-12">
-                                                <label for="sub-tasks" class="form-label">Project Name</label>
-                                                <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="parent-project-input" >
-
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-
-                                            <!--Issue title col-->
-                                            <div class="col-lg-12">
-                                                <label for="sub-tasks" class="form-label">Issue Title</label>
-                                                <input type="text" class="form-control" id="issue-title-input" placeholder="Issue title">
-                                            </div>
-                                            <!--end col-->
-
-                                            <!--Issue type col-->
-                                            <div class="col-lg-12">
-                                                <label for="sub-tasks" class="form-label">Issue Type</label>
-                                                <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="issue-type-input" >
-                                                        <option selected disabled>Issue Type</option>
-                                                        <option value="Task">Task</option>
-                                                        <option value="Request">Request</option>
-                                                        <option value="QA">QA</option>
-                                                        <option value="Coding Bug">Coding Bug</option>
-                                                        <option value="Change Request">Change Request</option>
-                                                        <option value="Problem">Problem</option>
-                                                        <option value="Other">Other</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-
-                                            <!--Issue category col-->
-                                            <div class="col-lg-12">
-                                                <label for="sub-tasks" class="form-label">Issue Category</label>
-                                                <div class="input-light">
-                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="issue-category-input" ></select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-
-                                            <!--Issue subject col-->
-                                            <div class="col-lg-12">
-                                                <label for="task-description" class="form-label">Subject</label>
-                                                <textarea class="form-control" id="issue-subject-input" rows="3" placeholder="Issue Subject"></textarea>
-                                            </div>
-                                            <!--end col-->
-
-                                            <!--Issue description col-->
-                                            <div class="mb-3">
-                                                <label class="form-label">Issue Description</label>
-                                                <div id="ckeditor-classic-1">
-                                                    
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-
-                                            <!--Issue Teamleader-->
-                                            <div class="col-lg-12">
-                                                <label th:for="tasks-progress" class="form-label">Assign Team Leader</label>
-                                                <div data-simplebar style="height: 95px;">
-                                                    <ul class="list-unstyled vstack gap-2 mb-0" th:id="teamleader-list">
+                                                        </li>
                                                     </ul>
+                                                    <!-- end dropzon-preview  -->
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
 
-                                            <!--Issue Plan Dates col-->
-                                            <div class="col-lg-6">
-                                                <label th:for="issue-plan-start-date" class="form-label">Plan Start Date</label>
-                                                <input type="date" th:id="issue-plan-start-date" class="form-control" data-provider="flatpickr" placeholder="Plan Start date" required />
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-6">
-                                                <label th:for="issue-plan-due-date" class="form-label">Plan Due Date</label>
-                                                <input type="date" th:id="issue-plan-due-date" class="form-control" data-provider="flatpickr" placeholder="Plan Due date" required />
-                                            </div>
-                                            <!--end col-->
+                                    <div class="mt-4">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" class="btn btn-success" id="createIssueBtn">Add
+                                                Issue
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
 
-                                            <!--issue-priority col-->
-                                            <div class="col-lg-12">
-                                                <label for="issue-priority-input" class="form-label">Priority</label>
-                                                <select class="form-control" id="issue-priority-input">
-                                                    <option disabled>Priority</option>
-                                                    <option value="HIGH">High</option>
-                                                    <option value="MEDIUM">Medium</option>
-                                                    <option value="LOW">Low</option>
-                                                </select>
-                                            </div>
-                                            <!--end col-->
 
-                                            <!--Attached files input col-->
-                                            <div class="col-lg-12">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h5 class="card-title mb-0">Attached files</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div>
-                                                            <p class="text-muted">Add Attached files here.</p>
-                    
-                                                            <div class="dropzone" >
-                                                               
-                                                                <div class="dz-message needsclick">
-                                                                    
-                                                                    <input type="file" id="file-input1"   name="files"  multiple="multiple" style="display: none;">
-							                                         <label for="file-input1" >
-                                                                        <div class="mb-3">
-                                                                            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                </div>
+                                <!--end row-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end add create issue modal-->
+
+            <!--update issue modal form-->
+                               <!-- <div class="modal fade" id="updateissueModal" tabindex="-1" aria-labelledby="updateissueModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content border-0">
+                                            <div class="modal-header p-3 bg-info-subtle">
+                                                <h5 class="modal-title" id="updateissueModalLabel">Update Issue</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="#">
+                                                    <div class="row g-3">
+                                                        <div class="col-lg-12">
+                                                            <label for="sub-tasks" class="form-label">Project Name</label>
+                                                            <div class="input-light">
+                                                                <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
+                                                                    <option selected disabled>Project Name</option>
+
+                                                                    <option value="New">A</option>
+                                                                    <option value="Pending">B</option>
+                                                                    <option value="Inprogress">C</option>
+                                                                    <option value="Completed">D</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+                                                        <div class="col-lg-12">
+                                                            <label for="sub-tasks" class="form-label">Issue Title</label>
+                                                            <input type="text" class="form-control" id="sub-tasks" placeholder="Issue title">
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+                                                        <div class="col-lg-12">
+                                                            <label for="sub-tasks" class="form-label">Issue Type</label>
+                                                            <div class="input-light">
+                                                                <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
+                                                                    <option selected disabled>Issue Type</option>
+                                                                    <option value="all">All</option>
+                                                                    <option value="New">A</option>
+                                                                    <option value="Pending">B</option>
+                                                                    <option value="Inprogress">C</option>
+                                                                    <option value="Completed">D</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+                                                        <div class="col-lg-12">
+                                                            <label for="sub-tasks" class="form-label">Issue Category</label>
+                                                            <div class="input-light">
+                                                                <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
+                                                                    <option selected disabled>Category</option>
+                                                                    <option value="all">All</option>
+                                                                    <option value="New">A</option>
+                                                                    <option value="Pending">B</option>
+                                                                    <option value="Inprogress">C</option>
+                                                                    <option value="Completed">D</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+
+                                                        <div class="col-lg-12">
+                                                            <label for="task-description" class="form-label">Subject</label>
+                                                            <textarea class="form-control" id="task-description" rows="3" placeholder="Subject"></textarea>
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+
+
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Issue Description</label>
+                                                            <div id="ckeditor-classic-2">
+
+                                                            </div>
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+                                                        <div class="col-lg-12">
+                                                            <label for="tasks-progress" class="form-label">Add Team Leader</label>
+                                                            <div data-simplebar style="height: 95px;">
+                                                                <ul class="list-unstyled vstack gap-2 mb-0">
+                                                                    <li>
+                                                                        <div class="form-check d-flex align-items-center justify-content-between">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <input class="form-check-input me-3" type="radio" value="" id="anna-adame" name="userselection">
+                                                                                <label class="form-check-label d-flex align-items-center" for="anna-adame"  >
+                                                                                    <span class="flex-shrink-0">
+                                                                                        <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                                    </span>
+                                                                                    <span class="flex-grow-1 ms-2" id="userLabel">
+                                                                                        Anna Adame
+                                                                                    </span>
+                                                                            </div>                                                    <div class="d-flex justify-content-center">
+                                                                                &lt;!&ndash; <a href="pages-profile.html" class="btn btn-sm btn-light view-btn">View </a> &ndash;&gt;
+                                                                                <button class="btn btn-sm btn-light view-btn" data-bs-toggle="modal" data-bs-target="#viewModal">View</button>
+                                                                            </div>
+                                                                            <div>
+
+                                                                            </div>
+
+                                                                            </label>
+
                                                                         </div>
-                                                                        <h5>Drop files here or click to upload.</h5></label>
-                                                                    
+
+
+                                                                    </li>
+
+                                                                    <li>
+                                                                        <div class="form-check d-flex align-items-center">
+                                                                            <input class="form-check-input me-3" type="radio" value="" id="frank-hook" name="userselection">
+                                                                            <label class="form-check-label d-flex align-items-center" for="frank-hook">
+                                                                                <span class="flex-shrink-0">
+                                                                                    <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                                </span>
+                                                                                <span class="flex-grow-1 ms-2">
+                                                                                    Frank Hook
+                                                                                </span>
+                                                                            </label>
+
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="form-check d-flex align-items-center">
+                                                                            <input class="form-check-input me-3" type="radio" value="" id="alexis-clarke" name="userselection">
+                                                                            <label class="form-check-label d-flex align-items-center" for="alexis-clarke">
+                                                                                <span class="flex-shrink-0">
+                                                                                    <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                                </span>
+                                                                                <span class="flex-grow-1 ms-2">
+                                                                                    Alexis Clarke
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="form-check d-flex align-items-center">
+                                                                            <input class="form-check-input me-3" type="radio" value="" id="herbert-stokes" name="userselection">
+                                                                            <label class="form-check-label d-flex align-items-center" for="herbert-stokes">
+                                                                                <span class="flex-shrink-0">
+                                                                                    <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                                </span>
+                                                                                <span class="flex-grow-1 ms-2">
+                                                                                    Herbert Stokes
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="form-check d-flex align-items-center">
+                                                                            <input class="form-check-input me-3" type="radio" value="" id="michael-morris" name="userselection">
+                                                                            <label class="form-check-label d-flex align-items-center" for="michael-morris">
+                                                                                <span class="flex-shrink-0">
+                                                                                    <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                                </span>
+                                                                                <span class="flex-grow-1 ms-2">
+                                                                                    Michael Morris
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="form-check d-flex align-items-center">
+                                                                            <input class="form-check-input me-3" type="radio" value="" id="nancy-martino" name="userselection">
+                                                                            <label class="form-check-label d-flex align-items-center" for="nancy-martino">
+                                                                                <span class="flex-shrink-0">
+                                                                                    <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                                </span>
+                                                                                <span class="flex-grow-1 ms-2">
+                                                                                    Nancy Martino
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="form-check d-flex align-items-center">
+                                                                            <input class="form-check-input me-3" type="radio" value="" id="thomas-taylor" name="userselection">
+                                                                            <label class="form-check-label d-flex align-items-center" for="thomas-taylor">
+                                                                                <span class="flex-shrink-0">
+                                                                                    <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                                </span>
+                                                                                <span class="flex-grow-1 ms-2">
+                                                                                    Thomas Taylor
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="form-check d-flex align-items-center">
+                                                                            <input class="form-check-input me-3" type="radio" value="" id="tonya-noble" name="userselection">
+                                                                            <label class="form-check-label d-flex align-items-center" for="tonya-noble">
+                                                                                <span class="flex-shrink-0">
+                                                                                    <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />
+                                                                                </span>
+                                                                                <span class="flex-grow-1 ms-2">
+                                                                                    Tonya Noble
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+                                                        <div class="col-lg-6">
+                                                            <label for="duedate-field" class="form-label">Plan Start Date</label>
+                                                            <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Start date" required />
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+                                                        <div class="col-lg-6">
+                                                            <label for="duedate-field" class="form-label">Plan Due Date</label>
+                                                            <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Due date" required />
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+                                                        <div class="col-lg-12">
+                                                            <label for="priority-field" class="form-label">Priority</label>
+                                                            <select class="form-control" id="priority-field">
+                                                                <option value="">Priority</option>
+                                                                <option value="High">High</option>
+                                                                <option value="Medium">Medium</option>
+                                                                <option value="Low">Low</option>
+                                                            </select>
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+
+                                                         <div class="col-lg-12">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <h5 class="card-title mb-0">Attached files</h5>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div>
+                                                                        <p class="text-muted">Add Attached files here.</p>
+
+                                                                        <div class="dropzone" >
+
+                                                                            <div class="dz-message needsclick">
+
+                                                                                <input type="file" id="file-input"   name="file"  multiple="multiple" style="display: none;">
+            							                                         <label for="file-input" >
+                                                                                    <div class="mb-3">
+                                                                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                                                    </div>
+                                                                                    <h5>Drop files here or click to upload.</h5></label>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul class="list-unstyled mb-0" >
+                                                                            <li class="mt-2" id="fileNames">
+
+
+                                                                            </li>
+                                                                        </ul>
+                                                                         &lt;!&ndash; end dropzon-preview  &ndash;&gt;
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <ul class="list-unstyled mb-0" >
-                                                                <li class="mt-2" id="fileNames1">
-                                                                   
-                                                                    
-                                                                </li>
-                                                            </ul> 
-                                                             <!-- end dropzon-preview  -->
                                                         </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+
+                                                        <div class="mt-4">
+                                                            <div class="hstack gap-2 justify-content-end">
+                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-success">Update Issue</button>
+                                                            </div>
+                                                        </div>
+                                                        &lt;!&ndash;end col&ndash;&gt;
+
+
                                                     </div>
-                                                </div>
-                                            </div> 
-                                            <!--end col-->
-                                            
-                                            <div class="mt-4">
-                                                <div class="hstack gap-2 justify-content-end">
-                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-success">Add Issue</button>
-                                                </div>
+                                                    &lt;!&ndash;end row&ndash;&gt;
+                                                </form>
                                             </div>
-                                            <!--end col-->
-
-
-                                        </div>
-                                        <!--end row-->
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end add create issue modal-->
-
-                    <!--update issue modal form-->
-<!--                    <div class="modal fade" id="updateissueModal" tabindex="-1" aria-labelledby="updateissueModalLabel" aria-hidden="true">-->
-<!--                        <div class="modal-dialog modal-dialog-centered modal-lg">-->
-<!--                            <div class="modal-content border-0">-->
-<!--                                <div class="modal-header p-3 bg-info-subtle">-->
-<!--                                    <h5 class="modal-title" id="updateissueModalLabel">Update Issue</h5>-->
-<!--                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                                </div>-->
-<!--                                <div class="modal-body">-->
-<!--                                    <form action="#">-->
-<!--                                        <div class="row g-3">-->
-<!--                                            <div class="col-lg-12">-->
-<!--                                                <label for="sub-tasks" class="form-label">Project Name</label>-->
-<!--                                                <div class="input-light">-->
-<!--                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >-->
-<!--                                                        <option selected disabled>Project Name</option>-->
-<!--                                                        -->
-<!--                                                        <option value="New">A</option>-->
-<!--                                                        <option value="Pending">B</option>-->
-<!--                                                        <option value="Inprogress">C</option>-->
-<!--                                                        <option value="Completed">D</option>-->
-<!--                                                    </select>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                            <div class="col-lg-12">-->
-<!--                                                <label for="sub-tasks" class="form-label">Issue Title</label>-->
-<!--                                                <input type="text" class="form-control" id="sub-tasks" placeholder="Issue title">-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                            <div class="col-lg-12">-->
-<!--                                                <label for="sub-tasks" class="form-label">Issue Type</label>-->
-<!--                                                <div class="input-light">-->
-<!--                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >-->
-<!--                                                        <option selected disabled>Issue Type</option>-->
-<!--                                                        <option value="all">All</option>-->
-<!--                                                        <option value="New">A</option>-->
-<!--                                                        <option value="Pending">B</option>-->
-<!--                                                        <option value="Inprogress">C</option>-->
-<!--                                                        <option value="Completed">D</option>-->
-<!--                                                    </select>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                            <div class="col-lg-12">-->
-<!--                                                <label for="sub-tasks" class="form-label">Issue Category</label>-->
-<!--                                                <div class="input-light">-->
-<!--                                                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus">-->
-<!--                                                        <option selected disabled>Category</option>-->
-<!--                                                        <option value="all">All</option>-->
-<!--                                                        <option value="New">A</option>-->
-<!--                                                        <option value="Pending">B</option>-->
-<!--                                                        <option value="Inprogress">C</option>-->
-<!--                                                        <option value="Completed">D</option>-->
-<!--                                                    </select>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                            -->
-<!--                                            <div class="col-lg-12">-->
-<!--                                                <label for="task-description" class="form-label">Subject</label>-->
-<!--                                                <textarea class="form-control" id="task-description" rows="3" placeholder="Subject"></textarea>-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                            -->
-
-<!--                                            <div class="mb-3">-->
-<!--                                                <label class="form-label">Issue Description</label>-->
-<!--                                                <div id="ckeditor-classic-2">-->
-<!--                                                    -->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                            <div class="col-lg-12">-->
-<!--                                                <label for="tasks-progress" class="form-label">Add Team Leader</label>-->
-<!--                                                <div data-simplebar style="height: 95px;">-->
-<!--                                                    <ul class="list-unstyled vstack gap-2 mb-0">-->
-<!--                                                        <li>-->
-<!--                                                            <div class="form-check d-flex align-items-center justify-content-between">-->
-<!--                                                                <div class="d-flex align-items-center">-->
-<!--                                                                    <input class="form-check-input me-3" type="radio" value="" id="anna-adame" name="userselection">-->
-<!--                                                                    <label class="form-check-label d-flex align-items-center" for="anna-adame"  >-->
-<!--                                                                        <span class="flex-shrink-0">-->
-<!--                                                                            <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                                                        </span>-->
-<!--                                                                        <span class="flex-grow-1 ms-2" id="userLabel">-->
-<!--                                                                            Anna Adame-->
-<!--                                                                        </span>   -->
-<!--                                                                </div>                                                    <div class="d-flex justify-content-center">-->
-<!--                                                                    &lt;!&ndash; <a href="pages-profile.html" class="btn btn-sm btn-light view-btn">View </a> &ndash;&gt;-->
-<!--                                                                    <button class="btn btn-sm btn-light view-btn" data-bs-toggle="modal" data-bs-target="#viewModal">View</button>-->
-<!--                                                                </div> -->
-<!--                                                                <div>-->
-
-<!--                                                                </div>          -->
-<!--                                                                   -->
-<!--                                                                </label>-->
-<!--                                                                -->
-<!--                                                            </div>-->
-<!--                                                            -->
-<!--                                                            -->
-<!--                                                        </li>-->
-<!--                                                        -->
-<!--                                                        <li>-->
-<!--                                                            <div class="form-check d-flex align-items-center">-->
-<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="frank-hook" name="userselection">-->
-<!--                                                                <label class="form-check-label d-flex align-items-center" for="frank-hook">-->
-<!--                                                                    <span class="flex-shrink-0">-->
-<!--                                                                        <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                                                    </span>-->
-<!--                                                                    <span class="flex-grow-1 ms-2">-->
-<!--                                                                        Frank Hook-->
-<!--                                                                    </span>-->
-<!--                                                                </label>-->
-<!--                                                                -->
-<!--                                                            </div>-->
-<!--                                                        </li>-->
-<!--                                                        <li>-->
-<!--                                                            <div class="form-check d-flex align-items-center">-->
-<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="alexis-clarke" name="userselection">-->
-<!--                                                                <label class="form-check-label d-flex align-items-center" for="alexis-clarke">-->
-<!--                                                                    <span class="flex-shrink-0">-->
-<!--                                                                        <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                                                    </span>-->
-<!--                                                                    <span class="flex-grow-1 ms-2">-->
-<!--                                                                        Alexis Clarke-->
-<!--                                                                    </span>-->
-<!--                                                                </label>-->
-<!--                                                            </div>-->
-<!--                                                        </li>-->
-<!--                                                        <li>-->
-<!--                                                            <div class="form-check d-flex align-items-center">-->
-<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="herbert-stokes" name="userselection">-->
-<!--                                                                <label class="form-check-label d-flex align-items-center" for="herbert-stokes">-->
-<!--                                                                    <span class="flex-shrink-0">-->
-<!--                                                                        <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                                                    </span>-->
-<!--                                                                    <span class="flex-grow-1 ms-2">-->
-<!--                                                                        Herbert Stokes-->
-<!--                                                                    </span>-->
-<!--                                                                </label>-->
-<!--                                                            </div>-->
-<!--                                                        </li>-->
-<!--                                                        <li>-->
-<!--                                                            <div class="form-check d-flex align-items-center">-->
-<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="michael-morris" name="userselection">-->
-<!--                                                                <label class="form-check-label d-flex align-items-center" for="michael-morris">-->
-<!--                                                                    <span class="flex-shrink-0">-->
-<!--                                                                        <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                                                    </span>-->
-<!--                                                                    <span class="flex-grow-1 ms-2">-->
-<!--                                                                        Michael Morris-->
-<!--                                                                    </span>-->
-<!--                                                                </label>-->
-<!--                                                            </div>-->
-<!--                                                        </li>-->
-<!--                                                        <li>-->
-<!--                                                            <div class="form-check d-flex align-items-center">-->
-<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="nancy-martino" name="userselection">-->
-<!--                                                                <label class="form-check-label d-flex align-items-center" for="nancy-martino">-->
-<!--                                                                    <span class="flex-shrink-0">-->
-<!--                                                                        <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                                                    </span>-->
-<!--                                                                    <span class="flex-grow-1 ms-2">-->
-<!--                                                                        Nancy Martino-->
-<!--                                                                    </span>-->
-<!--                                                                </label>-->
-<!--                                                            </div>-->
-<!--                                                        </li>-->
-<!--                                                        <li>-->
-<!--                                                            <div class="form-check d-flex align-items-center">-->
-<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="thomas-taylor" name="userselection">-->
-<!--                                                                <label class="form-check-label d-flex align-items-center" for="thomas-taylor">-->
-<!--                                                                    <span class="flex-shrink-0">-->
-<!--                                                                        <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                                                    </span>-->
-<!--                                                                    <span class="flex-grow-1 ms-2">-->
-<!--                                                                        Thomas Taylor-->
-<!--                                                                    </span>-->
-<!--                                                                </label>-->
-<!--                                                            </div>-->
-<!--                                                        </li>-->
-<!--                                                        <li>-->
-<!--                                                            <div class="form-check d-flex align-items-center">-->
-<!--                                                                <input class="form-check-input me-3" type="radio" value="" id="tonya-noble" name="userselection">-->
-<!--                                                                <label class="form-check-label d-flex align-items-center" for="tonya-noble">-->
-<!--                                                                    <span class="flex-shrink-0">-->
-<!--                                                                        <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />-->
-<!--                                                                    </span>-->
-<!--                                                                    <span class="flex-grow-1 ms-2">-->
-<!--                                                                        Tonya Noble-->
-<!--                                                                    </span>-->
-<!--                                                                </label>-->
-<!--                                                            </div>-->
-<!--                                                        </li>-->
-<!--                                                    </ul>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                            <div class="col-lg-6">-->
-<!--                                                <label for="duedate-field" class="form-label">Plan Start Date</label>-->
-<!--                                                <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Start date" required />-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                            <div class="col-lg-6">-->
-<!--                                                <label for="duedate-field" class="form-label">Plan Due Date</label>-->
-<!--                                                <input type="date" id="duedate-field" class="form-control" data-provider="flatpickr" placeholder="Plan Due date" required />-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                            <div class="col-lg-12">-->
-<!--                                                <label for="priority-field" class="form-label">Priority</label>-->
-<!--                                                <select class="form-control" id="priority-field">-->
-<!--                                                    <option value="">Priority</option>-->
-<!--                                                    <option value="High">High</option>-->
-<!--                                                    <option value="Medium">Medium</option>-->
-<!--                                                    <option value="Low">Low</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-
-<!--                                             <div class="col-lg-12">-->
-<!--                                                <div class="card">-->
-<!--                                                    <div class="card-header">-->
-<!--                                                        <h5 class="card-title mb-0">Attached files</h5>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="card-body">-->
-<!--                                                        <div>-->
-<!--                                                            <p class="text-muted">Add Attached files here.</p>-->
-<!--                    -->
-<!--                                                            <div class="dropzone" >-->
-<!--                                                               -->
-<!--                                                                <div class="dz-message needsclick">-->
-<!--                                                                    -->
-<!--                                                                    <input type="file" id="file-input"   name="file"  multiple="multiple" style="display: none;">-->
-<!--							                                         <label for="file-input" >-->
-<!--                                                                        <div class="mb-3">-->
-<!--                                                                            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>-->
-<!--                                                                        </div>-->
-<!--                                                                        <h5>Drop files here or click to upload.</h5></label>-->
-<!--                                                                    -->
-<!--                                                                </div>-->
-<!--                                                            </div>-->
-<!--                                                            <ul class="list-unstyled mb-0" >-->
-<!--                                                                <li class="mt-2" id="fileNames">-->
-<!--                                                                   -->
-<!--                                                                    -->
-<!--                                                                </li>-->
-<!--                                                            </ul> -->
-<!--                                                             &lt;!&ndash; end dropzon-preview  &ndash;&gt;-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div> -->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-<!--                                         -->
-<!--                                            <div class="mt-4">-->
-<!--                                                <div class="hstack gap-2 justify-content-end">-->
-<!--                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>-->
-<!--                                                    <button type="button" class="btn btn-success">Update Issue</button>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash;end col&ndash;&gt;-->
-
-
-<!--                                        </div>-->
-<!--                                        &lt;!&ndash;end row&ndash;&gt;-->
-<!--                                    </form>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                    <!--end update issue modal-->
-
-                    <!--delete record modal form-->
-                    <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="delete-btn-close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mt-2 text-center">
-                                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                                            <h4>Are you sure ?</h4>
-                                            <p class="text-muted mx-4 mb-0">Are you sure you want to remove this tasks ?</p>
                                         </div>
                                     </div>
-                                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn w-sm btn-danger" id="delete-record">Yes, Delete It!</button>
-                                    </div>
+                                </div>-->
+            <!--end update issue modal-->
+
+            <!--delete record modal form-->
+            <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                    id="delete-btn-close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mt-2 text-center">
+                                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                                           colors="primary:#f7b84b,secondary:#f06548"
+                                           style="width:100px;height:100px"></lord-icon>
+                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                    <h4>Are you sure ?</h4>
+                                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this tasks ?</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <!--end modal -->
-
-                     <!--View Modal-->
-                    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0">
-            <div class="modal-header p-3 bg-info-subtle">
-                <h5 class="modal-title" id="viewModalLabel">Create New Task</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="#">
-                    <div class="row g-3">
-                        <div class="col-lg-12">
-                            <label for="projectName" class="form-label">Project Name</label>
-                            <input type="text" class="form-control" id="projectName" placeholder="Enter project name">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label for="sub-tasks" class="form-label">Task Title</label>
-                            <input type="text" class="form-control" id="sub-tasks" placeholder="Task title">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label for="task-description" class="form-label">Task Description</label>
-                            <textarea class="form-control" id="task-description" rows="3" placeholder="Task description"></textarea>
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label for="formFile" class="form-label">Tasks Images</label>
-                            <input class="form-control" type="file" id="formFile">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-12">
-                            <label for="tasks-progress" class="form-label">Add Team Member</label>
-                            <div data-simplebar style="height: 95px;">
-                                <ul class="list-unstyled vstack gap-2 mb-0">
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" value="" id="anna-adame">
-                                            <label class="form-check-label d-flex align-items-center" for="anna-adame">
-                                                <span class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                    Anna Adame
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" value="" id="frank-hook">
-                                            <label class="form-check-label d-flex align-items-center" for="frank-hook">
-                                                <span class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                    Frank Hook
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" value="" id="alexis-clarke">
-                                            <label class="form-check-label d-flex align-items-center" for="alexis-clarke">
-                                                <span class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-6.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                    Alexis Clarke
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" value="" id="herbert-stokes">
-                                            <label class="form-check-label d-flex align-items-center" for="herbert-stokes">
-                                                <span class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                    Herbert Stokes
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" value="" id="michael-morris">
-                                            <label class="form-check-label d-flex align-items-center" for="michael-morris">
-                                                <span class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-7.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                    Michael Morris
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" value="" id="nancy-martino">
-                                            <label class="form-check-label d-flex align-items-center" for="nancy-martino">
-                                                <span class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-5.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                    Nancy Martino
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" value="" id="thomas-taylor">
-                                            <label class="form-check-label d-flex align-items-center" for="thomas-taylor">
-                                                <span class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-8.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                    Thomas Taylor
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="form-check d-flex align-items-center">
-                                            <input class="form-check-input me-3" type="checkbox" value="" id="tonya-noble">
-                                            <label class="form-check-label d-flex align-items-center" for="tonya-noble">
-                                                <span class="flex-shrink-0">
-                                                    <img src="assets/images/users/avatar-10.jpg" alt="" class="avatar-xxs rounded-circle" />
-                                                </span>
-                                                <span class="flex-grow-1 ms-2">
-                                                    Tonya Noble
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-4">
-                            <label for="due-date" class="form-label">Due Date</label>
-                            <input type="text" class="form-control" id="due-date" data-provider="flatpickr" placeholder="Select date">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-4">
-                            <label for="categories" class="form-label">Tags</label>
-                            <input type="text" class="form-control" id="categories" placeholder="Enter tag">
-                        </div>
-                        <!--end col-->
-                        <div class="col-lg-4">
-                            <label for="tasks-progress" class="form-label">Tasks Progress</label>
-                            <input type="text" class="form-control" maxlength="3" id="tasks-progress" placeholder="Enter progress">
-                        </div>
-                        <!--end col-->
-                        <div class="mt-4">
-                            <div class="hstack gap-2 justify-content-end">
-                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-success">Add Task</button>
-                            </div>
-                        </div>
-                        <!--end col-->
-                    </div>
-                    <!--end row-->
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-                    <!--Add Issue Category Form-->
-                    <div class="modal fade" id="addIssueCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header bg-light p-3">
-                                    <h5 class="modal-title" id="exampleModalLabel">Add New Issue Category</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-
-                                <form id="addIssueCategoryForm">
-                                    <div class="modal-body">
-                                        <div class="mb-3" id="modal-id" style="display: none;">
-                                            <label th:for="issueCategoryId" class="form-label">ID</label>
-                                            <input type="hidden" name="id" th:id="issueCategoryId" th:class="form-control" placeholder="ID" readonly />
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label  th:for="issueCategoryName" class="form-label">Department Name</label>
-                                            <input type="text" name="name" th:id="issueCategoryName" th:class="form-control" placeholder="Name" th:required="required" />
-                                            <div class="invalid-feedback">Please enter a department name.</div>
-                                        </div>
-
-
-                                        <div class="col-lg-12">
-                                            <label th:for="issueCategoryDescription" class="form-label">Description</label>
-                                            <textarea class="form-control" th:id="issueCategoryDescription" rows="3" placeholder="Description"></textarea>
-                                        </div>
-
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="hstack gap-2 justify-content-end">
-                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-success" id="add-btn" data-bs-dismiss="modal">confirm</button>
-                                        </div>
-                                    </div>
-                                </form>
-
+                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn w-sm btn-danger" id="delete-record">Yes, Delete It!
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- container-fluid -->
             </div>
-        </div><!-- end main content-->
+            <!--end modal -->
 
+            <!--View Modal-->
+            <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-0">
+                        <div class="modal-header p-3 bg-info-subtle">
+                            <h5 class="modal-title" id="viewModalLabel">Create New Task</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#">
+                                <div class="row g-3">
+                                    <div class="col-lg-12">
+                                        <label for="projectName" class="form-label">Project Name</label>
+                                        <input type="text" class="form-control" id="projectName"
+                                               placeholder="Enter project name">
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-12">
+                                        <label for="sub-tasks" class="form-label">Task Title</label>
+                                        <input type="text" class="form-control" id="sub-tasks" placeholder="Task title">
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-12">
+                                        <label for="task-description" class="form-label">Task Description</label>
+                                        <textarea class="form-control" id="task-description" rows="3"
+                                                  placeholder="Task description"></textarea>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-12">
+                                        <label for="formFile" class="form-label">Tasks Images</label>
+                                        <input class="form-control" type="file" id="formFile">
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-12">
+                                        <label for="tasks-progress" class="form-label">Add Team Member</label>
+                                        <div data-simplebar style="height: 95px;">
+                                            <ul class="list-unstyled vstack gap-2 mb-0">
+                                                <li>
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input me-3" type="checkbox" value=""
+                                                               id="anna-adame">
+                                                        <label class="form-check-label d-flex align-items-center"
+                                                               for="anna-adame">
+                                                <span class="flex-shrink-0">
+                                                    <img src="assets/images/users/avatar-1.jpg" alt=""
+                                                         class="avatar-xxs rounded-circle"/>
+                                                </span>
+                                                            <span class="flex-grow-1 ms-2">
+                                                    Anna Adame
+                                                </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input me-3" type="checkbox" value=""
+                                                               id="frank-hook">
+                                                        <label class="form-check-label d-flex align-items-center"
+                                                               for="frank-hook">
+                                                <span class="flex-shrink-0">
+                                                    <img src="assets/images/users/avatar-3.jpg" alt=""
+                                                         class="avatar-xxs rounded-circle"/>
+                                                </span>
+                                                            <span class="flex-grow-1 ms-2">
+                                                    Frank Hook
+                                                </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input me-3" type="checkbox" value=""
+                                                               id="alexis-clarke">
+                                                        <label class="form-check-label d-flex align-items-center"
+                                                               for="alexis-clarke">
+                                                <span class="flex-shrink-0">
+                                                    <img src="assets/images/users/avatar-6.jpg" alt=""
+                                                         class="avatar-xxs rounded-circle"/>
+                                                </span>
+                                                            <span class="flex-grow-1 ms-2">
+                                                    Alexis Clarke
+                                                </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input me-3" type="checkbox" value=""
+                                                               id="herbert-stokes">
+                                                        <label class="form-check-label d-flex align-items-center"
+                                                               for="herbert-stokes">
+                                                <span class="flex-shrink-0">
+                                                    <img src="assets/images/users/avatar-2.jpg" alt=""
+                                                         class="avatar-xxs rounded-circle"/>
+                                                </span>
+                                                            <span class="flex-grow-1 ms-2">
+                                                    Herbert Stokes
+                                                </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input me-3" type="checkbox" value=""
+                                                               id="michael-morris">
+                                                        <label class="form-check-label d-flex align-items-center"
+                                                               for="michael-morris">
+                                                <span class="flex-shrink-0">
+                                                    <img src="assets/images/users/avatar-7.jpg" alt=""
+                                                         class="avatar-xxs rounded-circle"/>
+                                                </span>
+                                                            <span class="flex-grow-1 ms-2">
+                                                    Michael Morris
+                                                </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input me-3" type="checkbox" value=""
+                                                               id="nancy-martino">
+                                                        <label class="form-check-label d-flex align-items-center"
+                                                               for="nancy-martino">
+                                                <span class="flex-shrink-0">
+                                                    <img src="assets/images/users/avatar-5.jpg" alt=""
+                                                         class="avatar-xxs rounded-circle"/>
+                                                </span>
+                                                            <span class="flex-grow-1 ms-2">
+                                                    Nancy Martino
+                                                </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input me-3" type="checkbox" value=""
+                                                               id="thomas-taylor">
+                                                        <label class="form-check-label d-flex align-items-center"
+                                                               for="thomas-taylor">
+                                                <span class="flex-shrink-0">
+                                                    <img src="assets/images/users/avatar-8.jpg" alt=""
+                                                         class="avatar-xxs rounded-circle"/>
+                                                </span>
+                                                            <span class="flex-grow-1 ms-2">
+                                                    Thomas Taylor
+                                                </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input me-3" type="checkbox" value=""
+                                                               id="tonya-noble">
+                                                        <label class="form-check-label d-flex align-items-center"
+                                                               for="tonya-noble">
+                                                <span class="flex-shrink-0">
+                                                    <img src="assets/images/users/avatar-10.jpg" alt=""
+                                                         class="avatar-xxs rounded-circle"/>
+                                                </span>
+                                                            <span class="flex-grow-1 ms-2">
+                                                    Tonya Noble
+                                                </span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-4">
+                                        <label for="due-date" class="form-label">Due Date</label>
+                                        <input type="text" class="form-control" id="due-date" data-provider="flatpickr"
+                                               placeholder="Select date">
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-4">
+                                        <label for="categories" class="form-label">Tags</label>
+                                        <input type="text" class="form-control" id="categories" placeholder="Enter tag">
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-4">
+                                        <label for="tasks-progress" class="form-label">Tasks Progress</label>
+                                        <input type="text" class="form-control" maxlength="3" id="tasks-progress"
+                                               placeholder="Enter progress">
+                                    </div>
+                                    <!--end col-->
+                                    <div class="mt-4">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close
+                                            </button>
+                                            <button type="button" class="btn btn-success">Add Task</button>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Add Issue Category Form-->
+            <div class="modal fade" id="addIssueCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-light p-3">
+                            <h5 class="modal-title" id="exampleModalLabel">Add New Issue Category</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <form id="addIssueCategoryForm">
+                            <div class="modal-body">
+                                <div class="mb-3" id="modal-id" style="display: none;">
+                                    <label th:for="issueCategoryId" class="form-label">ID</label>
+                                    <input type="hidden" name="id" th:id="issueCategoryId" th:class="form-control"
+                                           placeholder="ID" readonly/>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label th:for="issueCategoryName" class="form-label">Department Name</label>
+                                    <input type="text" name="name" th:id="issueCategoryName" th:class="form-control"
+                                           placeholder="Name" th:required="required"/>
+                                    <div class="invalid-feedback">Please enter a department name.</div>
+                                </div>
+
+
+                                <div class="col-lg-12">
+                                    <label th:for="issueCategoryDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" th:id="issueCategoryDescription" rows="3"
+                                              placeholder="Description"></textarea>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <div class="hstack gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success" id="add-btn" data-bs-dismiss="modal">
+                                        confirm
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- container-fluid -->
     </div>
-    <!-- END layout-wrapper -->
+</div><!-- end main content-->
 
+</div>
+<!-- END layout-wrapper -->
 <div th:replace="~{layout :: footer}"></div>
-    <!-- Add this script after your HTML content -->
+<!-- Add this script after your HTML content -->
 
-
-    <script th:src="@{assets/js/issueboard.js}"></script>
-    <script th:src="@{assets/js/pm-issue-board.js}"></script>
-    <script th:src="@{/assets/js/issue-modal-init.js}"></script>
-    <script th:src="@{/assets/js/issue-create.js}"></script>
+<script th:src="@{assets/js/issueboard.js}"></script>
+<script th:src="@{assets/js/pm-issue-board.js}"></script>
+<script th:src="@{/assets/js/issue-modal-init.js}"></script>
+<script th:src="@{/assets/js/issue-create.js}"></script>
 <!--FIle Script-->
 <script src="assets/js/file.js"></script>
-<!--<script>-->
-<!--    initializeFileUpload('file-input', 'fileNames');-->
-<!--    initializeFileUpload1('file-input1', 'fileNames1');-->
-<!--</script>-->
-    <script th:src="@{https://cdn.jsdelivr.net/npm/flatpickr}"></script>
-  <!-- JAVASCRIPT -->
-     <script th:src="@{assets/js/pages/tasks-kanban.init.js}"></script>
-     <!-- ckeditor -->
-     <script th:src="@{assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js}"></script>
-<script>
-    // Initialize CKEditor for the first instance
-    // ClassicEditor
-    //     .create(document.querySelector('#ckeditor-classic-1'))
-    //     .catch(error => {
-    //         console.error(error);
-    //     });
-
-    //Initialize CKEditor for the second instance
-    // ClassicEditor
-    //     .create(document.querySelector('#ckeditor-classic-2'))
-    //     .catch(error => {
-    //         console.error(error);
-    //     });
-</script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/flatpickr}"></script>
+<!-- JAVASCRIPT -->
+<script th:src="@{assets/js/pages/tasks-kanban.init.js}"></script>
+<!-- ckeditor -->
+<script th:src="@{assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js}"></script>
 
 <script th:src="@{/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         ClassicEditor
             .create(document.querySelector('#ckeditor-classic-1'))
-            .then(newEditor  => {
+            .then(newEditor => {
                 // editor.model.document.on('change:data', () => {
                 //     const editorData = editor.getData();
                 //     console.log('CKEditor Data:', editorData);
@@ -1249,38 +1272,37 @@
 </script>
 
 
+<script>
+    function triggerFileInput() {
+        document.getElementById("fileInput").click();
+    }
 
-
-    <script>
-        function triggerFileInput() {
-          document.getElementById("fileInput").click();
-        }
-      
-        document.addEventListener("DOMContentLoaded", function() {
-          // Initialize Dropzone
-          var myDropzone = new Dropzone("#customDropzone", {
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Dropzone
+        var myDropzone = new Dropzone("#customDropzone", {
             // Dropzone configuration options go here
-          });
         });
-      </script>
-
-    <!-- dragula init js -->
-    <script th:src="@{assets/libs/dragula/dragula.min.js}"></script>
-
-    <!-- dom autoscroll -->
-    <script th:src="@{assets/libs/dom-autoscroller/dom-autoscroller.min.js}"></script>
-    <script th:src="@{assets/libs/dropzone/dropzone-min.js}"></script>
-
-    <!-- project-create init -->
-     <script th:src="@{assets/js/pages/project-create.init.js}"></script>
-
-    <!-- SweetAlert CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
-    <!-- SweetAlert JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    });
+</script>
 
 
+<!-- dragula init js -->
+<script th:src="@{assets/libs/dragula/dragula.min.js}"></script>
+
+<!-- dom autoscroll -->
+<script th:src="@{assets/libs/dom-autoscroller/dom-autoscroller.min.js}"></script>
+<script th:src="@{assets/libs/dropzone/dropzone-min.js}"></script>
+
+<!-- project-create init -->
+<script th:src="@{assets/js/pages/project-create.init.js}"></script>
+
+<!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- SweetAlert JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script th:src="@{assets/js/search-bars.js}"></script>
 
 
 </body>

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-layout="vertical" data-topbar="light" data-sidebar="dark"
+      data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+
+
+<!-- Mirrored from themesbrand.com/velzon/html/material/apps-tasks-list-view.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 13 Jan 2024 06:44:43 GMT -->
+<head th:replace="~{layout :: head}">
+    <!-- Sweet Alert css-->
+    <link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+</head>
+<style>
+    .additional-content {
+        display: none;
+    }
+
+    .form-check-label:hover .additional-content {
+        display: block;
+    }
+
+    .hidden-input {
+        display: none;
+    }
+
+</style>
+<body>
+<!-- Begin page -->
+<div id="layout-wrapper">
+    <div id="header-container">
+        <header th:replace="~{header :: header}"></header>
+    </div>
+
+
+    <!-- ========== App Menu ========== -->
+    <div id="navbar-container">
+        <div th:replace="~{navbar :: navbar}"></div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Projects List</h4>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card" id="tasksList">
+                        <div class="card-body">
+                            <div class="table-responsive table-card mb-4">
+                                <table class="table align-middle table-striped table-hover table1 display" id="example">
+                                    <thead class="table-light text-muted">
+                                    <tr>
+                                        <th class="sort" data-sort="">Project</th>
+                                        <th class="sort" data-sort="">Plan Start Date</th>
+                                        <th class="sort" data-sort="">Plan Due Date</th>
+                                        <th class="sort" data-sort="">Actual Start Date</th>
+                                        <th class="sort" data-sort="">Actual Due Date</th>
+                                        <th class="sort" data-sort="">Status</th>
+                                        <th class="sort" data-sort="">Priority</th>
+                                        <th class="sort" data-sort="">Active</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="list form-check-all">
+                                    <tr th:each="project : ${projects}">
+                                        <td class="id"><a href="#" class="fw-medium link-primary"
+                                                          th:text="${project.getTitle()}"></a></td>
+                                        <td class="due_date" th:text="${project.getPlanStartDate()}"></td>
+                                        <td class="due_date" th:text="${project.getPlanEndDate()}"></td>
+                                        <td class="due_date"
+                                            th:text="${project.getActualStartDate() != null ? project.getActualStartDate() : 'Not yet Started'}"></td>
+                                        <td class="due_date"
+                                            th:text="${project.getActualEndDate() != null ? project.getActualEndDate() : 'Not yet Ended'}"></td>
+                                        <td class="status"><span
+                                                class="badge bg-secondary-subtle text-secondary text-uppercase"
+                                                th:text="${project.getStatus()}"></span></td>
+                                        <td class="priority"><span class="badge bg-danger text-uppercase"
+                                                                   th:text="${project.getPriority()}"></span></td>
+                                        <td class="priority">
+    <span th:class="${project.isActive() ? 'badge bg-primary text-uppercase' : 'badge bg-danger text-uppercase'}"
+          th:text="${project.isActive() ? 'Active' : 'Inactive'}">
+    </span>
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                    <!--end card-->
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+</div>
+<!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+<div th:replace="~{layout :: footer}"></div>
+
+<!--Update Issue Script-->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#userLabel1").click(function () {
+            $("#hiddenInputContainer1").toggle();
+        });
+    });
+</script>
+<!-- JAVASCRIPT -->
+<script src="assets/libs/list.js/list.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable if it's not already initialized
+        if (!$.fn.DataTable.isDataTable('#example')) {
+            $('#example').DataTable({
+                pagingType: 'full_numbers'
+            });
+        }
+    });
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if the "See More" button was clicked
+        const seeMoreClicked = sessionStorage.getItem('seeMoreClicked');
+
+        // Check if the button was clicked and selectedStatus is available
+        if (seeMoreClicked && localStorage.getItem('selectedStatus')) {
+            // Get the DataTable instance
+            var table = $('#example').DataTable();
+
+            // Retrieve the selectedStatus from localStorage
+            const selectedStatus = localStorage.getItem('selectedStatus');
+
+            // Set the search value programmatically
+            table.search(selectedStatus).draw();
+
+            // Clear the sessionStorage flag
+            sessionStorage.removeItem('seeMoreClicked');
+        }
+    });
+</script>
+<!--list pagination js-->
+<script src="assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+<!-- titcket init js -->
+<script src="assets/js/pages/tasks-list.init.js"></script>
+
+<!-- Sweet Alerts js -->
+<script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
+<script th:src="@{assets/js/pm-teamleader-list.js}"></script>
+</body>
+</html>

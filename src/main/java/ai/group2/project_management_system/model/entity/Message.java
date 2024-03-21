@@ -8,16 +8,13 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     public Long getId() {
         return id;
     }
-
     private long senderId;
     private String content;
     private Long issueId;
     private LocalDateTime timeStamp;
-
     @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
 

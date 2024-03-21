@@ -1,0 +1,429 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProjectAPI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.controller.api</a>
+</div>
+
+<h1>Coverage Summary for Class: ProjectAPI (ai.group2.project_management_system.controller.api)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProjectAPI</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4%
+  </span>
+  <span class="absValue">
+    (1/25)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0.6%
+  </span>
+  <span class="absValue">
+    (1/160)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.controller.api;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.dto.ProjectDTO;
+&nbsp;import ai.group2.project_management_system.dto.UserDTO;
+&nbsp;import ai.group2.project_management_system.mapping.UserMapping;
+&nbsp;import ai.group2.project_management_system.model.Enum.Role;
+&nbsp;import ai.group2.project_management_system.model.Enum.Status;
+&nbsp;import ai.group2.project_management_system.model.entity.*;
+&nbsp;import ai.group2.project_management_system.repository.ProjectRepository;
+&nbsp;import ai.group2.project_management_system.service.DepartmentService;
+&nbsp;import ai.group2.project_management_system.service.Impl.ProjectServiceImpl;
+&nbsp;import ai.group2.project_management_system.service.ProjectService;
+&nbsp;import ai.group2.project_management_system.service.UserService;
+&nbsp;import jakarta.persistence.Cacheable;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.cglib.core.CollectionUtils;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.*;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class ProjectAPI {
+&nbsp;
+&nbsp;    private final ProjectService projectService;
+&nbsp;    private final DepartmentService departmentService;
+&nbsp;    private final UserService userService;
+&nbsp;    private final ProjectRepository projectRepository;
+&nbsp;
+&nbsp;    private final UserMapping userMapping;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/all-project&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Project&gt;&gt; getAllProjects() {
+<b class="nc">&nbsp;        List&lt;Project&gt; projects = projectService.getAllProjects();</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(projects);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/departments-selector&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Department&gt;&gt; selectDepartment() {
+<b class="nc">&nbsp;        System.out.println(&quot;department is gone&quot;);</b>
+<b class="nc">&nbsp;        List&lt;Department&gt; departments = departmentService.getAllDepartments();</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(departments);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/current-departments&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Department&gt;&gt; selectCurrentDepartment() {
+<b class="nc">&nbsp;        System.out.println(&quot;department is gone&quot;);</b>
+<b class="nc">&nbsp;        List&lt;Department&gt; departments = departmentService.getAllDepartments();</b>
+&nbsp;        // Filter active departments
+<b class="nc">&nbsp;        List&lt;Department&gt; activeDepartments = departments.stream()</b>
+<b class="nc">&nbsp;                .filter(Department::isActive)</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(activeDepartments);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/members-selector/{departmentId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;UserDTO&gt;&gt; getUsers(@PathVariable Long departmentId) {
+<b class="nc">&nbsp;        System.out.println(&quot;Users are gone&quot;);</b>
+<b class="nc">&nbsp;        User currentUser = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        List&lt;UserDTO&gt; users = userService.getUsersByDepartmentId(departmentId); // Assuming this returns List&lt;User&gt;</b>
+<b class="nc">&nbsp;        users.removeIf(user -&gt; user.getId().equals(currentUser.getId()));</b>
+<b class="nc">&nbsp;        System.out.println(&quot;member-selector &quot; + users);</b>
+<b class="nc">&nbsp;        if (!users.isEmpty()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(users);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.noContent().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/members-selection/{departmentId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;User&gt;&gt; getMembers(@PathVariable Long departmentId){
+<b class="nc">&nbsp;        System.out.println(&quot;Users are gone : &quot;);</b>
+<b class="nc">&nbsp;        List&lt;User&gt; users = userService.getMembersByDepartmentId(departmentId);</b>
+<b class="nc">&nbsp;        users = users.stream()</b>
+<b class="nc">&nbsp;                .filter(user -&gt; user.getRole().equals(Role.MEMBER))</b>
+<b class="nc">&nbsp;                .filter(User::isActive)</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;        //System.out.println(users);
+<b class="nc">&nbsp;        users.forEach(user -&gt; {</b>
+<b class="nc">&nbsp;            String profile = userService.getUserPhotoById(user.getId());</b>
+<b class="nc">&nbsp;            user.setProfilePictureFileName(profile);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;User isActive: &quot; + user.isActive());</b>
+&nbsp;        });
+<b class="nc">&nbsp;        return ResponseEntity.ok(users);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/leader-selection/{departmentId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;User&gt;&gt; getLeaders(@PathVariable Long departmentId){
+<b class="nc">&nbsp;        System.out.println(&quot;Users are gone : &quot;);</b>
+<b class="nc">&nbsp;        List&lt;User&gt; users = userService.getMembersByDepartmentId(departmentId);</b>
+<b class="nc">&nbsp;        users = users.stream()</b>
+<b class="nc">&nbsp;                .filter(user -&gt; user.getRole().equals(Role.TEAMLEADER))</b>
+<b class="nc">&nbsp;                .filter(User::isActive)</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;       // System.out.println(users);
+<b class="nc">&nbsp;        users.forEach(user -&gt; {</b>
+<b class="nc">&nbsp;            String profile = userService.getUserPhotoById(user.getId());</b>
+<b class="nc">&nbsp;            user.setProfilePictureFileName(profile);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;User isActive: &quot; + user.isActive());</b>
+&nbsp;        });
+<b class="nc">&nbsp;        return ResponseEntity.ok(users);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/teamLeader-selection/{departmentId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;User&gt;&gt; getTeamLeaders(@PathVariable Long departmentId){
+<b class="nc">&nbsp;        System.out.println(&quot;Leaders are gone : &quot;);</b>
+<b class="nc">&nbsp;        List&lt;User&gt; teamLeaders = userService.getMembersByDepartmentId(departmentId);</b>
+<b class="nc">&nbsp;        teamLeaders = teamLeaders.stream()</b>
+<b class="nc">&nbsp;                .filter(user -&gt; user.getRole().equals(Role.TEAMLEADER))</b>
+<b class="nc">&nbsp;                .filter(User::isActive)</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+<b class="nc">&nbsp;        System.out.println(teamLeaders);</b>
+<b class="nc">&nbsp;        teamLeaders.forEach(user -&gt; {</b>
+<b class="nc">&nbsp;            String profile = userService.getUserPhotoById(user.getId());</b>
+<b class="nc">&nbsp;            user.setProfilePictureFileName(profile);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;User isActive: &quot; + user.isActive());</b>
+&nbsp;        });
+<b class="nc">&nbsp;        return ResponseEntity.ok(teamLeaders);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // This method is for creating new projects
+&nbsp;    @PostMapping(&quot;/add-project&quot;)
+&nbsp;    public ResponseEntity&lt;Project&gt; addProject(@RequestBody Project project) {
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Here we go&quot;);</b>
+<b class="nc">&nbsp;        project.setIsActive(true);</b>
+<b class="nc">&nbsp;        System.out.println(project);</b>
+&nbsp;
+<b class="nc">&nbsp;        List&lt;Long&gt; userIds = project.getUserIds();</b>
+<b class="nc">&nbsp;        User currentUser = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        project.setCreator(currentUser.getName());</b>
+<b class="nc">&nbsp;        userIds.add(currentUser.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;        List&lt;User&gt; users = userService.findUsersByIds(userIds);</b>
+<b class="nc">&nbsp;        project.setUsers(new HashSet&lt;&gt;(users));</b>
+<b class="nc">&nbsp;        project.setStatus(Status.TODO);</b>
+<b class="nc">&nbsp;        Project newProject = projectService.save(project);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(newProject);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //These methods are for selecting back and display back the project list
+&nbsp;    @GetMapping(&quot;/show-projects&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Project&gt;&gt; getActiveProjects() {
+<b class="nc">&nbsp;        List&lt;Project&gt; projects = projectService.getAllProjectsWithUsers();</b>
+<b class="nc">&nbsp;        for(Project project:projects){</b>
+<b class="nc">&nbsp;            if(project != null &amp;&amp; project.getStatus().equals(Status.COMPLETED)){</b>
+<b class="nc">&nbsp;                if(project.getPlanEndDate().isBefore(project.getActualEndDate())){</b>
+<b class="nc">&nbsp;                    project.setOverDue(true);</b>
+<b class="nc">&nbsp;                    projectRepository.save(project);</b>
+&nbsp;                }
+&nbsp;            }else  {
+<b class="nc">&nbsp;                if( project.getPlanEndDate().isBefore(LocalDate.now())){</b>
+<b class="nc">&nbsp;                    project.setOverDue(true);</b>
+<b class="nc">&nbsp;                    projectRepository.save(project);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        List&lt;Project&gt; projects1 = projects.stream()</b>
+<b class="nc">&nbsp;                .sorted(Comparator.comparingLong(Project::getId).reversed())</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;        //return ResponseEntity.ok(projects1);
+<b class="nc">&nbsp;        if(userService.getCurrentUser().getRole()==Role.PMO || userService.getCurrentUser().getRole()==Role.PM){</b>
+&nbsp;
+<b class="nc">&nbsp;            return ResponseEntity.ok(projects1);</b>
+&nbsp;        }else {
+<b class="nc">&nbsp;            List&lt;Project&gt; userProjects=projectRepository.findProjectsByUserId(userService.getCurrentUser().getId());</b>
+&nbsp;            //System.out.println(&quot;Project Size:&quot;+teamLeaderProjects.size());
+<b class="nc">&nbsp;            List&lt;Project&gt; sortUserProjects = userProjects.stream()</b>
+<b class="nc">&nbsp;                    .sorted(Comparator.comparingLong(Project::getId).reversed())</b>
+<b class="nc">&nbsp;                    .collect(Collectors.toList());</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(sortUserProjects);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/edit-project/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Project&gt; editProject(@PathVariable(&quot;id&quot;) Long projectId, @RequestBody Project project){
+<b class="nc">&nbsp;        System.out.println(&quot;we reach edit mapping!&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;       Project pj = projectService.getProjectBy_Id(projectId);</b>
+<b class="nc">&nbsp;        if (pj != null) {</b>
+&nbsp;
+<b class="nc">&nbsp;            pj.setTitle(project.getTitle());</b>
+<b class="nc">&nbsp;            pj.setObjective(project.getObjective());</b>
+<b class="nc">&nbsp;            User currentUser = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;            pj.setCreator(currentUser.getName());</b>
+<b class="nc">&nbsp;            pj.setDescription(project.getDescription());</b>
+<b class="nc">&nbsp;            pj.setCategory(project.getCategory());</b>
+&nbsp;//            pj.setStatus(project.getStatus());
+<b class="nc">&nbsp;            pj.setPriority(project.getPriority());</b>
+<b class="nc">&nbsp;            pj.setPlanStartDate(project.getPlanStartDate());</b>
+<b class="nc">&nbsp;            pj.setPlanEndDate(project.getPlanEndDate());</b>
+&nbsp;
+<b class="nc">&nbsp;            Project latestUser = projectService.save(pj);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(latestUser);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/member&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Long&gt;&gt; getUserIdsByProjectId(@RequestParam Long projectId) {
+<b class="nc">&nbsp;        System.out.print(&quot;Get Mapping&quot;+ projectId);</b>
+<b class="nc">&nbsp;        List&lt;Long&gt; userIds = projectService.getUserIdsByProjectId(projectId);</b>
+<b class="nc">&nbsp;        System.out.println(userIds);</b>
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(userIds, HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/users&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;User&gt;&gt; getUsersByIds(@RequestParam(&quot;userIds&quot;) List&lt;Long&gt; userIds) {
+<b class="nc">&nbsp;        List&lt;User&gt; users = userService.findUsersByIds(userIds);</b>
+<b class="nc">&nbsp;        users = users.stream()</b>
+<b class="nc">&nbsp;                .filter(user -&gt; !user.getRole().equals(Role.PM) &amp;&amp; !user.getRole().equals(Role.PMO))</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+<b class="nc">&nbsp;        if (!users.isEmpty()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(users);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/leaders&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;User&gt;&gt; getLeadersByIds(@RequestParam(&quot;userIds&quot;) List&lt;Long&gt; userIds) {
+<b class="nc">&nbsp;        List&lt;User&gt; users = userService.findUsersByIds(userIds);</b>
+<b class="nc">&nbsp;        users = users.stream()</b>
+<b class="nc">&nbsp;                .filter(user -&gt; user.getRole().equals(Role.TEAMLEADER))</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+<b class="nc">&nbsp;        if (!users.isEmpty()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(users);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //These methods are for editing the data
+&nbsp;    @GetMapping(&quot;/project-selector/{projectId}&quot;)
+&nbsp;    public ResponseEntity&lt;Project&gt; getProjectById(@PathVariable Long projectId) {
+<b class="nc">&nbsp;        System.out.println(&quot;Start Update&quot;+ projectId);</b>
+<b class="nc">&nbsp;        Project project = projectService.getProjectBy_Id(projectId);</b>
+<b class="nc">&nbsp;        System.out.println(project);</b>
+<b class="nc">&nbsp;        if (project != null) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok().body(project);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/project/{projectId}&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; updateProjectStatus(@PathVariable(&quot;projectId&quot;) Long projectId,
+&nbsp;                                                    @RequestBody Project requestProject ) {
+&nbsp;        //   String newStatus= String.valueOf(requestAssignIssue.getStatus());
+<b class="nc">&nbsp;        Project project = projectRepository.findById(projectId).orElse(null);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (project != null) {</b>
+<b class="nc">&nbsp;            project.setStatus(requestProject.getStatus());</b>
+<b class="nc">&nbsp;            project.setActualEndDate(LocalDate.now());</b>
+<b class="nc">&nbsp;            projectRepository.save(project);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(String.format(&quot;Issue %d status updated to %s&quot;, project, requestProject.getStatus()));</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/user-for-project-update/{departmentId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;UserDTO&gt;&gt; getUsersForProject(@PathVariable Long departmentId) {
+<b class="nc">&nbsp;        System.out.println(&quot;Updaters are gone&quot;);</b>
+<b class="nc">&nbsp;        List&lt;UserDTO&gt; users = userService.getUsersByDepartmentId(departmentId);</b>
+<b class="nc">&nbsp;        System.out.println(users);</b>
+<b class="nc">&nbsp;        if (!users.isEmpty()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(users);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.noContent().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    // This is to delete projects
+&nbsp;    @PutMapping(&quot;/updateStatusForProject/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Project&gt; updateStatusForProject(@PathVariable(&quot;id&quot;) Long projectId){
+<b class="nc">&nbsp;        Project project = projectService.getProjectBy_Id(projectId);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Project id : &quot; + projectId);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Project status : &quot; + project.isActive());</b>
+&nbsp;
+<b class="nc">&nbsp;        if(project != null){</b>
+<b class="nc">&nbsp;            project.setActive(!project.isActive());</b>
+<b class="nc">&nbsp;            Project updatedProject = projectService.save(project);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Project later ststus : &quot;+ project.isActive());</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(updatedProject);</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/all-project-ids&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Long&gt;&gt; getAllProjectIds() {
+<b class="nc">&nbsp;        List&lt;Long&gt; projectIds = projectService.getAllProjectIds();</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(projectIds);</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/project-name/{projectId}&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; getProjectNameById(@PathVariable Long projectId) {
+<b class="nc">&nbsp;        Project project = projectService.getProjectBy_Id(projectId);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (project != null) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(project.getTitle()); // Assuming the project name is stored in the &#39;title&#39; field</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/projectList/{userId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Project&gt;&gt; getProjectsByUserId(@PathVariable Long userId) {
+&nbsp;
+<b class="nc">&nbsp;        String userName= userService.getUserNameById(userId);</b>
+<b class="nc">&nbsp;        List&lt;Project&gt; userProjects = projectService.getProjectsByUserName(userName);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(userProjects);</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/projectByTitle/{title}&quot;)
+&nbsp;    public ResponseEntity&lt;Project&gt; getProjectByTitle(@PathVariable String title) {
+<b class="nc">&nbsp;        Project project = projectService.getProjectByTitle(title);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (project != null) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(project);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

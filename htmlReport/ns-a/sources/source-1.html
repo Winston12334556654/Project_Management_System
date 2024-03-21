@@ -1,0 +1,252 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AssignIssueServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.service.Impl</a>
+</div>
+
+<h1>Coverage Summary for Class: AssignIssueServiceImpl (ai.group2.project_management_system.service.Impl)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AssignIssueServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    7.1%
+  </span>
+  <span class="absValue">
+    (1/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2.1%
+  </span>
+  <span class="absValue">
+    (1/48)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AssignIssueServiceImpl$AssignIssueServiceImplBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2%
+  </span>
+  <span class="absValue">
+    (1/49)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.service.Impl;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.dto.AssignIssueRequestDTO;
+&nbsp;import ai.group2.project_management_system.model.entity.AssignIssue;
+&nbsp;import ai.group2.project_management_system.model.entity.Issue;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import ai.group2.project_management_system.repository.AssignIssueRepository;
+&nbsp;import ai.group2.project_management_system.repository.IssueFileRepository;
+&nbsp;import ai.group2.project_management_system.repository.IssueRepository;
+&nbsp;import ai.group2.project_management_system.repository.UserRepository;
+&nbsp;import ai.group2.project_management_system.service.AssignIssueService;
+&nbsp;import lombok.Builder;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+<b class="nc">&nbsp;@Builder</b>
+&nbsp;public class AssignIssueServiceImpl implements AssignIssueService {
+&nbsp;    private final IssueRepository issueRepository;
+&nbsp;    private final IssueFileRepository issueFileRepository;
+&nbsp;    private final UserRepository userRepository;
+&nbsp;    private final AssignIssueRepository assignIssueRepository;
+&nbsp;    @Override
+&nbsp;    public AssignIssueRequestDTO getAssignIssuesByIssueId(Long id) {
+<b class="nc">&nbsp;        Issue issue =  issueRepository.findIssueById(id).orElse(null);</b>
+<b class="nc">&nbsp;        var issueFiles = issueFileRepository.findByIssueId(id);</b>
+<b class="nc">&nbsp;        List&lt;Long&gt; pjMemberIds = issueRepository.getUsersByIssueId(id, &quot;MEMBER&quot;);</b>
+<b class="nc">&nbsp;        List&lt;User&gt; members = userRepository.findAllById(pjMemberIds);</b>
+&nbsp;
+<b class="nc">&nbsp;        return AssignIssueRequestDTO.builder()</b>
+<b class="nc">&nbsp;                .issueId(issue.getId())</b>
+<b class="nc">&nbsp;                .memberUsers(members)</b>
+<b class="nc">&nbsp;                .projectName(issue.getProject().getTitle())</b>
+<b class="nc">&nbsp;                .issueTitle(issue.getTitle())</b>
+<b class="nc">&nbsp;                .issueType(issue.getIssueType())</b>
+<b class="nc">&nbsp;                .issueCategory(issue.getIssueCategory().getName())</b>
+<b class="nc">&nbsp;                .subject(issue.getSubject())</b>
+<b class="nc">&nbsp;                .issueDescription(issue.getDescription())</b>
+<b class="nc">&nbsp;                .issuePlanStartDate(issue.getPlanStartDate())</b>
+<b class="nc">&nbsp;                .issuePlanEndDate(issue.getPlanDueDate())</b>
+<b class="nc">&nbsp;                .fileNameList(issueFiles.stream().map(v-&gt;v.getFileName()).toList())</b>
+<b class="nc">&nbsp;                .build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public AssignIssue save(AssignIssue assignIssue) {
+<b class="nc">&nbsp;        return assignIssueRepository.save(assignIssue);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;AssignIssue&gt; getAssignIssuesByTeamleaderId(Long id) {
+<b class="nc">&nbsp;        return assignIssueRepository.getAssignIssuesByTeamLeaderId(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;AssignIssue&gt; getAssignIssuesByMemberId(Long id) {
+<b class="nc">&nbsp;        return assignIssueRepository.getAssignIssuesByMemberId(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public AssignIssue getAssignIssueDetailsByAssignIssueId(Long id) {
+<b class="nc">&nbsp;        return assignIssueRepository.getAssignIssueById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int getAssignIssueCount() {
+<b class="nc">&nbsp;        return (int) assignIssueRepository.count();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int getActiveAssignIssueCount() {
+<b class="nc">&nbsp;        List&lt;AssignIssue&gt; allAssignIssues = assignIssueRepository.findAll();</b>
+<b class="nc">&nbsp;        int activeAssignIssue = 0;</b>
+<b class="nc">&nbsp;        for (AssignIssue assignIssue : allAssignIssues){</b>
+<b class="nc">&nbsp;            if(assignIssue.isActive()){</b>
+<b class="nc">&nbsp;                activeAssignIssue++;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return activeAssignIssue;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int getInactiveAssignIssueCount() {
+<b class="nc">&nbsp;        List&lt;AssignIssue&gt; allAssignIssues = assignIssueRepository.findAll();</b>
+<b class="nc">&nbsp;        int inActiveAssignIssue = 0;</b>
+<b class="nc">&nbsp;        for (AssignIssue assignIssue : allAssignIssues){</b>
+<b class="nc">&nbsp;            if(!assignIssue.isActive()){</b>
+<b class="nc">&nbsp;                inActiveAssignIssue++;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return inActiveAssignIssue;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;AssignIssue&gt; getSubIssuesByUserId(Long userId) {
+<b class="nc">&nbsp;        return assignIssueRepository.getAssignIssuesByMemberId(userId);</b>
+&nbsp;}
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Issue&gt; getIssuesByAssignIssueIds(List&lt;Long&gt; assignIssueIds) {
+<b class="nc">&nbsp;        List&lt;Issue&gt; issues = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (Long assignIssueId : assignIssueIds) {</b>
+<b class="nc">&nbsp;            Optional&lt;AssignIssue&gt; assignIssueOptional = assignIssueRepository.findById(Math.toIntExact(assignIssueId));</b>
+<b class="nc">&nbsp;            assignIssueOptional.ifPresent(assignIssue -&gt; {</b>
+<b class="nc">&nbsp;                if (assignIssue.getIssue() != null) {</b>
+<b class="nc">&nbsp;                    issues.add(assignIssue.getIssue());</b>
+&nbsp;                }
+&nbsp;            });
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return issues;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public AssignIssue getAssignIssueById(Long assignIssueId) {
+<b class="nc">&nbsp;        return assignIssueRepository.findById(assignIssueId);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

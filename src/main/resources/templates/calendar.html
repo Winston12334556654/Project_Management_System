@@ -28,8 +28,7 @@
 
     <div class="page-content">
         <div class="container-fluid">
-
-<div id='calendar'></div>
+            <div id='calendar'></div>
         </div>
     </div>
 </div>
@@ -43,49 +42,310 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            events: [],
 
-        });
-        fetch("/issueList")
-            .then(response=> response.json())
-            .then(data=>{
-                console.log('All Issue object Lists in Array Response: '+ data);
+        async function fetchUserAndProcessSchedules(){
+            try{
+                var user  = await fetchCurrentUser();
+                if (user.role === "TEAMLEADER" || user.role === "MEMBER"){
+                    var calendarEl = document.getElementById('calendar');
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        events: [],
 
-                // Assuming data is an array of issues
-                var events = data.map(function(issue, index) {
+                    });
+                    console.log("User ID:", user.id);
+                    fetch(`/issueList/${user.id}`)
+                        .then(response=> {
+                            if(!response.ok){
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data=>{
+                            // Assuming data is an array of issues
+                            var events = data.map(function(issue, index) {
 
-                    // Define colors for each issue (you can customize these colors)
-                    var colors = ["#FF5733", "#33FF57", "#3366FF", "#FF33A1", "#A133FF"];
+                                // Define colors for each issue (you can customize these colors)
+                                var colors = ["rgba(255,87,51,0.29)", "rgba(51,255,87,0.34)", "rgba(51,102,255,0.26)", "rgba(255,51,161,0.26)", "#A133FF"];
 
-                    // Format dates to include the time portion
-                    var formattedStartDate = issue.planStartDate + "T00:00:00";
-                    var formattedEndDate = issue.planDueDate + "T23:59:59";
+                                // Format dates to include the time portion
+                                var formattedStartDate = issue.planStartDate + "T00:00:00";
+                                var formattedEndDate = issue.planDueDate + "T23:59:59";
 
-                    console.log('formattedStartDate : '+ formattedStartDate);
-                    console.log('formattedEndDate : '+ formattedEndDate);
+                                console.log('formattedStartDate : '+ formattedStartDate);
+                                console.log('formattedEndDate : '+ formattedEndDate);
 
-                    return {
-                        title: issue.title,
-                        start: formattedStartDate,
-                        end: formattedEndDate,
-                        color: colors[index % colors.length]
-                    };
+                                return {
+                                    title: issue.title,
+                                    start: formattedStartDate,
+                                    end: formattedEndDate,
+                                    color: colors[index % colors.length]
+                                };
+                            });
+
+                            // Set the events in the calendar
+                            calendar.setOption('events', events);
+
+                            // Log the data to the console (for debugging purposes)
+                            console.log('All Issue List: ', data);
+                        })
+
+                        .catch(error => {
+                            console.log('Error: ', error);
+                        });
+                    calendar.render();
+
+
+                }else if(user.role === "PM"){
+                    var calendarEl= document.getElementById('calendar');
+                    var calendar= new FullCalendar.Calendar(calendarEl,{
+                        initialView: 'dayGridMonth',
+                        events: [],
+                        eventClick: async function (info) {
+                            // Access the title property directly from _def
+                            const title = info.event._def.title;
+                            console.log('Event title:', title);
+                            const project = await fetchProjectByTitle(title);
+                            console.log('project Id : ', project.id);
+                            const issueListByProject = await fetchIssuesByProjectId(project.id);
+                            console.log('Issue list : ', issueListByProject);
+
+                            // Assuming data is an array of issues
+                            var events = issueListByProject.map(function(issue, index) {
+
+                                // Define colors for each issue (you can customize these colors)
+                                var colors = ["rgba(255,87,51,0.29)", "rgba(51,255,87,0.34)", "rgba(51,102,255,0.26)", "rgba(255,51,161,0.26)", "#A133FF"];
+
+                                // Format dates to include the time portion
+                                var formattedStartDate = issue.planStartDate + "T00:00:00";
+                                var formattedEndDate = issue.planDueDate + "T23:59:59";
+
+                                console.log('formattedStartDate : '+ formattedStartDate);
+                                console.log('formattedEndDate : '+ formattedEndDate);
+
+                                return {
+                                    title: issue.title,
+                                    start: formattedStartDate,
+                                    end: formattedEndDate,
+                                    color: colors[index % colors.length]
+                                };
+                            });
+                            // Set the events in the calendar
+                            calendar.setOption('events', events);
+                            calendar.render();
+                        }
+                    })
+
+
+
+                    fetch(`/projectList/${user.id}`)
+                        .then (response=> {
+                            if(!response.ok){
+                                throw new Error('Network response was not ok')
+
+                            }
+                            return response.json();
+                        })
+                        .then(data=>{
+                            var events = data.map(function(project,index){
+
+                                // Define colors for each issue (you can customize these colors)
+                                var colors = ["rgba(255,87,51,0.29)", "rgba(51,255,87,0.34)", "rgba(51,102,255,0.26)", "rgba(255,51,161,0.26)", "#A133FF"];
+
+
+
+                                // Format dates to include the time portion
+                                var formattedStartDate = project.planStartDate + "T00:00:00";
+                                var formattedEndDate = project.planEndDate + "T23:59:59";
+
+                                console.log('formattedStartDate : '+ formattedStartDate);
+                                console.log('formattedEndDate : '+ formattedEndDate);
+
+                                return {
+                                    title: project.title,
+                                    start: formattedStartDate,
+                                    end: formattedEndDate,
+                                    color: colors[index % colors.length]
+                                };
+                            })
+
+                            calendar.setOption('events', events);
+                            // Add an event listener to the document body
+                            // Add an event listener to the document body
+                            document.body.addEventListener('click', function (event) {
+                                // Check if the clicked element is inside the day grid table
+                                if (event.target.closest('.fc-scrollgrid-sync-table')) {
+                                    // Reset the calendar to its initial state
+                                    calendar.setOption('events', events);
+                                    calendar.render();
+                                }
+                            });
+                        })
+                        .catch(error => {
+                            console.log('Error: ', error);
+                        });
+                    calendar.render();
+
+                }
+                else if(user.role==="PMO"){
+
+                    var calendarEl= document.getElementById('calendar');
+                    var calendar= new FullCalendar.Calendar(calendarEl,{
+                        initialView: 'dayGridMonth',
+                        events: [],
+                        eventClick: async function (info) {
+                            // Access the title property directly from _def
+                            const title = info.event._def.title;
+                            console.log('Event title:', title);
+                            const project = await fetchProjectByTitle(title);
+                            console.log('project Id : ', project.id);
+                            const issueListByProject = await fetchIssuesByProjectId(project.id);
+                            console.log('Issue list : ', issueListByProject);
+
+                            // Assuming data is an array of issues
+                            var events = issueListByProject.map(function(issue, index) {
+
+                                // Define colors for each issue (you can customize these colors)
+                                var colors = ["rgba(255,87,51,0.29)", "rgba(51,255,87,0.34)", "rgba(51,102,255,0.26)", "rgba(255,51,161,0.26)", "#A133FF"];
+
+                                // Format dates to include the time portion
+                                var formattedStartDate = issue.planStartDate + "T00:00:00";
+                                var formattedEndDate = issue.planDueDate + "T23:59:59";
+
+                                console.log('formattedStartDate : '+ formattedStartDate);
+                                console.log('formattedEndDate : '+ formattedEndDate);
+
+                                return {
+                                    title: issue.title,
+                                    start: formattedStartDate,
+                                    end: formattedEndDate,
+                                    color: colors[index % colors.length]
+                                };
+                            });
+                            // Set the events in the calendar
+                            calendar.setOption('events', events);
+                            calendar.render();
+                        }
+                    })
+
+
+
+                    fetch(`/all-project`)
+                        .then (response=> {
+                            if(!response.ok){
+                                throw new Error('Network response was not ok')
+
+                            }
+                            return response.json();
+                        })
+                        .then(data=>{
+                            var events = data.map(function(project,index){
+
+                                // Define colors for each issue (you can customize these colors)
+                                var colors = ["rgba(255,87,51,0.29)", "rgba(51,255,87,0.34)", "rgba(51,102,255,0.26)", "rgba(255,51,161,0.26)", "#A133FF"];
+
+
+
+                                // Format dates to include the time portion
+                                var formattedStartDate = project.planStartDate + "T00:00:00";
+                                var formattedEndDate = project.planEndDate + "T23:59:59";
+
+                                console.log('formattedStartDate : '+ formattedStartDate);
+                                console.log('formattedEndDate : '+ formattedEndDate);
+
+                                return {
+                                    title: project.title,
+                                    start: formattedStartDate,
+                                    end: formattedEndDate,
+                                    color: colors[index % colors.length]
+                                };
+                            })
+
+                            calendar.setOption('events', events);
+
+                            // Add an event listener to the document body
+                            document.body.addEventListener('click', function (event) {
+                                // Check if the clicked element is inside the day grid table
+                                if (event.target.closest('.fc-scrollgrid-sync-table')) {
+                                    // Reset the calendar to its initial state
+                                    calendar.setOption('events', events);
+                                    calendar.render();
+                                }
+                            });
+                        })
+                        .catch(error => {
+                            console.log('Error: ', error);
+                        });
+                    calendar.render();
+
+                }
+                else {
+                    console.log("User does not have the required role for calendar setup.");
+                }
+
+            }catch(error){
+                console.error('Error Fetching or processing user: ', error);
+            }
+
+        }
+
+        //THis is the function to render calender , segments inside are the verification of the accessing data according to role.
+        fetchUserAndProcessSchedules()
+
+        async function fetchIssuesByProjectId(projectId){
+            return await fetch (`/${projectId}/issues`)
+                .then(response =>{
+                    if(!response.ok){
+                        throw new Error('Failed to fetch current user')
+                    }
+                    return response.json();
+                })
+                .then(issues =>{
+                    issueList = issues;
+                    return issues;
+                })
+                .catch(error=>{
+                    console.error('Error fetching current user : ', error);
+                    return Promise.reject(0);
+                })
+        }
+        async function fetchCurrentUser() {
+            return await fetch('/api/user/current-user')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch current user');
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    // Update UI with user data
+                    currentUser = user;
+                    return user;
+                })
+                .catch(error => {
+                    console.error('Error fetching current user:', error);
+                    return Promise.reject(0);
                 });
+        }
+        async function fetchProjectByTitle(title) {
+            return await fetch(`/projectByTitle/${title}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch project with title: ${title}`);
+                    }
+                    return response.json();
+                })
+                .then(project => {
+                    // Handle the retrieved project data
+                    console.log('Fetched project by title:', project);
+                    return project;
+                })
+                .catch(error => {
+                    console.error('Error fetching project by title:', error);
+                    return Promise.reject(0);
+                });
+        }
 
-                // Set the events in the calendar
-                calendar.setOption('events', events);
-
-                // Log the data to the console (for debugging purposes)
-                console.log('All Issue List: ', data);
-            })
-
-            .catch(error => {
-                console.log('Error: ', error);
-            });
-        calendar.render();
     });
 
 </script>

@@ -1,0 +1,114 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > IssueRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: IssueRepository (ai.group2.project_management_system.repository)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IssueRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.repository;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.model.Enum.Status;
+&nbsp;import ai.group2.project_management_system.model.entity.Issue;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Repository
+&nbsp;public interface IssueRepository extends JpaRepository&lt;Issue, Integer&gt; {
+&nbsp;    Optional&lt;Issue&gt; findIssueById(Long id);
+&nbsp;
+&nbsp;    List&lt;Issue&gt; getIssuesByTeamLeaderId(Long id);
+&nbsp;
+&nbsp;    List&lt;Issue&gt; getIssuesByCreator(String creator);
+&nbsp;
+&nbsp;    @Query(value = &quot;select u.id from issue ie join\n&quot; +
+&nbsp;            &quot;project p on ie.project_id = p.id join\n&quot; +
+&nbsp;            &quot;project_member pm on p.id = pm.project_id join\n&quot; +
+&nbsp;            &quot;user u on pm.user_id = u.id\n&quot; +
+&nbsp;            &quot;where ie.id = :issueId and u.role = :role&quot;, nativeQuery = true)
+&nbsp;    List&lt;Long&gt; getUsersByIssueId(@Param(&quot;issueId&quot;) Long issueId, @Param(&quot;role&quot;) String role);
+&nbsp;
+&nbsp;    @Query(value = &quot;select i.* from issue i join project p on p.id=i.project_id join project_member pm on pm.project_id = p.id where pm.user_id = :userId &quot;, nativeQuery = true)
+&nbsp;    List&lt;Issue&gt; findAllIssueByUserId(@Param(&quot;userId&quot;) Long userId);
+&nbsp;
+&nbsp;    Issue getIssueById(Long id);
+&nbsp;
+&nbsp;
+&nbsp;    List&lt;Issue&gt; findIssuesByProjectId(Long projectId);
+&nbsp;
+&nbsp;
+&nbsp;    Integer countByStatus(Status status);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT COUNT(i) FROM Issue i WHERE i.project.id = :projectId&quot;)
+&nbsp;    int countIssuesByProjectId(@Param(&quot;projectId&quot;) Long projectId);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT COUNT(i) FROM Issue i WHERE i.project.id = :projectId AND i.status = &#39;COMPLETED&#39;&quot;)
+&nbsp;    int countCompletedIssuesByProjectId(@Param(&quot;projectId&quot;) Long projectId);
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

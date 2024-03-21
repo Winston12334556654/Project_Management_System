@@ -28,6 +28,4 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department getDepartmentById(Long id) {
         return departmentRepository.getReferenceById(id);
     }
-
-
 }

@@ -57,4 +57,10 @@ public class AssignIssueAPI {
 
     }
 
+    @GetMapping("/get-all-subIssues/{memberId}")
+    public ResponseEntity<List<AssignIssue>> getAllAssignIssue(@PathVariable("memberId") Long memberId) {
+        List<AssignIssue> assignIssues=assignIssueService.getAssignIssuesByMemberId(memberId);
+        return ResponseEntity.ok(assignIssues);
+    }
+
 }

@@ -4,7 +4,17 @@
 <head th:replace="~{layout :: head}">
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css}" />
     <title>Project Management System</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
 </head>
+<style>
+    .teamLeaderImage {
+        width: 50px;
+        height: 50px;
+        display: block;
+        margin: 0 auto;
+    }
+
+</style>
 <body>
 <div id="layout-wrapper">
     <div id="header-container">
@@ -51,9 +61,9 @@
                                                     <div class="hstack gap-3 flex-wrap">
 
                                                         <div class="vr"></div>
-                                                        <div>Create Date : <span class="fw-medium" th:text="${project.planStartDate}"></span></div>
+                                                        <div>Plan Start Date : <span class="fw-medium" th:text="${project.planStartDate}"></span></div>
                                                         <div class="vr"></div>
-                                                        <div>Due Date : <span class="fw-medium" th:text="${project.planEndDate}"></span></div>
+                                                        <div>Plan Due Date : <span class="fw-medium" th:text="${project.planEndDate}"></span></div>
                                                         <div class="vr"></div>
                                                         <div class="text-end">
                                                             <span th:if="${project.isActive()}" class="badge bg-success">Active</span>
@@ -120,16 +130,22 @@
                                                                 <h5 class="fs-15 mb-0" th:if="${project.actualEndDate == null}">This project isn't started yet!</h5>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-3 col-sm-6">
+                                                        <div class="col-lg-2 col-sm-6">
                                                             <div>
                                                                 <p class="mb-2 text-uppercase fw-medium">Priority :</p>
                                                                 <div class="badge bg-danger fs-12" th:text="${project.priority}"></div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-3 col-sm-6">
+                                                        <div class="col-lg-2 col-sm-6">
                                                             <div>
                                                                 <p class="mb-2 text-uppercase fw-medium">Status :</p>
                                                                 <div class="badge bg-warning fs-12" th:text="${project.status}"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-2 col-sm-6">
+                                                            <div>
+                                                                <p class="mb-2 text-uppercase fw-medium display-none" > Announcement</p>
+                                                                <div class="badge bg-danger fs-12 " th:text="${project.overDue ? 'OVERDUE' : 'Current'}"></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -137,28 +153,15 @@
                                             </div>
                                         </div>
                                         <!-- end card body -->
+
                                     </div>
                                     <!-- end card -->
+
                                 </div>
                                 <!-- ene col -->
 
-                                <div class="row g-4 mb-3">
-                                    <div class="col-sm">
-                                        <div class="d-flex">
-                                            <div class="search-box me-2">
-                                                <input type="text" class="form-control" placeholder="Search member..." id="search-members">
-                                                <i class="ri-search-line search-icon"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end row -->
-
-                                <div class="team-list list-view-filter" id="member-list">
-                                    <!--Member List-->
-                                </div>
-                                <!-- end team list -->
                             </div>
+
                             <!-- end row -->
                         </div>
                         <!-- end tab pane -->
@@ -169,154 +172,126 @@
                 <!-- end col -->
             </div>
             <!-- end row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card" id="tasksList">
+                        <div class="card-body">
+                            <div class="table-responsive table-card mb-4">
+                                <table class="table align-middle table-striped table-hover table1 display" id="example">
+                                    <thead class="table-light text-muted">
+                                    <tr>
+
+                                        <th class="sort" data-sort="">PM Name</th>
+                                        <th class="sort" data-sort="">Project</th>
+                                        <th class="sort" data-sort="">Issue Title</th>
+                                        <th class="sort" data-sort="">Team Leader</th>
+                                        <th class="sort" data-sort="">Start Date</th>
+                                        <th class="sort" data-sort="">Due Date</th>
+                                        <th class="sort" data-sort="">Status</th>
+                                        <th class="sort" data-sort="">Priority</th>
+                                        <th class="sort" >Details</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="list form-check-all">
+                                    <tr th:each="issue : ${issues}">
+                                        <td class="id"><a href="#" class="fw-medium link-primary" th:text="${issue.getCreator()}"></a></td>
+                                        <td class="due_date"><a href="#" class="fw-medium link-primary" th:text="${issue.getProject().getTitle()}"></a></td>
+
+                                        <td>
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1 tasks_name" th:text="${issue.getTitle()}"></div>
+                                            </div>
+                                        </td>
+                                        <td class="assignedto">
+                                            <div class="avatar-group">
+                                                <!--<a href="javascript: void(0);" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Frank">
+                                                    <img th:src="@{'/assets/userPhoto/A.jpg'}" alt="" class="rounded-circle avatar-xxs" />
+                                                </a>-->
+
+                                                <a href="#" class="avatar-group-item shadow teamLeaderName" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="" th:attr="data-team-leader-id=${issue.getTeamLeaderId()}">
+                                                    <img src="" alt="" class="rounded-circle avatar-xxs teamLeaderImage">
+                                                </a>
+
+
+                                            </div>
+                                        </td>
+                                        <td class="due_date" th:text="${issue.getPlanStartDate()}"></td>
+                                        <td class="due_date" th:text="${issue.getPlanDueDate()}"></td>
+                                        <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase" th:text="${issue.getStatus()}"></span></td>
+                                        <td class="priority"><span class="badge bg-danger text-uppercase" th:text="${issue.getPriority()}"></span></td>
+                                        <td >
+                                            <button class="btn btn-sm btn-light"
+                                                    th:onclick="@{'clickView(' + ${issue.id} + ')'}"
+                                                    th:disabled="${!(user.role == user.role.TEAMLEADER and user.id==issue.teamLeaderId) and !(user.role==user.role.PMO) and !(user.role==user.role.PM ) and !(user.role==user.role.MEMBER and issue.project.users.contains(user))}">
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                    <!--end card-->
+                </div>
+                <!--end col-->
+            </div>
         </div>
         <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-
-    <footer class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <script>document.write(new Date().getFullYear())</script> © Velzon.
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end d-none d-sm-block">
-                        Design & Develop by Themesbrand
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
 </div>
-
+<div th:replace="~{layout :: footer}"></div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" ></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const pjId = [[${project.id}]];
-        memberGetter(pjId);
+    $(document).ready(function() {
+        new DataTable('#example', {
+            pagingType: 'full_numbers'
+
+        });
+
+
     });
 
-
-    function memberGetter(projectId) {
-        // Construct the URL with the projectId as a query parameter
-        const url = `/member?projectId=${projectId}`;
-
-        // Make a GET request using Fetch API
-        return fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Return the response data, which will contain user IDs
-                console.log(data);
-                getUserData(data);
-                return data;
-            })
-            .catch(error => {
-                // Handle errors
-                console.error('There was a problem with the fetch operation:', error);
-                throw error; // Rethrow the error for the caller to handle
-            });
-    }
-
-    function getUserData(userIds) {
-        const url = `/users?userIds=${userIds.join(',')}`;
-        fetch(url, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(users => {
-                // Process the user data and display it as needed
-                console.log(users);
-                displayMemberList(users);
-            })
-            .catch(error => {
-                console.error('Error fetching user data:', error);
-            });
-    }
-    const member=[];
-    function displayMemberList(dto) {
-        const memberListContainer = document.getElementById('member-list');
-        // Clear existing member list content
-        memberListContainer.innerHTML = '';
-
-        if (!Array.isArray(dto)) {
-            console.error('DTO is not an array:', dto);
-            return;
-        }
-
-        // Loop through the DTOs and create HTML elements for each DTO
-        dto.forEach(user => {
-            const listItem = document.createElement('div');
-            listItem.classList.add('card', 'team-box');
-            listItem.innerHTML = `
-                                        <div class="card-body px-4" id="member-card">
-                                            <div class="row align-items-center team-row">
-                                                <div class="col-lg-4 col">
-                                                    <div class="team-profile-img">
-                                                        <div class="avatar-lg img-thumbnail rounded-circle shadow">
-                                                            <img src="assets/images/users/about" alt="" class="img-fluid d-block rounded-circle" />
-                                                        </div>
-                                                        <div class="team-content">
-                                                            <a href="#" class="d-block">
-                                                                <h5 class="member-names fs-16 mb-1">${user.name}</h5>
-                                                            </a>
-                                                            <p class="text-muted mb-0">${user.role}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col">
-                                                    <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col">
-                                                    <div class="text-end">
-                                                        <a href="pages-profile.html" class="btn btn-light view-btn">View Profile</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-        `;
-            memberListContainer.appendChild(listItem);
-        });
-        const memberElements = document.querySelectorAll('.member-names');
-        memberElements.forEach(element => {
-            member.push(element.textContent);
-        });
-        console.log(member);
-    }
-    function searchMembers() {
-        const searchInput = document.getElementById('search-members').value;
-        console.log(searchInput);
-        const members = document.querySelectorAll('.team-box');
-
-        console.log(member);
-        members.forEach((card, index) => {
-            const m = member[index];
-            if (m.includes(searchInput)) {
-                card.style.display = 'block'; // Show the card if it matches the search
-            } else {
-                card.style.display = 'none'; // Hide the card if it doesn't match the search
-            }
-        });
-    }
-    document.getElementById('search-members').addEventListener('input', searchMembers);
 </script>
+<!--<script th:src="@{assets/js/pm-teamleader-list.js}"></script>-->
+<!--For Teamleader Image-->
+<script>
+    async function fetchUserDetails(teamLeaderId, teamLeaderElement) {
+        try {
+            const response = await fetch('/get-user/' + teamLeaderId);
+            const user = await response.json();
+            // Update HTML with user details, including the profile picture
+            const profilePicture = user.profilePictureFileName;
+            console.log("Profile Picture:", profilePicture);
+            const imgElement = teamLeaderElement.querySelector('.teamLeaderImage');
+            imgElement.src = '/assets/userPhoto/' + profilePicture;
+            imgElement.alt = '';  // Set alt text if needed
+            teamLeaderElement.setAttribute('title', user.name);
 
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+            teamLeaderElement.textContent = 'Error fetching user details: ' + error.message;
+        }
+    }
+
+    // Get all elements with the class "teamLeader"
+    var teamLeaderElements = document.getElementsByClassName("teamLeaderName");
+
+    // Iterate through each element
+    for (var i = 0; i < teamLeaderElements.length; i++) {
+        var teamLeaderId = teamLeaderElements[i].getAttribute("data-team-leader-id");
+        console.log("TeamleaderId:",teamLeaderId);
+        // Call the function to fetch user details and update HTML
+        fetchUserDetails(teamLeaderId, teamLeaderElements[i]);
+    }
+    const clickView = (id)=>{
+        console.log(id)
+        window.location.href = '/project/project-issue-detail/'+id;
+    }
+</script>
 </body>
 </html>

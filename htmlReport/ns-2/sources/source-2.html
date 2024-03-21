@@ -1,0 +1,332 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > SecurityConfig</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.config</a>
+</div>
+
+<h1>Coverage Summary for Class: SecurityConfig (ai.group2.project_management_system.config)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SecurityConfig</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (15/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    89%
+  </span>
+  <span class="absValue">
+    (65/73)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SecurityConfig$$SpringCGLIB$$0</td>
+  </tr>
+  <tr>
+    <td class="name">SecurityConfig$$SpringCGLIB$$FastClass$$0</td>
+  </tr>
+  <tr>
+    <td class="name">SecurityConfig$$SpringCGLIB$$FastClass$$1</td>
+  </tr>
+  <tr>
+    <td class="name">SecurityConfig$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    85%
+  </span>
+  <span class="absValue">
+    (17/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    89.3%
+  </span>
+  <span class="absValue">
+    (67/75)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.config;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.model.Enum.Role;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import ai.group2.project_management_system.repository.UserRepository;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.springframework.context.annotation.Bean;
+&nbsp;import org.springframework.context.annotation.Configuration;
+&nbsp;import org.springframework.jdbc.core.JdbcTemplate;
+&nbsp;import org.springframework.security.authentication.BadCredentialsException;
+&nbsp;import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+&nbsp;import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+&nbsp;import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+&nbsp;import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+&nbsp;import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+&nbsp;import org.springframework.security.core.context.SecurityContextHolder;
+&nbsp;import org.springframework.security.core.session.SessionRegistry;
+&nbsp;import org.springframework.security.core.session.SessionRegistryImpl;
+&nbsp;import org.springframework.security.core.userdetails.UserDetailsService;
+&nbsp;import org.springframework.security.core.userdetails.UsernameNotFoundException;
+&nbsp;import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+&nbsp;import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+&nbsp;import org.springframework.security.crypto.password.PasswordEncoder;
+&nbsp;import org.springframework.security.web.SecurityFilterChain;
+&nbsp;import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+&nbsp;import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+&nbsp;import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+&nbsp;import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+&nbsp;import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+&nbsp;
+&nbsp;import javax.sql.DataSource;
+&nbsp;
+&nbsp;@Configuration
+&nbsp;@EnableWebSecurity
+&nbsp;@EnableMethodSecurity
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+<b class="fc">&nbsp;@Slf4j</b>
+&nbsp;public class SecurityConfig {
+&nbsp;
+&nbsp;    private final UserRepository userRepository;
+<b class="fc">&nbsp;    private final String MY_KEY = &quot;akatsuki-abcdEFGH1234-5678IJKLmnopqrstuvwxYZ&quot;;</b>
+&nbsp;    private final DataSource dataSource;
+&nbsp;    @Bean
+&nbsp;    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+<b class="fc">&nbsp;        return http</b>
+<b class="fc">&nbsp;                .csrf(AbstractHttpConfigurer::disable)</b>
+<b class="fc">&nbsp;                .httpBasic(AbstractHttpConfigurer::disable)</b>
+<b class="fc">&nbsp;                .authorizeHttpRequests(request -&gt;</b>
+&nbsp;                        request
+<b class="fc">&nbsp;                                .requestMatchers(</b>
+&nbsp;                                        &quot;/resources/**&quot;,
+&nbsp;                                        &quot;/static/**&quot;,
+&nbsp;                                        &quot;/static/img/**&quot;,
+&nbsp;                                        &quot;/assets/**&quot;,
+&nbsp;                                        &quot;/js/**&quot;,
+&nbsp;                                        &quot;/css/**&quot;,
+&nbsp;                                        &quot;/images/**&quot;,
+&nbsp;                                       &quot;userPhoto&quot;,
+&nbsp;                                        &quot;projectFiles&quot;
+<b class="fc">&nbsp;                                ).permitAll()</b>
+<b class="fc">&nbsp;                                .requestMatchers(&quot;/forgot-password&quot;,&quot;/otp-form&quot;,&quot;/create-new-password&quot;).permitAll()</b>
+<b class="fc">&nbsp;                                .requestMatchers(&quot;/calendar&quot;,&quot;/all-issue-list&quot;,&quot;/home&quot;,&quot;/project/projects&quot;)</b>
+<b class="fc">&nbsp;                                .hasAnyAuthority(&quot;PMO&quot;,&quot;PM&quot;,&quot;TEAMLEADER&quot;,&quot;MEMBER&quot;)</b>
+<b class="fc">&nbsp;                                .requestMatchers(&quot;/issue-list&quot;,&quot;/issueboard&quot;,&quot;/teamleader-progress-view&quot;,&quot;/project/my-projects&quot;)</b>
+<b class="fc">&nbsp;                                .hasAnyAuthority(&quot;PM&quot;)</b>
+<b class="fc">&nbsp;                                .requestMatchers(&quot;/user-management&quot;)</b>
+<b class="fc">&nbsp;                                .hasAnyAuthority(&quot;PM&quot;,&quot;PMO&quot;)</b>
+<b class="fc">&nbsp;                                .requestMatchers(&quot;/department&quot;)</b>
+<b class="fc">&nbsp;                                .hasAnyAuthority(&quot;PMO&quot;)</b>
+<b class="fc">&nbsp;                                .requestMatchers(&quot;/teamleader-issuelist&quot;,&quot;/teamleader-member-issuelist&quot;,&quot;/teamleader-issueboard&quot;)</b>
+<b class="fc">&nbsp;                                .hasAnyAuthority(&quot;TEAMLEADER&quot;)</b>
+<b class="fc">&nbsp;                                .requestMatchers(&quot;/member-issueboard&quot;,&quot;member-issuelist&quot;)</b>
+<b class="fc">&nbsp;                                .hasAnyAuthority(&quot;MEMBER&quot;)</b>
+<b class="fc">&nbsp;                                .anyRequest()</b>
+<b class="fc">&nbsp;                                .fullyAuthenticated()</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;                )
+<b class="fc">&nbsp;                .formLogin(form -&gt; {</b>
+<b class="fc">&nbsp;                    form</b>
+<b class="fc">&nbsp;                            .loginPage(&quot;/login&quot;)</b>
+<b class="fc">&nbsp;                            .loginProcessingUrl(&quot;/process-login&quot;)</b>
+<b class="fc">&nbsp;                            .usernameParameter(&quot;email&quot;)</b>
+<b class="fc">&nbsp;                            .passwordParameter(&quot;password&quot;)</b>
+<b class="fc">&nbsp;                            .successHandler(((request, response, authentication) -&gt; {</b>
+<b class="nc">&nbsp;                                System.out.println(&quot;Successful authentication. Redirecting to /home&quot;);</b>
+<b class="nc">&nbsp;                                response.sendRedirect(&quot;/home&quot;);</b>
+&nbsp;                            }))
+<b class="fc">&nbsp;                            .permitAll();</b>
+&nbsp;                })
+&nbsp;
+<b class="fc">&nbsp;                .logout(logout -&gt;</b>
+<b class="fc">&nbsp;                        logout</b>
+<b class="fc">&nbsp;                                .logoutUrl(&quot;/logout&quot;)</b>
+<b class="fc">&nbsp;                                .invalidateHttpSession(true)</b>
+<b class="fc">&nbsp;                                .deleteCookies(&quot;JSESSIONID&quot;)</b>
+<b class="fc">&nbsp;                                .clearAuthentication(true)</b>
+<b class="fc">&nbsp;                                .logoutSuccessHandler(((request, response, authentication) -&gt;</b>
+<b class="nc">&nbsp;                                        response.sendRedirect(&quot;/login&quot;)</b>
+&nbsp;                                ))
+<b class="fc">&nbsp;                                .permitAll()</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .exceptionHandling(</b>
+<b class="fc">&nbsp;                        (exceptionHandling) -&gt; exceptionHandling</b>
+<b class="fc">&nbsp;                                .accessDeniedPage(&quot;/access-denied&quot;))</b>
+&nbsp;                /*.rememberMe(remember -&gt; remember
+&nbsp;                        .key(MY_KEY )
+&nbsp;                        .rememberMeParameter(&quot;remember-me&quot;)
+&nbsp;                        .rememberMeServices(rememberMeServices())
+&nbsp;                        .tokenValiditySeconds(60 * 60 * 24)//1 day
+&nbsp;                )*/
+<b class="fc">&nbsp;                .sessionManagement(session -&gt; session</b>
+<b class="fc">&nbsp;                        .maximumSessions(1)//1 user 1 session</b>
+<b class="fc">&nbsp;                        .maxSessionsPreventsLogin(false)//if user already login, then user can&#39;t login again</b>
+<b class="fc">&nbsp;                        .expiredUrl(&quot;/login&quot;)//if user already login, then user can&#39;t login again</b>
+<b class="fc">&nbsp;                        .sessionRegistry(sessionRegistry())//session registry</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public UserDetailsService userDetailsService(){
+<b class="fc">&nbsp;        return email -&gt; {</b>
+<b class="nc">&nbsp;            User user=userRepository.findByEmail(email)</b>
+<b class="nc">&nbsp;                    .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;user not found!&quot;));</b>
+<b class="nc">&nbsp;            log.info(&quot;\n\n\nuser -&gt; {}\n\n\n&quot;, user);</b>
+<b class="nc">&nbsp;            return user;</b>
+&nbsp;        };
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public PasswordEncoder passwordEncoder(){
+<b class="fc">&nbsp;       return new BCryptPasswordEncoder();</b>
+&nbsp;    //    return NoOpPasswordEncoder.getInstance();
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public DaoAuthenticationProvider authenticationProvider(){
+<b class="fc">&nbsp;        DaoAuthenticationProvider provider=new DaoAuthenticationProvider();</b>
+<b class="fc">&nbsp;        provider.setUserDetailsService(userDetailsService());</b>
+<b class="fc">&nbsp;        provider.setPasswordEncoder(passwordEncoder());</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Password&quot;+passwordEncoder());</b>
+<b class="fc">&nbsp;        return provider;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public SessionRegistry sessionRegistry(){
+<b class="fc">&nbsp;        return new SessionRegistryImpl();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public PersistentTokenRepository persistentTokenRepository() {
+<b class="fc">&nbsp;        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();</b>
+<b class="fc">&nbsp;        tokenRepository.setDataSource(dataSource);</b>
+<b class="fc">&nbsp;        if (tokenRepository.getJdbcTemplate() == null) {</b>
+<b class="nc">&nbsp;            tokenRepository.setJdbcTemplate(new JdbcTemplate(dataSource));</b>
+&nbsp;        }
+<b class="fc">&nbsp;        tokenRepository.getJdbcTemplate().execute(&quot;CREATE TABLE IF NOT EXISTS persistent_logins (&quot; +</b>
+&nbsp;                &quot;username VARCHAR(64) NOT NULL,&quot; +
+&nbsp;                &quot;series VARCHAR(64) PRIMARY KEY,&quot; +
+&nbsp;                &quot;token VARCHAR(64) NOT NULL,&quot; +
+&nbsp;                &quot;last_used TIMESTAMP NOT NULL&quot; +
+&nbsp;                &quot;)&quot;);
+&nbsp;
+<b class="fc">&nbsp;        return tokenRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public PersistentTokenBasedRememberMeServices rememberMeServices() {
+<b class="fc">&nbsp;        return new PersistentTokenBasedRememberMeServices(</b>
+<b class="fc">&nbsp;                MY_KEY, userDetailsService(), persistentTokenRepository()</b>
+&nbsp;        );
+&nbsp;
+&nbsp;//        @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+&nbsp;//                @Override
+&nbsp;//        public AuthenticationManager authenticationManagerBean() throws Exception{
+&nbsp;//            return super.authenticationManagerBean();
+&nbsp;//        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public WebMvcConfigurer webConfigurer() {
+<b class="fc">&nbsp;        return new WebMvcConfigurer() {</b>
+&nbsp;            @Override
+&nbsp;            public void addViewControllers(ViewControllerRegistry registry) {
+<b class="fc">&nbsp;                registry.addViewController(&quot;/error/404&quot;).setViewName(&quot;error/404&quot;);</b>
+&nbsp;            }
+&nbsp;        };
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

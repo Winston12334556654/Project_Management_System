@@ -64,49 +64,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card" id="tasksList">
-                        <div class="card-header border-0">
-                            <div class="d-flex ">
-
-                                <div class="col-xxl-3 col-sm-4">
-                                    <!--<div class="input-light">
-                                        <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                            <option selected disabled>Search Projects</option>
-                                            <option value="New">All</option>
-                                            <option value="New">A</option>
-                                            <option value="Pending">B</option>
-                                            <option value="Inprogress">C</option>
-                                            <option value="Completed">D</option>
-                                        </select>
-                                    </div>-->
-                                </div>
-
-                                <div class="d-flex  col-xxl-4 col-sm-4 ms-auto justify-content-center align-items-center">
-                                    <div class="flex-shrink-0  " >
-                                        <img th:src="@{/assets/userPhoto/{photo}(photo=${user.profilePictureFileName})}" alt="" class="avatar-xs rounded-circle shadow">
-                                    </div>
-                                    <div class="flex-grow-1 ms-2">
-                                        <h6 class="mb-1"><a href="#" class="text-body" th:text="${user.getName()}"></a></h6>
-                                        <p class="text-muted mb-0" th:text="${user.getPosition().getPositionName()}"></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-3 ms-sm-auto">
-                                    <!-- <div class="input-light">
-                                         <select class="form-control" data-choices data-choices-search-false name="choices-single-default" id="idStatus" >
-                                             <option selected disabled>Search Issues</option>
-                                             <option value="New">All</option>
-                                             <option value="New">A</option>
-                                             <option value="Pending">B</option>
-                                             <option value="Inprogress">C</option>
-                                             <option value="Completed">D</option>
-                                         </select>
-                                     </div>-->
-                                </div>
-
-
-                            </div>
-                        </div>
-
                         <div class="card-body">
                             <div class="table-responsive table-card mb-4">
                                 <table class="table align-middle table-striped table-hover table1 display" id="example">
@@ -121,6 +78,7 @@
                                         <th class="sort" data-sort="">Due Date</th>
                                         <th class="sort" data-sort="">Status</th>
                                         <th class="sort" data-sort="">Priority</th>
+                                        <th class="sort" data-sort="">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody class="list form-check-all">
@@ -150,6 +108,19 @@
                                         <td class="due_date" th:text="${currentIssue.getPlanDueDate()}"></td>
                                         <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase" th:text="${currentIssue.getStatus()}"></span></td>
                                         <td class="priority"><span class="badge bg-danger text-uppercase" th:text="${currentIssue.getPriority()}"></span></td>
+                                        <td>
+    <span th:if="${currentIssue.active}">
+        <!-- Content for active issues -->
+        <button class="btn btn-sm btn-primary edit-item-btn" id="issueUpdate" data-issue-id="${currentIssue.getId()}">Edit</button>
+        <button class="btn btn-sm btn-success remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal" th:data-item-id="${currentIssue.id}">Delete</button>
+    </span>
+                                            <span th:unless="${currentIssue.active}">
+        <!-- Content for inactive issues -->
+        <button class="btn btn-sm btn-primary edit-item-btn" disabled>Edit</button>
+        <button class="btn btn-sm btn-success enable-item-btn" data-bs-toggle="modal" data-bs-target="#enableRecordModal" th:data-item-id="${currentIssue.id}">Enable</button>
+    </span>
+                                        </td>
+
                                     </tr>
                                     </tbody>
                                 </table>
@@ -173,6 +144,237 @@
 <!-- end main content-->
 
 </div>
+<!-- Modal -->
+<div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="deleteItemId" />
+                <div class="mt-2 text-center">
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Are you Sure ?</h4>
+                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Record ?</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn w-sm btn-danger " id="delete-record">Yes, Delete It!</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--end modal -->
+<!-- Modal -->
+<div class="modal fade zoomIn" id="enableRecordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close1"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="enableItemId" />
+                <div class="mt-2 text-center">
+                    <lord-icon
+                            src="https://cdn.lordicon.com/vihyezfv.json"
+                            trigger="loop"
+                            delay="1500"
+                            colors="primary:#e8e230"
+                            style="width:100px;height:100px">
+                    </lord-icon>
+                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Are you Sure ?</h4>
+                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Enable this Record ?</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn w-sm btn-outline-primary " id="enable-record">Yes, Enable it</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--end modal -->
+
+<!--<div class="modal fade" id="updateIssueModal" tabindex="-1" aria-labelledby="updateIssueModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0">
+            <div class="modal-header p-3 bg-info-subtle">
+                <h5 class="modal-title" id="updateIssueModalLabel">Update Issue</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form name="issue" id="createIssueForm" enctype="multipart/form-data">
+                    <h3 th:text="${user.getName()}" id="creator" style="display: none;"></h3>
+                    <div class="row g-3">
+                        &lt;!&ndash;Project Name col&ndash;&gt;
+                        <div class="col-lg-12">
+                            <label for="sub-tasks" class="form-label">Project Name</label>
+                            <div class="input-light">
+                                <select class="form-control" data-choices data-choices-search-false
+                                        name="choices-single-default" id="parent-project-input">
+
+                                </select>
+                            </div>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+                        &lt;!&ndash;Issue title col&ndash;&gt;
+                        <div class="col-lg-12">
+                            <label for="sub-tasks" class="form-label">Issue Title</label>
+                            <input type="text" class="form-control" id="issue-title-input"
+                                   placeholder="Issue title">
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+                        &lt;!&ndash;Issue type col&ndash;&gt;
+                        <div class="col-lg-12">
+                            <label for="sub-tasks" class="form-label">Issue Type</label>
+                            <div class="input-light">
+                                <select class="form-control" data-choices data-choices-search-false
+                                        name="choices-single-default" id="issue-type-input">
+                                    <option selected disabled>Issue Type</option>
+                                    <option value="Task">Task</option>
+                                    <option value="Request">Request</option>
+                                    <option value="QA">QA</option>
+                                    <option value="Coding Bug">Coding Bug</option>
+                                    <option value="Change Request">Change Request</option>
+                                    <option value="Problem">Problem</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+                        &lt;!&ndash;Issue category col&ndash;&gt;
+                        <div class="col-lg-12">
+                            <label for="sub-tasks" class="form-label">Issue Category</label>
+                            <div class="input-light">
+                                <select class="form-control" data-choices data-choices-search-false
+                                        name="choices-single-default" id="issue-category-input"></select>
+                            </div>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+                        &lt;!&ndash;Issue subject col&ndash;&gt;
+                        <div class="col-lg-12">
+                            <label for="task-description" class="form-label">Subject</label>
+                            <textarea class="form-control" id="issue-subject-input" rows="3"
+                                      placeholder="Issue Subject"></textarea>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+                        &lt;!&ndash;Issue description col&ndash;&gt;
+                        <div class="mb-3">
+                            <label class="form-label">Issue Description</label>
+                            <div id="ckeditor-classic-1">
+
+                            </div>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+                        &lt;!&ndash;Issue Teamleader&ndash;&gt;
+                        <div class="col-lg-12">
+                            <label th:for="tasks-progress" class="form-label">Assign Team Leader</label>
+                            <div data-simplebar style="height: 95px;">
+                                <ul class="list-unstyled vstack gap-2 mb-0" th:id="teamleader-list">
+                                </ul>
+                            </div>
+                        </div>
+
+                        &lt;!&ndash;Issue Plan Dates col&ndash;&gt;
+                        <div class="col-lg-6">
+                            <label th:for="issue-plan-start-date" class="form-label">Plan Start Date</label>
+                            <input type="date" th:id="issue-plan-start-date" class="form-control"
+                                   data-provider="flatpickr" placeholder="Plan Start date" required/>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+                        <div class="col-lg-6">
+                            <label th:for="issue-plan-due-date" class="form-label">Plan Due Date</label>
+                            <input type="date" th:id="issue-plan-due-date" class="form-control"
+                                   data-provider="flatpickr" placeholder="Plan Due date" required/>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+                        &lt;!&ndash;issue-priority col&ndash;&gt;
+                        <div class="col-lg-12">
+                            <label for="issue-priority-input" class="form-label">Priority</label>
+                            <select class="form-control" id="issue-priority-input">
+                                <option disabled>Priority</option>
+                                <option value="HIGH">High</option>
+                                <option value="MEDIUM">Medium</option>
+                                <option value="LOW">Low</option>
+                            </select>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+                        &lt;!&ndash;Attached files input col&ndash;&gt;
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Attached files</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div>
+                                        <p class="text-muted">Add Attached files here.</p>
+
+                                        <div class="dropzone">
+
+                                            <div class="dz-message needsclick">
+
+                                                <input type="file" id="file-input1" name="files"
+                                                       multiple="multiple" style="display: none;">
+                                                <label for="file-input1">
+                                                    <div class="mb-3">
+                                                        <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                    </div>
+                                                    <h5>Drop files here or click to upload.</h5></label>
+
+                                            </div>
+                                        </div>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mt-2" id="fileNames1">
+
+
+                                            </li>
+                                        </ul>
+                                        &lt;!&ndash; end dropzon-preview  &ndash;&gt;
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+                        <div class="mt-4">
+                            <div class="hstack gap-2 justify-content-end">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close
+                                </button>
+                                <button type="submit" class="btn btn-success" id="createIssueBtn">Add
+                                    Issue
+                                </button>
+                            </div>
+                        </div>
+                        &lt;!&ndash;end col&ndash;&gt;
+
+
+                    </div>
+                    &lt;!&ndash;end row&ndash;&gt;
+                </form>
+            </div>
+        </div>
+    </div>
+</div>-->
+
 <!-- END layout-wrapper -->
 <div th:replace="~{layout :: footer}"></div>
 
@@ -184,6 +386,76 @@
             $("#hiddenInputContainer1").toggle();
         });
     });
+</script>
+
+<!--For Delete Department-->
+<script>
+    $(document).ready(function () {
+        $('#deleteRecordModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var itemId = button.data('item-id');
+            $('#deleteItemId').val(itemId);
+            console.log("DeleteItemId:",itemId);
+        });
+
+        $('#delete-record').on('click', function () {
+            var itemId = $('#deleteItemId').val();
+            var apiUrl = '/api/updateIssue/' + itemId;
+            var updatedData = {
+                // Your updated record fields here
+            };
+
+            $.ajax({
+                url: apiUrl,
+                type: 'PUT',
+                data: updatedData,
+                success: function (response) {
+                    console.log('Record updated successfully');
+                    $('#deleteRecordModal').modal('hide');
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Error updating record:', error);
+                }
+            });
+        });
+    });
+
+</script>
+
+<!--For Enable Department-->
+<script>
+    $(document).ready(function () {
+        $('#enableRecordModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var itemId = button.data('item-id');
+            $('#enableItemId').val(itemId);
+            console.log("EnableItemId:",itemId);
+        });
+
+        $('#enable-record').on('click', function () {
+            var itemId = $('#enableItemId').val();
+            var apiUrl = '/api/updateIssue/' + itemId;
+            var updatedData = {
+                // Your updated record fields here
+            };
+
+            $.ajax({
+                url: apiUrl,
+                type: 'PUT',
+                data: updatedData,
+                success: function (response) {
+                    console.log('Record updated successfully');
+                    $('#enableRecordModal').modal('hide');
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Error updating record:', error);
+                }
+            });
+        });
+    });
+
 </script>
 <!-- JAVASCRIPT -->
 <script src="assets/libs/list.js/list.min.js"></script>
@@ -202,7 +474,7 @@
 
 <!-- titcket init js -->
 <script src="assets/js/pages/tasks-list.init.js"></script>
-
+<script src="assets/js/issue-update.js"></script>
 <!-- Sweet Alerts js -->
 <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script th:src="@{assets/js/pm-teamleader-list.js}"></script>

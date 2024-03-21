@@ -1,0 +1,103 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > AssignIssueRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: AssignIssueRepository (ai.group2.project_management_system.repository)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">AssignIssueRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.repository;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.model.entity.AssignIssue;
+&nbsp;import ai.group2.project_management_system.model.entity.Issue;
+&nbsp;import jakarta.persistence.criteria.CriteriaBuilder;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public interface AssignIssueRepository extends JpaRepository&lt;AssignIssue,Integer&gt; {
+&nbsp;    @Query(value = &quot;SELECT assign_issue.*\n&quot; +
+&nbsp;            &quot;FROM assign_issue\n&quot; +
+&nbsp;            &quot;JOIN issue ON assign_issue.issue_id = issue.id\n&quot; +
+&nbsp;            &quot;JOIN project ON issue.project_id = project.id\n&quot; +
+&nbsp;            &quot;WHERE issue.team_leader_id = :teamleaderId AND project.status != &#39;COMPLETED&#39;&quot;,nativeQuery = true)
+&nbsp;    List&lt;AssignIssue&gt; getAssignIssuesByTeamLeaderId(@Param(&quot;teamleaderId&quot;) Long teamleaderId);
+&nbsp;
+&nbsp;
+&nbsp;    @Query(&quot;SELECT ai FROM AssignIssue ai WHERE ai.user.id = :userId&quot;)
+&nbsp;    List&lt;AssignIssue&gt; getAssignIssuesByMemberId(@Param(&quot;userId&quot;) Long userId);
+&nbsp;
+&nbsp;    AssignIssue getAssignIssueById(Long id);
+&nbsp;
+&nbsp;    AssignIssue findById(Long assignIssueId);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT COUNT(i) FROM AssignIssue i WHERE i.issue.id = :issueId&quot;)
+&nbsp;    int countSubIssuesByIssueId(@Param(&quot;issueId&quot;) Long issueId);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT COUNT(i) FROM AssignIssue i WHERE i.issue.id = :issueId AND i.status = &#39;COMPLETED&#39;&quot;)
+&nbsp;    int countCompletedSubIssuesByIssueId(@Param(&quot;issueId&quot;) Long issueId);
+&nbsp;
+&nbsp;    List&lt;AssignIssue&gt; findAssignIssuesByIssueId(Long id);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

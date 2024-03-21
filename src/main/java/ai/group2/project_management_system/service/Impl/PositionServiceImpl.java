@@ -14,8 +14,6 @@ public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository positionRepository;
 
-
-
     @Override
     public List<Position> getAllPositions(){
         return positionRepository.findAll();

@@ -1,5 +1,4 @@
 
-
 async function assignIssueBox(id) {
     let assignIssue = {};
     console.log("Issue Id:" + id);
@@ -74,9 +73,9 @@ function populateMemberList(memberUsers) {
                     </label>
                     
                 </div>
-                <div class="ms-auto " >
+                <!--<div class="ms-auto " >
                                 <button class="btn btn-sm btn-light " id="view-btn" style="margin-right: 25px;">View</button>
-                            </div>
+                            </div>-->
             </div>
         `;
 

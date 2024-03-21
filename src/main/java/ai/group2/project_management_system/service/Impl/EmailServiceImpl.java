@@ -43,44 +43,6 @@ public class EmailServiceImpl implements EmailService {
             return "Error while Sending Mail";
         }
     }
-
-//    @Override
-//    public String sendMailWithAttachment(EmailDetail emailDetails) {
-//        MimeMessage mimeMessage
-//                = javaMailSender.createMimeMessage();
-//        MimeMessageHelper mimeMessageHelper;
-//        try {
-//            // Setting multipart as true for attachments to
-//            // be send
-//            mimeMessageHelper
-//                    = new MimeMessageHelper(mimeMessage, true);
-//            mimeMessageHelper.setFrom(sender);
-//            mimeMessageHelper.setTo(emailDetails.getRecipient());
-//            mimeMessageHelper.setText(emailDetails.getMsgBody());
-//            mimeMessageHelper.setSubject(
-//                    emailDetails.getSubject());
-//
-//            // Adding the attachment
-//            FileSystemResource file
-//                    = new FileSystemResource(
-//                    new File(emailDetails.getAttachment()));
-//
-//            mimeMessageHelper.addAttachment(
-//                    file.getFilename(), file);
-//
-//            // Sending the mail
-//            javaMailSender.send(mimeMessage);
-//            return "Mail sent Successfully";
-//        }
-//
-//        // Catch block to handle MessagingException
-//        catch (MessagingException e) {
-//
-//            // Display message when exception occurred
-//            return "Error while sending mail!!!";
-//        }
-//
-//    }
     @Override
     public String generateOTP() {
         // Generate a 6-digit random OTP

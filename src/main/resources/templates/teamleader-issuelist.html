@@ -66,7 +66,7 @@
                         <div class="card-body">
                             <div>
                                 <div class="table-responsive table-card mb-1">
-                                    <table id="example" class="table align-middle table-striped table-hover table1 display" >
+                                    <table id="statusTable" class="table align-middle table-striped table-hover table1 display" >
                                         <thead class="table-light text-muted">
                                         <tr>
 
@@ -121,16 +121,17 @@
                                 <div class="modal-dialog modal-dialog-centered modal">
                                     <div class="modal-content border-0">
                                         <div class="modal-header p-3 bg-info-subtle">
-                                            <h5 class="modal-title" id="assignIssueModalLabel">Assign Issue</h5>
+                                            <h5 class="modal-title" id="assignIssueModalLabel">
+                                                Sub Issue</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form th:object="${assignIssue}" method="post" th:action="@{/assignIssue}">
+                                            <form id="assignIssueForm" th:object="${assignIssue}" method="post" th:action="@{/assignIssue}">
                                                 <div class="row g-3">
 
                                                     <!--end col-->
                                                     <div class="col-lg-12">
-                                                        <label th:for="assignName" class="form-label">Assign Issue</label>
+                                                        <label th:for="assignName" class="form-label">Sub Issue</label>
                                                         <input type="text" class="form-control" th:id="assignName" th:name="assignName"  placeholder="Assign Issue Name" required>
                                                     </div>
                                                     <!--end col-->
@@ -221,11 +222,13 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" ></script>
 <script>
     $(document).ready(function() {
-        new DataTable('#example', {
-            pagingType: 'full_numbers'
-
-        });
-    });
+        // Initialize DataTable if it's not already initialized
+        if (!$.fn.DataTable.isDataTable('#statusTable')) {
+            $('#statusTable').DataTable({
+                pagingType: 'full_numbers'
+            });
+        }
+    })
 
 </script>
 
@@ -238,6 +241,29 @@
 <!-- ckeditor -->
 <script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 <script th:src="@{/assets/js/teamleader-issuelist.js}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if the "See More" button was clicked
+        const seeMoreClicked = sessionStorage.getItem('seeMoreClicked');
+
+        // Check if the button was clicked and selectedStatus is available
+        if (seeMoreClicked && localStorage.getItem('selectedStatus')) {
+            // Get the DataTable instance
+            var table = $('#statusTable').DataTable();
+
+            // Retrieve the selectedStatus from localStorage
+            const selectedStatus = localStorage.getItem('selectedStatus');
+
+            // Set the search value programmatically
+            table.search(selectedStatus).draw();
+
+            // Clear the sessionStorage flag
+            sessionStorage.removeItem('seeMoreClicked');
+        }
+    });
+
+</script>
 </body>
 
 </html>

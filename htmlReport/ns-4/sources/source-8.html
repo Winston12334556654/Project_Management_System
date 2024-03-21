@@ -1,0 +1,481 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProjectController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.controller.view</a>
+</div>
+
+<h1>Coverage Summary for Class: ProjectController (ai.group2.project_management_system.controller.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProjectController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    5%
+  </span>
+  <span class="absValue">
+    (1/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.controller.view;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.dto.ProjectDTO;
+&nbsp;import ai.group2.project_management_system.model.Enum.Status;
+&nbsp;import ai.group2.project_management_system.model.entity.AssignIssue;
+&nbsp;import ai.group2.project_management_system.model.entity.Issue;
+&nbsp;import ai.group2.project_management_system.model.entity.Project;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import ai.group2.project_management_system.repository.AssignIssueRepository;
+&nbsp;import ai.group2.project_management_system.repository.IssueRepository;
+&nbsp;import ai.group2.project_management_system.repository.ProjectRepository;
+&nbsp;import ai.group2.project_management_system.service.ProjectService;
+&nbsp;import ai.group2.project_management_system.service.UserService;
+&nbsp;import jakarta.servlet.http.HttpSession;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.stereotype.Controller;
+&nbsp;import org.springframework.ui.Model;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;@Controller
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;@RequestMapping(&quot;project&quot;)
+&nbsp;public class ProjectController {
+&nbsp;    private final IssueRepository issueRepository;
+&nbsp;    private final AssignIssueRepository assignIssueRepository;
+&nbsp;    private final ProjectRepository projectRepository;
+&nbsp;   private final ProjectService projectService;
+&nbsp;    private final UserService userService;
+&nbsp;    @ModelAttribute(&quot;user&quot;)
+&nbsp;    public User getUserFromSession(HttpSession session) {
+<b class="nc">&nbsp;        User user = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        return user;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/projects&quot;)
+&nbsp;    public String project(){
+<b class="nc">&nbsp;        return &quot;projects&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //This method is also for selecting back. But I will select with a project&#39;s id
+&nbsp;    @GetMapping(&quot;/project-detail/{id}&quot;)
+&nbsp;    public String projectDetail(@PathVariable(&quot;id&quot;) Long projectId , Model model){
+&nbsp;       // System.out.println(projectId);
+<b class="nc">&nbsp;        Project project = projectService.getProjectBy_Id(projectId);</b>
+<b class="nc">&nbsp;        var user = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        List&lt;Issue&gt; issues=issueRepository.findIssuesByProjectId(projectId);</b>
+&nbsp;
+<b class="nc">&nbsp;        model.addAttribute(&quot;issues&quot;,issues);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;project&quot;, project);</b>
+<b class="nc">&nbsp;        return &quot;project-detail&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/project-issue-detail/{id}&quot;)
+&nbsp;    public String projectIssuesDetail(@PathVariable(&quot;id&quot;) Long issueId , Model model){
+<b class="nc">&nbsp;        Issue issue=issueRepository.getIssueById(issueId);</b>
+<b class="nc">&nbsp;        var user = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        List&lt;AssignIssue&gt; assignIssues=assignIssueRepository.findAssignIssuesByIssueId(issueId);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Assign Issues:&quot;+assignIssues.size());</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;assignIssues&quot;,assignIssues);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;issue&quot;, issue);</b>
+<b class="nc">&nbsp;        return &quot;project-issue-detail&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/my-projects&quot;)
+&nbsp;    public String myProjects(Model model){
+<b class="nc">&nbsp;        List&lt;Project&gt; projects=projectRepository.findProjectsByCreator(userService.getCurrentUser().getName());</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;projects&quot;,projects);</b>
+<b class="nc">&nbsp;        return &quot;my-projects&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

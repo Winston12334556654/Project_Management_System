@@ -14,12 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Error: ', error);
         });
 
-
     // Render Department list Table
     function refreshDepartmentListTable(items) {
         const table = document.getElementById('department-table');
-
-
         // Check if DataTable is already initialized and destroy it
         if (table && table.DataTable) {
             table.DataTable.destroy();
@@ -40,10 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     `,
                 },
                 {
-                    data: 'action',
+                    data: 'active',
                     render: (data, type, row) => `
                         <button class="btn btn-sm btn-primary edit-item-btn" onclick="displayEditDepartmentModal(${row.id})">Edit</button>
-                        <button class="btn btn-sm btn-${data ? 'danger' : 'success'} mx-2" onclick="toggleDepartment(${row.id})">${data ? 'Close' : 'Open'}</button>
+                        
                         <button class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal">Remove</button>
                     `,
                 }
@@ -141,82 +138,4 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.log("Error" + error));
     });
 
-    // // Toggle Department status
-    // async function toggleDepartment(departmentId) {
-    //     console.log('function call......' + departmentId);
-    //     try {
-    //         const department = departmentList.find(department => department.id === departmentId);
-    //         console.log(department);
-    //         if (!department) {
-    //             console.log("Department not found for ID:", departmentId);
-    //             return;
-    //         }
-    //
-    //         const actionText = department.active ? 'Block' : 'Active';
-    //         document.getElementById('confirmationDepartmentAction').textContent = actionText;
-    //         const confirmationModal = document.getElementById('confirmationDepartmentModal');
-    //         confirmationModal.classList.add('show');
-    //     } catch (error) {
-    //         console.error('Error toggling department:', error);
-    //     }
-    //     // Show Bootstrap modal for confirmation
-    //     const actionText = department.active ? 'Block' : 'Active';
-    //     document.getElementById('confirmationDepartmentAction').textContent = actionText;
-    //     const confirmationModal = document.getElementById('confirmationDepartmentModal');
-    //     confirmationModal.classList.add('show');
-    // } catch (error) {
-    //     console.error('Error toggling department:', error);
-
-
-        // Show Bootstrap modal for confirmation
-        // const actionText = department.active ? 'Block' : 'Active';
-        // document.getElementById('confirmationDepartmentAction').textContent = actionText;
-        // const confirmationModal = document.getElementById('confirmationDepartmentModal');
-        // confirmationModal.classList.add('show');
-    //
-    //     // Promise to wait for confirmation
-    //     await new Promise((resolve, reject) => {
-    //         // Set event listener for modal confirm button
-    //         const confirmButton = document.getElementById('confirmDepartmentButton');
-    //         const confirmHandler = () => {
-    //             // Close the modal
-    //             confirmationModal.classList.remove('show');
-    //             confirmButton.removeEventListener('click', confirmHandler);
-    //             resolve();
-    //         };
-    //         confirmButton.addEventListener('click', confirmHandler);
-    //     });
-    //
-    //     // Determine the new active status (toggle it)
-    //     const newActiveStatus = !department.active;
-    //
-    //     // Make a PUT request to update the department data
-    //     const response = await fetch(`/department-toggle/${departmentId}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({ active: newActiveStatus })
-    //     });
-    //
-    //     if (!response.ok) {
-    //         throw new Error('Failed to toggle department');
-    //     }
-    //
-    //     console.log('Department toggled successfully');
-    //
-    //     // Update the departmentList with the new active status value
-    //     department.active = newActiveStatus;
-    //
-    //     // Update the button text based on the new active status
-    //     const buttonText = newActiveStatus ? 'Inactive' : 'Active';
-    //     const departmentButton = document.querySelector(`#department-table button[data-id="${departmentId}"]`);
-    //     departmentButton.textContent = buttonText;
-    //
-    //     // Reload the page
-    //     location.reload();
-    // } catch (error) {
-    //     console.error('Error toggling department:', error);
-    //
-    //}
 });

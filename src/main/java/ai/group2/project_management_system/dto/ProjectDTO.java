@@ -168,5 +168,13 @@ public class ProjectDTO {
     public void setUserIds(List<Long> userIds) {
         this.userIds = userIds;
     }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }
 

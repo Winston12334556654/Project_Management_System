@@ -12,11 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.log('Error: ', error);
         });
-
-    // checkInputValidation('name', 'Department name', null, null);
-    // checkInputValidation('editDepartmentName', 'Department name', null, null);
-    // formValidate('addDepartmentForm', addDepartment);
-    // formValidate('editDepartmentForm', editDepartment);
 });
 
 //Render Department list Table

@@ -1,0 +1,252 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > DashboardDataAPI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.controller.api</a>
+</div>
+
+<h1>Coverage Summary for Class: DashboardDataAPI (ai.group2.project_management_system.controller.api)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DashboardDataAPI</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.2%
+  </span>
+  <span class="absValue">
+    (1/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (5/35)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.controller.api;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.model.entity.AssignIssue;
+&nbsp;import ai.group2.project_management_system.model.entity.Issue;
+&nbsp;import ai.group2.project_management_system.model.entity.Project;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import ai.group2.project_management_system.service.AssignIssueService;
+&nbsp;import ai.group2.project_management_system.service.IssueService;
+&nbsp;import ai.group2.project_management_system.service.ProjectService;
+&nbsp;import ai.group2.project_management_system.service.UserService;
+&nbsp;import jakarta.servlet.http.HttpServletRequest;
+&nbsp;import jakarta.servlet.http.HttpSession;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;import org.springframework.web.bind.annotation.RequestParam;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@RestController
+&nbsp;public class DashboardDataAPI {
+&nbsp;    private final ProjectService projectService;
+&nbsp;    private final IssueService issueService;
+&nbsp;    private final AssignIssueService assignIssueService;
+&nbsp;    private final UserService userService;
+&nbsp;
+<b class="fc">&nbsp;    public DashboardDataAPI(ProjectService projectService, IssueService issueService, AssignIssueService assignIssueService, UserService userService) {</b>
+<b class="fc">&nbsp;        this.projectService = projectService;</b>
+<b class="fc">&nbsp;        this.issueService = issueService;</b>
+<b class="fc">&nbsp;        this.assignIssueService = assignIssueService;</b>
+<b class="fc">&nbsp;        this.userService = userService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/projects/count/active&quot;)
+&nbsp;    public int getActiveProjectCount(){
+<b class="nc">&nbsp;        return projectService.getActiveProjectCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/project/count/all&quot;)
+&nbsp;    public int getProjectCount(){
+<b class="nc">&nbsp;        return projectService.getProjectCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/projects/count/inactive&quot;)
+&nbsp;    public int getInactiveProjectCount(){
+<b class="nc">&nbsp;        return projectService.getInactiveProjectCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/issues/count/all&quot;)
+&nbsp;    public int getIssueCount(){
+<b class="nc">&nbsp;        return issueService.getIssueCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/issues/count/active&quot;)
+&nbsp;    public int getActiveIssuesCount(){
+<b class="nc">&nbsp;        return issueService.getActiveIssueCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/issues/count/inactive&quot;)
+&nbsp;    public int getInactiveIssuesCount(){
+<b class="nc">&nbsp;        return issueService.getInactiveIssueCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/assignIssues/count/all&quot;)
+&nbsp;    public int getAssignIssueCount(){
+<b class="nc">&nbsp;        return assignIssueService.getAssignIssueCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/assignIssues/count/active&quot;)
+&nbsp;    public int getActiveAssignIssuesCount(){
+<b class="nc">&nbsp;        return assignIssueService.getActiveAssignIssueCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/assignIssues/count/inactive&quot;)
+&nbsp;    public int getInactiveAssignIssuesCount(){
+<b class="nc">&nbsp;        return assignIssueService.getInactiveAssignIssueCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/find-same-department-with-currentUser&quot;)
+&nbsp;    public User getCurrentUser(){
+<b class="nc">&nbsp;        return userService.getCurrentUser();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/get-subIssues-by-userId/{userId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;AssignIssue&gt;&gt; getSubIssuesByUserId(@PathVariable Long userId) {
+<b class="nc">&nbsp;        System.out.println(&quot;Sub Issues are gone&quot;);</b>
+<b class="nc">&nbsp;        List&lt;AssignIssue&gt; subIssues = assignIssueService.getSubIssuesByUserId(userId);</b>
+<b class="nc">&nbsp;        if (subIssues.isEmpty()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.noContent().build();</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.ok(subIssues);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/getUserPhotoById/{assignIssueId}&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; getUserPhotoByAssignIssueId(@PathVariable Long assignIssueId) {
+&nbsp;        // Step 1: Retrieve the assignIssue based on the provided ID
+<b class="nc">&nbsp;        AssignIssue assignIssue = assignIssueService.getAssignIssueById(assignIssueId);</b>
+&nbsp;
+&nbsp;        // Step 2: Extract the issue ID from the retrieved assignIssue
+<b class="nc">&nbsp;        Long issueId = assignIssue.getIssue().getId();</b>
+&nbsp;
+&nbsp;        // Step 3: Retrieve the issue based on the extracted issue ID
+<b class="nc">&nbsp;        Issue issue = issueService.getIssueById(issueId);</b>
+&nbsp;
+&nbsp;        // Step 4: Retrieve the team leader ID from the retrieved issue
+<b class="nc">&nbsp;        Long teamLeaderId = issue.getTeamLeaderId();</b>
+&nbsp;
+&nbsp;        // Step 5: Retrieve the user based on the extracted team leader ID
+<b class="nc">&nbsp;        User user = userService.getUserById(teamLeaderId);</b>
+&nbsp;
+&nbsp;        // Step 6: Fetch the user photo using the retrieved user ID
+<b class="nc">&nbsp;        String userPhoto = userService.getUserPhotoById(user.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;        if (userPhoto != null) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(userPhoto);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/getProjectsByUserId/{userId}&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Project&gt;&gt; getProjectIdsByUserId(@PathVariable Long userId) {
+<b class="nc">&nbsp;        List&lt;Project&gt; projectIds = userService.getProjectsByUserId(userId);</b>
+<b class="nc">&nbsp;        if (!projectIds.isEmpty()) {</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(projectIds);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.noContent().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/projects/count&quot;)
+&nbsp;    public Map&lt;String, Integer&gt; getProjectCountsByStatus() {
+<b class="nc">&nbsp;        return projectService.getCountsByStatus();</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/issues/count&quot;)
+&nbsp;    public Map&lt;String, Integer&gt; getIssuesCountsByStatus() {
+<b class="nc">&nbsp;        return issueService.getCountsByStatus();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

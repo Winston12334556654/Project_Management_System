@@ -1,0 +1,159 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > HomeController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.controller.view</a>
+</div>
+
+<h1>Coverage Summary for Class: HomeController (ai.group2.project_management_system.controller.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HomeController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (2/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (2/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.controller.view;
+&nbsp;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.model.Enum.Role;
+&nbsp;import ai.group2.project_management_system.model.entity.Department;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import ai.group2.project_management_system.service.UserService;
+&nbsp;import jakarta.servlet.http.HttpSession;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.stereotype.Controller;
+&nbsp;import org.springframework.ui.Model;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.ModelAttribute;
+&nbsp;
+&nbsp;
+&nbsp;@Controller
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+<b class="fc">&nbsp;@Slf4j</b>
+&nbsp;public class HomeController {
+&nbsp;    private final UserService userService;
+&nbsp;
+&nbsp;    @ModelAttribute(&quot;user&quot;)
+&nbsp;    public User getUserFromSession(HttpSession session) {
+<b class="nc">&nbsp;        User user = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        return user;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/home&quot;)
+&nbsp;    public String home(Model model, HttpSession session) {
+<b class="nc">&nbsp;        var user = userService.getCurrentUser();</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Current User: &quot; + user);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (user.getRole() != Role.PM || user.getRole() != Role.PMO) {</b>
+<b class="nc">&nbsp;            Department department = user.getDepartment();</b>
+<b class="nc">&nbsp;            if (department != null) {</b>
+<b class="nc">&nbsp;                session.setAttribute(&quot;departmentId&quot;, department.getId());</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                System.out.println(&quot;There is no department!&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        session.setAttribute(&quot;user&quot;, user);</b>
+&nbsp;
+<b class="nc">&nbsp;        return &quot;index&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/profile&quot;)
+&nbsp;    public String profile(){
+<b class="nc">&nbsp;        return &quot;profile&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

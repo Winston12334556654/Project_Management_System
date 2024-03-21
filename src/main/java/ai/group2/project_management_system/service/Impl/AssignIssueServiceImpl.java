@@ -67,4 +67,56 @@ public class AssignIssueServiceImpl implements AssignIssueService {
         return assignIssueRepository.getAssignIssueById(id);
     }
 
+    @Override
+    public int getAssignIssueCount() {
+        return (int) assignIssueRepository.count();
+    }
+
+    @Override
+    public int getActiveAssignIssueCount() {
+        List<AssignIssue> allAssignIssues = assignIssueRepository.findAll();
+        int activeAssignIssue = 0;
+        for (AssignIssue assignIssue : allAssignIssues){
+            if(assignIssue.isActive()){
+                activeAssignIssue++;
+            }
+        }
+        return activeAssignIssue;
+    }
+
+    @Override
+    public int getInactiveAssignIssueCount() {
+        List<AssignIssue> allAssignIssues = assignIssueRepository.findAll();
+        int inActiveAssignIssue = 0;
+        for (AssignIssue assignIssue : allAssignIssues){
+            if(!assignIssue.isActive()){
+                inActiveAssignIssue++;
+            }
+        }
+        return inActiveAssignIssue;
+    }
+
+    @Override
+    public List<AssignIssue> getSubIssuesByUserId(Long userId) {
+        return assignIssueRepository.getAssignIssuesByMemberId(userId);
+}
+
+    @Override
+    public List<Issue> getIssuesByAssignIssueIds(List<Long> assignIssueIds) {
+        List<Issue> issues = new ArrayList<>();
+        for (Long assignIssueId : assignIssueIds) {
+            Optional<AssignIssue> assignIssueOptional = assignIssueRepository.findById(Math.toIntExact(assignIssueId));
+            assignIssueOptional.ifPresent(assignIssue -> {
+                if (assignIssue.getIssue() != null) {
+                    issues.add(assignIssue.getIssue());
+                }
+            });
+        }
+        return issues;
+    }
+
+    @Override
+    public AssignIssue getAssignIssueById(Long assignIssueId) {
+        return assignIssueRepository.findById(assignIssueId);
+    }
 }

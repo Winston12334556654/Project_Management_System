@@ -1,0 +1,106 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UserRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: UserRepository (ai.group2.project_management_system.repository)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">UserRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.repository;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.model.entity.Project;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Repository
+&nbsp;public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+&nbsp;
+&nbsp;    List&lt;User&gt; findByIdIn(List&lt;Long&gt; userIds);
+&nbsp;    List&lt;User&gt; findByDepartmentId(Long departmentId);
+&nbsp;    Optional&lt;User&gt; findByEmail(String email);
+&nbsp;    List&lt;User&gt; findByProjects_id(Long projectId);
+&nbsp;    @Query(&quot;SELECT u.profilePictureFileName FROM User u WHERE u.id = :id&quot;)
+&nbsp;    String findPhotoById(@Param(&quot;id&quot;) Long id);
+&nbsp;    @Query(value = &quot;select u.* from user u join project_member pm on u.id = pm.user_id join issue i on i.project_id=pm.project_id where i.id =:issueId&quot;, nativeQuery = true)
+&nbsp;    List&lt;User&gt; findAllUserByIssueId(@Param(&quot;issueId&quot;) Long issueId);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT u.department.id FROM User u WHERE u.name =: user&quot;)
+&nbsp;    Long getDepartmentIdByUser(@Param(&quot;userName&quot;) String user);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT p FROM Project p JOIN p.users u WHERE u.id = :userId&quot;)
+&nbsp;    List&lt;Project&gt; findProjectsByUserId(Long userId);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT u.email FROM User u WHERE u.id = :userId&quot;)
+&nbsp;    String findEmailById(@Param(&quot;userId&quot;) Long userId);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT u.name FROM User u WHERE u.id = :userId&quot;)
+&nbsp;    String findUserNameByID(@Param(&quot;userId&quot;)Long userId);
+&nbsp;    @Query(&quot;SELECT u.email FROM User u&quot;)
+&nbsp;    List&lt;String&gt; findAllEmails();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

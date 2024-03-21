@@ -36,7 +36,7 @@ public class ChatAPI {
             message.setUser(userService.getUserById(message.getSenderId()));
             Message newMessage = messageService.save(message);
             System.out.println(newMessage);
-            return new ResponseEntity<>(newMessage, HttpStatus.OK);
+        return new ResponseEntity<>(newMessage, HttpStatus.OK);
     }
 
     @GetMapping("/get-messages/{issueId}")

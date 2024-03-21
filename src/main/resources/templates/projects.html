@@ -7,6 +7,13 @@
 
     <!-- Date Css -->
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css}" />
+
+
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Project Management System</title>
 </head>
 <style>
@@ -32,6 +39,10 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+
+    #confirmationModal {
+        z-index: 2060; /* Higher than the main modal */
     }
 
 </style>
@@ -70,8 +81,11 @@
             <div class="row g-4 mb-3">
                 <div class="col-sm-auto">
 
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"  th:if="${user.role == T(ai.group2.project_management_system.model.Enum.Role).PM}" onclick="userGetter(); teamLeaderGetter();">
                         <i class="ri-add-line align-bottom me-1"></i>Create project
+                    </button>
+                    <button type="button" id="toggleButton" class="btn btn-danger" title="Inactive projects" style="font-size: 12px;" onclick="toggleProjects()">
+                        <i class="ri-delete-bin-line"></i> Inactive projects
                     </button>
 
                 </div>
@@ -82,22 +96,21 @@
                             <input type="text" id="search-input" class="form-control" placeholder="Search...">
                             <i class="ri-search-line search-icon"></i>
                         </div>
-
-
-                        <select id="projectFilter" class="form-control w-md" data-choices data-choices-search-false>
+                        <select id="projectFilter" class="form-control w-md" data-choices data-choices-search-false onchange="checkButtonTitle()">
                             <option value="All">All</option>
                             <option value="Today">Today</option>
                             <option value="Yesterday">Yesterday</option>
-                            <option value="Last 7 Days">Last 7 Days</option>
-                            <option value="Last 30 Days">Last 30 Days</option>
-                            <option value="This Month">This Month</option>
-                            <option value="Last Year">Last Year</option>
+                            <option value="This month">This month</option>
+                            <option value="Last month">Last month</option>
+                            <option value="Next month">Next month</option>
+                            <option value="Last year">Last year</option>
+                            <option value="Future">Future</option>
                         </select>
-
                     </div>
+
                 </div>
             </div>
-
+            <div style="display: none" th:text="${user.role} " id="userRole"></div>
             <div class="row" id="projects">
 
             </div>
@@ -107,21 +120,6 @@
         <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-
-    <footer class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <script>document.write(new Date().getFullYear())</script> © Velzon.
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end d-none d-sm-block">
-                        Design & Develop by Themesbrand
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
 </div>
 <!-- end main content-->
 
@@ -154,7 +152,7 @@
 </div><!-- /.modal -->
 
 <!--Modal-->
-<form th:id="formAuthor">
+<form th:id="formAuthor"class="needs-validation" novalidate>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -165,22 +163,19 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label" th:for="project-title-input">Project Title</label>
-                        <input type="text" class="form-control" th:id="project-title-input" placeholder="Enter project title" name="title">
+                        <input type="text" class="form-control" th:id="project-title-input" placeholder="Enter project title" name="title" required>
+                        <div class="invalid-feedback">Please enter a project title.</div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label" th:for="project-objective-input">Objective</label>
-                        <input type="text" class="form-control" th:id="project-objective-input" placeholder="Enter Objective" name="objective">
+                        <input type="text" class="form-control" th:id="project-objective-input" placeholder="Enter Objective" name="objective" required>
+                        <div class="invalid-feedback">Please enter a objective</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label" th:for="project-creator-name">Project Creator</label>
-                        <input class="form-control" th:id="project-creator-name" type="text" name="creator" placeholder="Enter creator">
-                    </div>
-
-                    <div class="mb-3">
+                    <div class="mb-3" id="ckeditor-camp">
                         <label class="form-label">Project Description</label>
-                        <input type="hidden" th:id="ckeditorHiddenInput" name="description">
+                        <input type="hidden" th:id="ckeditorHiddenInput" name="description" required>
                         <div id="ckeditor"></div>
                     </div>
                     <!-- CKEditor script from local resources -->
@@ -201,13 +196,12 @@
                     <!--Departments-->
                     <div class="mb-3">
                         <label class="form-label" for="project-department-input">Department</label>
-                        <select class="form-select" data-choices data-choices-search-false id="project-department-input" name="department" onchange="userGetter()"></select>
+                        <select class="form-select" data-choices data-choices-search-false id="project-department-input" name="department" onchange="userGetter(); teamLeaderGetter()" required></select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label" th:for="project-category-input">Category</label>
-
-                        <select class="form-select" data-choices data-choices-search-false th:id="project-category-input">
+                        <select class="form-select" data-choices data-choices-search-false th:id="project-category-input" required>
                             <option value="BANKING" selected>Banking</option>
                             <option value="HEALTHCARE">Healthcare</option>
                             <option value="EDUCATION">Education</option>
@@ -217,47 +211,49 @@
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label" th:for="project-status-input">Status</label>
-
-                        <select class="form-select" data-choices data-choices-search-false th:id="project-status-input" name="status">
-                            <option value="TODO" selected>To do</option>
-                            <option value="INPROGRESS">In progress</option>
-                            <option value="PENDING">Pending</option>
-                            <option value="FINISH">Finish</option>
-                        </select>
-                    </div>
-
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="mb-3 mb-lg-0">
                                 <label th:for="choices-priority-input" class="form-label">Priority</label>
-                                <select class="form-select" data-choices data-choices-search-false th:id="choices-priority-input" name="priority">
+                                <select class="form-select" data-choices data-choices-search-false th:id="choices-priority-input" name="priority" required>
                                     <option value="HIGH" selected>High</option>
                                     <option value="MEDIUM">Medium</option>
                                     <option value="LOW">Low</option>
                                 </select>
                             </div>
                         </div>
+
                         <div class="col-lg-4">
-                            <div>
+                            <div class="mb-3">
                                 <label th:for="datepicker-start-date-input" class="form-label">Start Date</label>
-                                <input type="date" class="form-control" name="planStartDate" th:id="datepicker-start-date-input" placeholder="Select start date" data-provider="datepicker">
+                                <input type="date" class="form-control" name="planStartDate" th:id="datepicker-start-date-input" placeholder="Select start date" data-provider="datepicker" required>
+                                <div class="invalid-feedback">Please set a plan start date.</div> <!-- Feedback message for Start Date -->
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div>
+                            <div class="mb-3">
                                 <label th:for="datepicker-end-date-input" class="form-label">End Date</label>
-                                <input type="date" class="form-control" name="planEndDate" th:id="datepicker-end-date-input" placeholder="Enter end date" data-provider="datepicker">
+                                <input type="date" class="form-control" name="planEndDate" th:id="datepicker-end-date-input" placeholder="Enter end date" data-provider="datepicker" required>
+                                <div class="invalid-feedback">Please set a plan end date.</div> <!-- Feedback message for End Date -->
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <!--Members-->
                 <div class="col-lg-12">
-                    <label th:for="tasks-progress" class="form-label">Add Team Member</label>
-                    <div data-simplebar style="height: 95px;">
-                        <ul class="list-unstyled vstack gap-2 mb-0" th:id="team-member-list">
+                    <label th:for="tasks-progress" class="form-label m-3">Add Team Members</label>
+                    <div data-simplebar style="height: 150px;">
+                        <ul class="list-unstyled vstack gap-2 mb-0 m-3" th:id="team-member-list">
+                            <!-- Placeholder for dynamic content -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <label th:for="tasks-progress" class="form-label m-3">Add Team Leaders</label>
+                    <div data-simplebar style="height: 150px;">
+                        <ul class="list-unstyled vstack gap-2 mb-0 m-3" th:id="team-teamLeader-list">
                             <!-- Placeholder for dynamic content -->
                         </ul>
                     </div>
@@ -268,7 +264,7 @@
                     <div class="text-end mb-4">
                         <button type="button" class="btn btn-danger w-sm" data-bs-dismiss="modal">Close</button>
                         <button type="reset" class="btn btn-secondary w-sm">Reset</button>
-                        <button type="submit" class="btn btn-success w-sm" data-bs-dismiss="modal" onclick="showData()">Create</button>
+                        <button id="createButton" type="button" data-bs-dismiss="modal" class="btn btn-success w-sm" onclick="validateAndConfirm()">Create</button>
                     </div>
                 </div>
             </div>
@@ -277,7 +273,7 @@
 </form>
 
 <!--Update Modal-->
-<form th:id="updateProject">
+<form th:id="updateProject" class="needs-validation" novalidate>
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -291,17 +287,13 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" th:for="project-title-update">Project Title</label>
-                        <input type="text" class="form-control" th:id="project-title-update" placeholder="Enter project title" name="title">
+                        <input type="text" class="form-control" th:id="project-title-update" placeholder="Enter project title" name="title" required>
+
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label" th:for="project-objective-input">Objective</label>
-                        <input type="text" class="form-control" th:id="project-objective-update" placeholder="Enter Objective" name="objective">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label" th:for="project-creator-name">Project Creator</label>
-                        <input class="form-control" th:id="project-creator-update" type="text" name="creator" placeholder="Enter creator">
+                        <input type="text" class="form-control" th:id="project-objective-update" placeholder="Enter Objective" name="objective" required>
                     </div>
 
                     <div class="mb-3">
@@ -341,20 +333,20 @@
                     <div class="mb-3">
                         <label class="form-label" th:for="project-category-update">Category</label>
 
-                        <select class="form-select" data-choices data-choices-search-false th:id="project-category-update">
-                            <option value="BANKING" selected>Banking</option>
-                            <option value="HEALTHCARE">Healthcare</option>
-                            <option value="EDUCATION">Education</option>
-                            <option value="TELECOMMUNICATION">Telecommunication</option>
-                            <option value="TRAVEL">Travel And Tourism</option>
-                            <option value="DEVELOPMENT">Development</option>
+                        <select class="form-select" data-choices data-choices-search-false th:id="project-category-update" required>
+                            <option value="BANKING" >BANKING</option>
+                            <option value="HEALTHCARE">HEALTHCARE</option>
+                            <option value="EDUCATION">EDUCATION</option>
+                            <option value="TELECOMMUNICATION">TELECOMMUNICATION</option>
+                            <option value="TRAVEL">TRAVEL</option>
+                            <option value="DEVELOPMENT">DEVELOPMENT</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label" th:for="project-status-update">Status</label>
 
-                        <select class="form-select" data-choices data-choices-search-false th:id="project-status-update" name="status">
+                        <select class="form-select" data-choices data-choices-search-false th:id="project-status-update" name="status" required>
                             <option value="TODO" selected>To do</option>
                             <option value="INPROGRESS">In progress</option>
                             <option value="PENDING">Pending</option>
@@ -366,7 +358,7 @@
                         <div class="col-lg-4">
                             <div class="mb-3 mb-lg-0">
                                 <label th:for="choices-priority-input" class="form-label">Priority</label>
-                                <select class="form-select" data-choices data-choices-search-false th:id="choices-priority-update" name="priority">
+                                <select class="form-select" data-choices data-choices-search-false th:id="choices-priority-update" name="priority" required>
                                     <option value="HIGH" selected>High</option>
                                     <option value="MEDIUM">Medium</option>
                                     <option value="LOW">Low</option>
@@ -377,6 +369,7 @@
                             <div>
                                 <label th:for="datepicker-start-date-input" class="form-label">Start Date</label>
                                 <input type="text" class="form-control" name="planStartDate" th:id="datepicker-start-date-update" placeholder="Select start date" data-provider="datepicker">
+
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -389,7 +382,7 @@
                 </div>
                 <!--Members-->
                 <div class="col-lg-12">
-                    <label th:for="tasks-progress" class="form-label">Update Team Member</label>
+                    <label th:for="tasks-progress" class="form-label">Team Members</label>
                     <div data-simplebar style="height: 95px;">
                         <ul class="list-unstyled vstack gap-2 mb-0" th:id="team-member-list-update">
                             <!-- Placeholder for dynamic content -->
@@ -397,12 +390,20 @@
                     </div>
                 </div>
 
+                <div class="col-lg-12">
+                    <label th:for="tasks-progress" class="form-label">Team Leaders</label>
+                    <div data-simplebar style="height: 95px;">
+                        <ul class="list-unstyled vstack gap-2 mb-0" th:id="team-leader-list-update">
+                            <!-- Placeholder for dynamic content -->
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="modal-footer">
                     <div class="text-end mb-4">
                         <button type="button" class="btn btn-danger w-sm" data-bs-dismiss="modal">Close</button>
                         <button type="reset" class="btn btn-secondary w-sm">Reset</button>
-                        <button type="submit" class="btn btn-success w-sm" data-bs-dismiss="modal">Edit</button>
+                        <button id="updateSubmit" type="submit" data-bs-dismiss="modal" class="btn btn-success w-sm">Edit</button>
                     </div>
                 </div>
             </div>
@@ -410,12 +411,10 @@
     </div>
 </form>
 
-
 <!--JavaScript files-->
 <div th:replace="~{layout :: footer}"></div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" ></script>
-
 <!-- prismjs plugin -->
 <script th:src="@{/assets/libs/prismjs/prism.js}"></script>
 <script th:src="@{/assets/libs/list.js/list.min.js}"></script>
@@ -448,19 +447,24 @@
     const startDatePicker1 = flatpickr(startDateInput1, {
         enableTime: false,
         dateFormat: "Y-m-d",
+        minDate: "today", // Restrict start date to today or later
         theme: "custom-theme", // Use the custom theme
     });
 
     const endDatePicker1 = flatpickr(endDateInput1, {
         enableTime: false,
         dateFormat: "Y-m-d",
-        minDate: "today", // Restrict end date to today or later
+        minDate: "today", // Restrict end date to today or later initially
         theme: "custom-theme", // Use the custom theme
     });
 
-    // Set minDate of end date picker based on the selected start date
+    // Set minDate of end date picker to the day after the selected start date
     startDatePicker1.config.onChange.push(function(selectedDates, dateStr, instance) {
-        endDatePicker1.set("minDate", dateStr);
+        if (selectedDates.length > 0) {
+            const nextDay = new Date(selectedDates[0]);
+            nextDay.setDate(nextDay.getDate() + 1);
+            endDatePicker1.set("minDate", nextDay);
+        }
     });
 
     // Initialize Flatpickr for the second set of date inputs
@@ -470,23 +474,35 @@
     const startDatePicker2 = flatpickr(startDateInput2, {
         enableTime: false,
         dateFormat: "Y-m-d",
+        minDate: "today", // Restrict start date to today or later
         theme: "custom-theme", // Use the custom theme
     });
 
     const endDatePicker2 = flatpickr(endDateInput2, {
         enableTime: false,
         dateFormat: "Y-m-d",
-        minDate: "today", // Restrict end date to today or later
+        minDate: "today", // Restrict end date to today or later initially
         theme: "custom-theme", // Use the custom theme
     });
 
-    // Set minDate of end date picker based on the selected start date
+    // Set minDate of end date picker to the day after the selected start date
     startDatePicker2.config.onChange.push(function(selectedDates, dateStr, instance) {
-        endDatePicker2.set("minDate", dateStr);
+        if (selectedDates.length > 0) {
+            const nextDay = new Date(selectedDates[0]);
+            nextDay.setDate(nextDay.getDate() + 1);
+            endDatePicker2.set("minDate", nextDay);
+        }
     });
 
 </script>
 <script th:src="@{/assets/js/project-update.js}"></script>
+<script th:src="@{/assets/js/project-validation.js}"></script>
+
+<!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- SweetAlert JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 </body>

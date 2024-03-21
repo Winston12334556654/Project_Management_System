@@ -1,0 +1,294 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > IssueController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.controller.view</a>
+</div>
+
+<h1>Coverage Summary for Class: IssueController (ai.group2.project_management_system.controller.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IssueController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (2/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2.1%
+  </span>
+  <span class="absValue">
+    (2/94)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.controller.view;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.dto.IssueDetailsDto;
+&nbsp;import ai.group2.project_management_system.model.Enum.Status;
+&nbsp;import ai.group2.project_management_system.model.entity.AssignIssue;
+&nbsp;import ai.group2.project_management_system.model.entity.Issue;
+&nbsp;import ai.group2.project_management_system.model.entity.Project;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import ai.group2.project_management_system.repository.IssueRepository;
+&nbsp;import ai.group2.project_management_system.repository.ProjectRepository;
+&nbsp;import ai.group2.project_management_system.service.AssignIssueService;
+&nbsp;import ai.group2.project_management_system.service.IssueService;
+&nbsp;import ai.group2.project_management_system.service.UserService;
+&nbsp;import jakarta.servlet.http.HttpSession;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.stereotype.Controller;
+&nbsp;import org.springframework.ui.Model;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.ModelAttribute;
+&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+&nbsp;
+&nbsp;import java.text.DecimalFormat;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Controller
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+<b class="fc">&nbsp;@Slf4j</b>
+&nbsp;public class IssueController {
+&nbsp;    private final UserService userService;
+&nbsp;    private final IssueService issueService;
+&nbsp;    private final IssueRepository issueRepository;
+&nbsp;    private final ProjectRepository projectRepository;
+&nbsp;
+&nbsp;    @ModelAttribute(&quot;user&quot;)
+&nbsp;    public User getUserFromSession(HttpSession session) {
+<b class="nc">&nbsp;        User user = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        return user;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/issue-list&quot;)
+&nbsp;    public String issueList(Model model){
+<b class="nc">&nbsp;        var user = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        List&lt;Issue&gt; pmIssues=issueRepository.getIssuesByCreator(user.getName());</b>
+<b class="nc">&nbsp;        for (Issue issue : pmIssues) {</b>
+&nbsp;
+<b class="nc">&nbsp;                if (issue.getStatus() != Status.COMPLETED &amp;&amp; issue.getStatus() != Status.PENDING) {</b>
+<b class="nc">&nbsp;                    if( issue.getPlanDueDate().isBefore(LocalDate.now())){</b>
+&nbsp;                        /*issue.setStatus(Status.OVERDUE);*/
+<b class="nc">&nbsp;                        issueRepository.save(issue);</b>
+&nbsp;                    }
+&nbsp;
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;        }</b>
+&nbsp;    //    log.info(&quot;Issue -&gt; {}&quot;,pmIssues.size());
+<b class="nc">&nbsp;        model.addAttribute(&quot;pmIssues&quot;,pmIssues);</b>
+<b class="nc">&nbsp;        return &quot;issue-list&quot;;</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/issueboard&quot;)
+&nbsp;    public String issueBoard(Model model){
+<b class="nc">&nbsp;        int todoCount = 0;</b>
+<b class="nc">&nbsp;         int  inprogressCount=0;</b>
+<b class="nc">&nbsp;          int  pendingCount=0;</b>
+<b class="nc">&nbsp;            int completedCount=0;</b>
+<b class="nc">&nbsp;        var user=userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        List&lt;Project&gt; creatorProjects=projectRepository.findProjectsByCreator(user.getName());</b>
+<b class="nc">&nbsp;        List&lt;Project&gt; currentProjects=new ArrayList&lt;Project&gt;();</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; creatorProjects.size(); i++) {</b>
+<b class="nc">&nbsp;            if (!creatorProjects.get(i).getStatus().equals(Status.COMPLETED)) {</b>
+<b class="nc">&nbsp;                currentProjects.add(creatorProjects.get(i));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        List&lt;Issue&gt; creatorIssues=issueRepository.getIssuesByCreator(user.getName());</b>
+<b class="nc">&nbsp;        List&lt;Issue&gt; currentIssues= new ArrayList&lt;Issue&gt;();</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; creatorIssues.size(); i++) {</b>
+<b class="nc">&nbsp;            if (!creatorIssues.get(i).getProject().getStatus().equals(Status.COMPLETED)) {</b>
+<b class="nc">&nbsp;                currentIssues.add(creatorIssues.get(i));</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        for(Project currentProject:currentProjects){</b>
+<b class="nc">&nbsp;            boolean anyInProgress = false;</b>
+<b class="nc">&nbsp;            boolean allCompleted = true;</b>
+<b class="nc">&nbsp;            boolean issuesFound = false;</b>
+<b class="nc">&nbsp;            for(Issue issue:currentIssues) {</b>
+&nbsp;
+<b class="nc">&nbsp;                if (currentProject.getTitle().equals(issue.getProject().getTitle())) {</b>
+<b class="nc">&nbsp;                    issuesFound = true;</b>
+<b class="nc">&nbsp;                    if (issue.getStatus() == Status.INPROGRESS) {</b>
+<b class="nc">&nbsp;                        anyInProgress = true;</b>
+<b class="nc">&nbsp;                        break; // Break if any assign issue is in progress</b>
+<b class="nc">&nbsp;                    } else if (issue.getStatus() != Status.COMPLETED &amp;&amp; issue.getStatus() != null) {</b>
+<b class="nc">&nbsp;                        allCompleted = false; // Not all assign issues are completed</b>
+&nbsp;                    }
+&nbsp;                }
+<b class="nc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            // Check if no issues were found for the project
+<b class="nc">&nbsp;            if (!issuesFound) {</b>
+<b class="nc">&nbsp;                currentProject.setStatus(Status.TODO);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                if (anyInProgress) {</b>
+<b class="nc">&nbsp;                    currentProject.setStatus(Status.INPROGRESS);</b>
+<b class="nc">&nbsp;                    currentProject.setActualStartDate(LocalDate.now());</b>
+<b class="nc">&nbsp;                } else if (allCompleted) {</b>
+<b class="nc">&nbsp;                    currentProject.setStatus(Status.PENDING);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            projectRepository.save(currentProject);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /*For Overdue*/
+<b class="nc">&nbsp;        for(Project project:currentProjects){</b>
+&nbsp;
+<b class="nc">&nbsp;            if (project.getStatus() != Status.COMPLETED &amp;&amp; project.getStatus() != Status.PENDING) {</b>
+<b class="nc">&nbsp;                if( project.getPlanEndDate().isBefore(LocalDate.now())){</b>
+&nbsp;                    /*project.setStatus(Status.OVERDUE);*/
+<b class="nc">&nbsp;                    projectRepository.save(project);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;       /* For percentage*/
+<b class="nc">&nbsp;        double percentage=0;</b>
+<b class="nc">&nbsp;        for(Project pj:currentProjects){</b>
+<b class="nc">&nbsp;            int issueCount = issueRepository.countIssuesByProjectId(pj.getId());</b>
+<b class="nc">&nbsp;            int completedIssueCount = issueRepository.countCompletedIssuesByProjectId(pj.getId());</b>
+<b class="nc">&nbsp;            percentage = (double) completedIssueCount / issueCount * 100;</b>
+<b class="nc">&nbsp;            DecimalFormat decimalFormat = new DecimalFormat(&quot;#.##&quot;);</b>
+<b class="nc">&nbsp;            String formattedPercentage = decimalFormat.format(percentage);</b>
+<b class="nc">&nbsp;            pj.setPercentage(formattedPercentage);</b>
+<b class="nc">&nbsp;            projectRepository.save(pj);</b>
+&nbsp;
+<b class="nc">&nbsp;            if(pj.getStatus()==Status.TODO){</b>
+<b class="nc">&nbsp;                todoCount+=1;</b>
+<b class="nc">&nbsp;            } else if (pj.getStatus()==Status.INPROGRESS) {</b>
+<b class="nc">&nbsp;                inprogressCount+=1;</b>
+<b class="nc">&nbsp;            } else if (pj.getStatus()==Status.PENDING) {</b>
+<b class="nc">&nbsp;                pendingCount+=1;</b>
+&nbsp;            }else {
+<b class="nc">&nbsp;                completedCount+=1;</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;//        log.info(&quot; All Project list -&gt; {}&quot;,creatorIssues.size());
+&nbsp;//          log.info(&quot;Project list -&gt; {}&quot;,currentIssues.size());
+<b class="nc">&nbsp;        model.addAttribute(&quot;todoCount&quot;, todoCount);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;inprogressCount&quot;, inprogressCount);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;pendingCount&quot;, pendingCount);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;completedCount&quot;, completedCount);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;issues&quot;,currentIssues);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;projects&quot;,currentProjects);</b>
+<b class="nc">&nbsp;        return &quot;issueboard&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/all-issue-list&quot;)
+&nbsp;    public String allIssueList(){
+<b class="nc">&nbsp;        return &quot;all-issue-list&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/teamleader-progress-view&quot;)
+&nbsp;    public String teamleaderProgressView(Model model){
+<b class="nc">&nbsp;        var user = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        List&lt;Issue&gt; issues=issueRepository.getIssuesByCreator(user.getName());</b>
+<b class="nc">&nbsp;        List&lt;Issue&gt; currentIssues=new ArrayList&lt;Issue&gt;();</b>
+<b class="nc">&nbsp;        for(Issue issue:issues){</b>
+<b class="nc">&nbsp;            if(issue.getProject().getStatus()!=Status.COMPLETED){</b>
+<b class="nc">&nbsp;                currentIssues.add(issue);</b>
+&nbsp;
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;user&quot;,user);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;currentIssues&quot;,currentIssues);</b>
+<b class="nc">&nbsp;        return &quot;/teamleader-progress-view&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/issuedetails/{id}&quot;)
+&nbsp;    public String ViewIssueDetails(@PathVariable Long id, Model model) {
+<b class="nc">&nbsp;        IssueDetailsDto issue=issueService.getIssueDetailsById(id);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;issue&quot;,issue);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Issue Id:&quot;+id);</b>
+<b class="nc">&nbsp;        return &quot;issue-details&quot;;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

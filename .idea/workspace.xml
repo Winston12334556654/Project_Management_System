@@ -4,22 +4,51 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="31e389ec-65c9-4d82-805c-a979f4f2a2b1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="fa010c6a-5998-4e0b-b7a6-40f1eedc63f8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/assets/js/dashboard-bar-chart.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ai/group2/project_management_system/controller/api/IssueAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ai/group2/project_management_system/controller/api/IssueAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/assets/js/issue-create.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/assets/js/issue-create.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/assets/js/issue-modal-init.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/assets/js/issue-modal-init.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/assets/js/teamleader-issuelist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/assets/js/teamleader-issuelist.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ai/group2/project_management_system/controller/api/IssueAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ai/group2/project_management_system/controller/api/IssueAPI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/assets/js/issue-create.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/assets/js/issue-create.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/assets/js/issue-modal-init.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/assets/js/issue-modal-init.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/assets/js/teamleader-issuelist.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/assets/js/teamleader-issuelist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ai/group2/project_management_system/model/entity/AssignIssue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ai/group2/project_management_system/model/entity/AssignIssue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/assets/js/user-report.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/assets/js/user-report.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/project-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/project-detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/dto/AssignIssueDTOTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/dto/AssignIssueRequestDTOTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/dto/IssueDetailsDtoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/dto/ProjectDTOTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/dto/UserDTOTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/mapping/AssignIssueMapperTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/mapping/UserMappingTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/model/entity/IssueTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/model/entity/NotificationTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/model/entity/UserTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/service/Impl/EmailServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/service/Impl/MessageServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/service/Impl/NotificationServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/serviceTest/department/DepartmentAPITest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/serviceTest/department/DepartmentControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/serviceTest/department/DepartmentServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/serviceTest/department/DepartmentServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/serviceTest/issue/IssueFilesServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/serviceTest/issue/IssueServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/serviceTest/project/ProjectServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ai/group2/project_management_system/serviceTest/user/UserServiceImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ai/group2/project_management_system/model/entity/AssignIssue.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ai/group2/project_management_system/model/entity/AssignIssue.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/assets/js/user-report.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/assets/js/user-report.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/ai/group2/project_management_system/serviceTest/project/ProjectServiceImplTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/ai/group2/project_management_system/serviceTest/project/ProjectServiceImplTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -35,64 +64,200 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.ProjectManagementSystemApplication.executor": "Run",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging demo-main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "spring.configuration.checksum": "711dd3093ac59cf676ea0432a926fcac",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;Spring Boot.ProjectManagementSystemApplication.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging demo-main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;711dd3093ac59cf676ea0432a926fcac&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Desktop\Git Project\ProjectManagementSystem\src\main\resources\static\assets\images" />
+      <recent name="C:\Users\User\Desktop\Git Project\ProjectManagementSystem\src\main\resources\static\assets\userPhoto" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="ai.group2.project_management_system.service.Impl" />
+      <recent name="ai.group2.project_management_system.service" />
+      <recent name="ai.group2.project_management_system.model.entity" />
+    </key>
+  </component>
   <component name="RunManager" selected="Spring Boot.ProjectManagementSystemApplication">
-    <configuration name="issue-create.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="issue-create.js" working-dir="$PROJECT_DIR$/src/main/resources/static/assets/js">
-      <method v="2" />
-    </configuration>
-    <configuration name="ProjectManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+    <configuration name="IssueServiceImplTest.testSave" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ProjectManagementSystem" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="ai.group2.project_management_system.ProjectManagementSystemApplication" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ai.group2.project_management_system.*" />
+          <option name="PATTERN" value="ai.group2.project_management_system.serviceTest.issue.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="ai.group2.project_management_system.serviceTest.issue" />
+      <option name="MAIN_CLASS_NAME" value="ai.group2.project_management_system.serviceTest.issue.IssueServiceImplTest" />
+      <option name="METHOD_NAME" value="testSave" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="issue-create.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="issue-create.js" working-dir="$PROJECT_DIR$/src/main/resources/static/assets/js">
+      <method v="2" />
+    </configuration>
+    <configuration name="ProjectManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="ProjectManagementSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ai.group2.project_management_system.ProjectManagementSystemApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.IssueServiceImplTest.testSave" />
+      <item itemvalue="Node.js.issue-create.js" />
+      <item itemvalue="Spring Boot.ProjectManagementSystemApplication" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.ProjectManagementSystemApplication" />
+        <item itemvalue="JUnit.IssueServiceImplTest.testSave" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="31e389ec-65c9-4d82-805c-a979f4f2a2b1" name="Changes" comment="" />
+      <changelist id="fa010c6a-5998-4e0b-b7a6-40f1eedc63f8" name="Changes" comment="" />
       <created>1709303108709</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709303108709</updated>
       <workItem from="1709303120398" duration="10958000" />
       <workItem from="1709353285534" duration="18479000" />
+      <workItem from="1710264990401" duration="11754000" />
+      <workItem from="1710296806755" duration="2959000" />
+      <workItem from="1710392826506" duration="1021000" />
+      <workItem from="1710429039703" duration="331000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="ai.group2.project_management_system.model.entity.Notification" memberName="id" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentControllerTest.ic" NAME="DepartmentControllerTest Coverage Results" MODIFIED="1710177654814" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$All_in_ProjectManagementSystem__3_.ic" NAME="All in ProjectManagementSystem (3) Coverage Results" MODIFIED="1710220433544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentAPITest_testAddDepartment.ic" NAME="DepartmentAPITest.testAddDepartment Coverage Results" MODIFIED="1710212337791" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$EmailServiceImplTest_testSendEmailWithAttachment.ic" NAME="EmailServiceImplTest.testSendEmailWithAttachment Coverage Results" MODIFIED="1710257262265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.service.Impl.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentServiceImplTest_testSaveDepartment.ic" NAME="DepartmentServiceImplTest.testSaveDepartment Coverage Results" MODIFIED="1710213203188" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$ProjectServiceImplTest_testGetProjectsByDepartmentId_Null.ic" NAME="ProjectServiceImplTest.testGetProjectsByDepartmentId_Null Coverage Results" MODIFIED="1710228206228" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.project.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$NotificationTest_testNotificationEntity.ic" NAME="NotificationTest.testNotificationEntity Coverage Results" MODIFIED="1710255113495" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.model.entity.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$UserServiceImplTest_getUsersByDepartmentId_ReturnsUserDTOs.ic" NAME="UserServiceImplTest.getUsersByDepartmentId_ReturnsUserDTOs Coverage Results" MODIFIED="1710218282105" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.user.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentAPITest_testUpdateDepartment.ic" NAME="DepartmentAPITest.testUpdateDepartment Coverage Results" MODIFIED="1710212450430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentAPITest_testDepartmentStatus_Active.ic" NAME="DepartmentAPITest.testDepartmentStatus_Active Coverage Results" MODIFIED="1710212588968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentAPITest_testDepartmentStatus_Inactive.ic" NAME="DepartmentAPITest.testDepartmentStatus_Inactive Coverage Results" MODIFIED="1710212597493" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$All_in_ProjectManagementSystem__4_.ic" NAME="All in ProjectManagementSystem (4) Coverage Results" MODIFIED="1710227445102" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentServiceImplTest.ic" NAME="DepartmentServiceImplTest Coverage Results" MODIFIED="1710177669405" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$UserServiceImplTest_getUsersByProjectId_ReturnsUserDTOs.ic" NAME="UserServiceImplTest.getUsersByProjectId_ReturnsUserDTOs Coverage Results" MODIFIED="1710217701467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.user.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentAPITest_testGetDepartmentsWhenEmpty.ic" NAME="DepartmentAPITest.testGetDepartmentsWhenEmpty Coverage Results" MODIFIED="1710215089698" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$ProjectManagementSystemApplicationTests_contextLoads.ic" NAME="ProjectManagementSystemApplicationTests.contextLoads Coverage Results" MODIFIED="1710178083627" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentServiceImplTest_testGetAllDepartments.ic" NAME="DepartmentServiceImplTest.testGetAllDepartments Coverage Results" MODIFIED="1710213276156" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentAPITest_testGetDepartments.ic" NAME="DepartmentAPITest.testGetDepartments Coverage Results" MODIFIED="1710179706505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$UserAPITest_testCreateUser_Success.ic" NAME="UserAPITest.testCreateUser_Success Coverage Results" MODIFIED="1710219422476" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.user.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$All_in_ProjectManagementSystem.ic" NAME="All in ProjectManagementSystem Coverage Results" MODIFIED="1710228404050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$UserServiceImplTest_getCurrentUser_ReturnsCurrentUser.ic" NAME="UserServiceImplTest.getCurrentUser_ReturnsCurrentUser Coverage Results" MODIFIED="1710217500373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.user.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$EmailServiceImplTest_testGenerateOTP.ic" NAME="EmailServiceImplTest.testGenerateOTP Coverage Results" MODIFIED="1710255936262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.service.Impl.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$UserTest_testUserEntity.ic" NAME="UserTest.testUserEntity Coverage Results" MODIFIED="1710255390223" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.model.entity.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$NotificationServiceImplTest_testSave.ic" NAME="NotificationServiceImplTest.testSave Coverage Results" MODIFIED="1710261159425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.service.Impl.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentAPITest.ic" NAME="DepartmentAPITest Coverage Results" MODIFIED="1710215146841" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$ProjectServiceImplTest_testGetUserIdsByProjectId.ic" NAME="ProjectServiceImplTest.testGetUserIdsByProjectId Coverage Results" MODIFIED="1710226991375" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.project.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$All_in_ProjectManagementSystem__2_.ic" NAME="All in ProjectManagementSystem (2) Coverage Results" MODIFIED="1710219040984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentServiceImplTest_testGetDepartmentById.ic" NAME="DepartmentServiceImplTest.testGetDepartmentById Coverage Results" MODIFIED="1710213334218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$ProjectManagementSystemApplication.ic" NAME="ProjectManagementSystemApplication Coverage Results" MODIFIED="1710313951337" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$IssueServiceImplTest_testSave.ic" NAME="IssueServiceImplTest.testSave Coverage Results" MODIFIED="1710314231408" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.issue.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$DepartmentAPITest_testUpdateDepartmentNotFound.ic" NAME="DepartmentAPITest.testUpdateDepartmentNotFound Coverage Results" MODIFIED="1710212574848" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.department.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$ImageServiceTest_testSaveImageAsync.ic" NAME="ImageServiceTest.testSaveImageAsync Coverage Results" MODIFIED="1710260469767" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$All_in_ProjectManagementSystem__1_.ic" NAME="All in ProjectManagementSystem (1) Coverage Results" MODIFIED="1710227937377" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$MessageServiceImplTest.ic" NAME="MessageServiceImplTest Coverage Results" MODIFIED="1710257617781" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.service.Impl.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$UserAPITest_testCreateUserEndpoint_Success.ic" NAME="UserAPITest.testCreateUserEndpoint_Success Coverage Results" MODIFIED="1710175770383" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.user.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$ProjectManagementSystemApplicationTests.ic" NAME="ProjectManagementSystemApplicationTests Coverage Results" MODIFIED="1710210204139" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ProjectManagementSystem$ProjectServiceImplTest_testGetProjectsByUserName.ic" NAME="ProjectServiceImplTest.testGetProjectsByUserName Coverage Results" MODIFIED="1710227782917" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ai.group2.project_management_system.serviceTest.project.*</FILTER>
+    </SUITE>
   </component>
 </project>

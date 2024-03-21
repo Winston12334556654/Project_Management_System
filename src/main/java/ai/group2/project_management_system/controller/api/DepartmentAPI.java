@@ -22,6 +22,7 @@ public class DepartmentAPI {
 
     @PostMapping("/add-department")
     public ResponseEntity<Department> addDepartment(@RequestBody Department department) {
+        department.setActive(true);
         Department newDepartment = departmentService.save(department);
         return ResponseEntity.ok(newDepartment);
     }
@@ -31,12 +32,9 @@ public class DepartmentAPI {
         Department existingDepartment = departmentService.getDepartmentById(departmentId);
 
         if (existingDepartment != null) {
-            // Update the existing department with the new information
             existingDepartment.setName(updatedDepartment.getName());
             existingDepartment.setEmail(updatedDepartment.getEmail());
             existingDepartment.setPhone(updatedDepartment.getPhone());
-            existingDepartment.setActive(updatedDepartment.isActive());
-            // Update other fields as needed
 
             Department savedDepartment = departmentService.save(existingDepartment);
             return ResponseEntity.ok(savedDepartment);
@@ -45,15 +43,18 @@ public class DepartmentAPI {
         }
     }
 
-    @PutMapping("/department-toggle/{departmentId}")
-    public ResponseEntity<String> toggleDepartmentStatus(@PathVariable("departmentId") Long departmentId) {
+    @PutMapping("api/updateRecord/{departmentId}")
+    public ResponseEntity<String> departmentStatus(@PathVariable("departmentId") Long departmentId) {
         Department department = departmentService.getDepartmentById(departmentId);
-        if (department != null) {
-            department.setActive(!department.isActive());
+        if (department != null && department.isActive()) {
+            department.setActive(false);
             departmentService.save(department);
-            return ResponseEntity.ok("Department status changed successfully");
+            return ResponseEntity.ok("Department status false changed successfully");
         } else {
-            return ResponseEntity.notFound().build();
+            department.setActive(true);
+            departmentService.save(department);
+            return ResponseEntity.ok("Department status true changed successfully");
         }
     }
+
 }

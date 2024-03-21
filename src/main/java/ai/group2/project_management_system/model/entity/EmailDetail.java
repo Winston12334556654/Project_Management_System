@@ -25,19 +25,17 @@ public class EmailDetail implements Serializable {
 
         private String msgBody;
         private String subject;
-        private MultipartFile attachment;
+    private List<MultipartFile> attachments;
 
-    public MultipartFile getAttachment() {
-        return attachment;
+    public List<MultipartFile> getAttachments() {
+        return attachments;
     }
 
-    public void setAttachment(MultipartFile attachment) {
-        this.attachment = attachment;
+    public void setAttachments(List<MultipartFile> attachments) {
+        this.attachments = attachments;
     }
 
-
-
-        public String getMsgBody() {
+    public String getMsgBody() {
             return msgBody;
         }
 
@@ -59,5 +57,8 @@ public class EmailDetail implements Serializable {
 
     public void setRecipients(List<String> recipients) {
         this.recipients = recipients;
+    }
+
+    public void addRecipient(String mail) {
     }
 }

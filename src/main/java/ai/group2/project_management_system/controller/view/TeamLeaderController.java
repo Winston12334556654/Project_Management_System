@@ -4,16 +4,16 @@ import ai.group2.project_management_system.dto.AssignIssueDTO;
 import ai.group2.project_management_system.dto.IssueDetailsDto;
 import ai.group2.project_management_system.mapping.AssignIssueMapper;
 import ai.group2.project_management_system.model.Enum.Status;
-import ai.group2.project_management_system.model.entity.AssignIssue;
-import ai.group2.project_management_system.model.entity.Department;
-import ai.group2.project_management_system.model.entity.Issue;
+import ai.group2.project_management_system.model.entity.*;
 import ai.group2.project_management_system.repository.AssignIssueRepository;
 import ai.group2.project_management_system.repository.IssueRepository;
 import ai.group2.project_management_system.service.AssignIssueService;
 import ai.group2.project_management_system.service.IssueService;
 import ai.group2.project_management_system.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +36,17 @@ public class TeamLeaderController {
     private final IssueRepository issueRepository;
     private final AssignIssueRepository assignIssueRepository;
     private final AssignIssueMapper assignIssueMapper;
+    @ModelAttribute("user")
+    public User getUserFromSession(HttpSession session) {
+        User user = userService.getCurrentUser();
+        return user;
+    }
     @GetMapping("/teamleader-issueboard")
     public String TeamLeaderIssueBoard(Model model) {
-
+        int todoCount = 0;
+        int  inprogressCount=0;
+        int  pendingCount=0;
+        int completedCount=0;
        // Long teamleaderId= (Long) httpSession.getAttribute("id");
         var user = userService.getCurrentUser();
         Long teamleaderId=user.getId();
@@ -49,11 +58,35 @@ public class TeamLeaderController {
             }
         }
      //   log.info("Issues list -> {}",currentTeamLeaderIssues.size());
-
+        /* For percentage*/
+        double percentage=0;
+        for(Issue issue:currentTeamLeaderIssues){
+            int assignIssueCount = assignIssueRepository.countSubIssuesByIssueId(issue.getId());
+            int completedAssignIssueCount = assignIssueRepository.countCompletedSubIssuesByIssueId(issue.getId());
+            percentage = (double) completedAssignIssueCount / assignIssueCount * 100;
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+            String formattedPercentage = decimalFormat.format(percentage);
+            issue.setPercentage(formattedPercentage);
+            issueRepository.save(issue);
+            if(issue.getStatus()==Status.TODO){
+                todoCount+=1;
+            } else if (issue.getStatus()==Status.INPROGRESS) {
+                inprogressCount+=1;
+            } else if (issue.getStatus()==Status.PENDING) {
+                pendingCount+=1;
+            }else if(issue.getStatus()==Status.COMPLETED){
+                completedCount+=1;
+            }else {
+                System.out.println("It is not ok for counting");
+            }
+        }
+        model.addAttribute("todoCount", todoCount);
+        model.addAttribute("inprogressCount", inprogressCount);
+        model.addAttribute("pendingCount", pendingCount);
+        model.addAttribute("completedCount", completedCount);
         model.addAttribute("issues",currentTeamLeaderIssues);
         return "teamleader-issueboard";
     }
-
 
 
     @GetMapping("/teamleader-issuelist")
@@ -97,6 +130,21 @@ public class TeamLeaderController {
                 }
                 issueRepository.save(issue);
             }
+
+            for(Issue issue:issues){
+                if(issue != null && issue.getStatus().equals(Status.COMPLETED)){
+                    if(issue.getPlanDueDate().isBefore(issue.getActualDueDate())){
+                        issue.setOverDue(true);
+                        issueRepository.save(issue);
+                    }
+                }else  {
+                    if( issue.getPlanDueDate().isBefore(LocalDate.now())){
+                        issue.setOverDue(true);
+                        issueRepository.save(issue);
+                    }
+                }
+            }
+
 
             model.addAttribute("issues", issues);
             model.addAttribute("assignIssue", new AssignIssueDTO());

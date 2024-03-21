@@ -1,0 +1,221 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UserServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.service.Impl</a>
+</div>
+
+<h1>Coverage Summary for Class: UserServiceImpl (ai.group2.project_management_system.service.Impl)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    12.5%
+  </span>
+  <span class="absValue">
+    (2/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8.3%
+  </span>
+  <span class="absValue">
+    (2/24)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UserServiceImpl$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    12.5%
+  </span>
+  <span class="absValue">
+    (2/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8.3%
+  </span>
+  <span class="absValue">
+    (2/24)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.service.Impl;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.dto.UserDTO;
+&nbsp;import ai.group2.project_management_system.mapping.UserMapping;
+&nbsp;import ai.group2.project_management_system.model.entity.Project;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import ai.group2.project_management_system.repository.UserRepository;
+&nbsp;import ai.group2.project_management_system.service.UserService;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.springframework.security.core.context.SecurityContextHolder;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+<b class="fc">&nbsp;@Slf4j</b>
+&nbsp;@Transactional
+&nbsp;public class UserServiceImpl implements UserService {
+&nbsp;
+&nbsp;    private final UserRepository userRepository;
+&nbsp;    private final UserMapping userMapping;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public User getCurrentUser() {
+<b class="nc">&nbsp;        var username = SecurityContextHolder.getContext().getAuthentication().getName();</b>
+<b class="nc">&nbsp;        return userRepository.findByEmail(username).orElse(null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;UserDTO&gt; getUsersByProjectId(Long projectId) {
+<b class="nc">&nbsp;        List&lt;User&gt; users = userRepository.findByProjects_id(projectId);</b>
+<b class="nc">&nbsp;        return users.stream()</b>
+<b class="nc">&nbsp;                .map(userMapping::mapUserToDTOs)</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;User&gt; getMembersByDepartmentId(Long departmentId) {
+<b class="nc">&nbsp;        List&lt;User&gt; users = userRepository.findByDepartmentId(departmentId);</b>
+<b class="nc">&nbsp;        return users;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getUserPhotoById(Long id) {
+<b class="nc">&nbsp;        return userRepository.findPhotoById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;User&gt; getAllUserByIssueId(Long issueId) {
+<b class="nc">&nbsp;        return userRepository.findAllUserByIssueId(issueId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;User&gt; getUsersByIds(List&lt;Long&gt; teamLeaderIds) {
+<b class="nc">&nbsp;        return userRepository.findAllById(teamLeaderIds);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Project&gt; getProjectsByUserId(Long userId) {
+<b class="nc">&nbsp;        return userRepository.findProjectsByUserId(userId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public User save(User user) {
+<b class="nc">&nbsp;        return userRepository.save(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;User&gt; getAllUsers() {
+<b class="nc">&nbsp;        return userRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public User getUserById(long userId) {
+<b class="nc">&nbsp;        return userRepository.findById(userId).orElse(null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;User&gt; findUsersByIds(List&lt;Long&gt; userIds) {
+<b class="nc">&nbsp;        return userRepository.findByIdIn(userIds);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;UserDTO&gt; getUsersByDepartmentId(Long departmentId) {
+<b class="nc">&nbsp;        List&lt;User&gt; users = userRepository.findByDepartmentId(departmentId);</b>
+<b class="nc">&nbsp;        return users.stream()</b>
+<b class="nc">&nbsp;                .map(userMapping::mapUserToDTOs)</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getUserEmailById(Long userId) {
+<b class="nc">&nbsp;        return userRepository.findEmailById(userId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getUserNameById(Long userId){
+<b class="nc">&nbsp;        return userRepository.findUserNameByID(userId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>

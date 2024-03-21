@@ -66,7 +66,7 @@
                         <div class="card-body">
                             <div>
                                 <div class="table-responsive table-card mb-1">
-                                    <table id="example" class="table align-middle table-striped table-hover table1 display" >
+                                    <table id="statusTable" class="table align-middle table-striped table-hover table1 display" >
                                         <thead class="table-light text-muted">
                                         <tr>
 
@@ -131,10 +131,12 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" ></script>
 <script>
     $(document).ready(function() {
-        new DataTable('#example', {
-            pagingType: 'full_numbers'
-
-        });
+        // Initialize DataTable if it's not already initialized
+        if (!$.fn.DataTable.isDataTable('#statusTable')) {
+            $('#statusTable').DataTable({
+                pagingType: 'full_numbers'
+            });
+        }
     });
 
 </script>
@@ -149,6 +151,27 @@
 <script src="assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 <script th:src="@{/assets/js/teamleader-issuelist.js}"></script>
 <script th:src="@{/assets/js/pm-issue-list.js}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if the "See More" button was clicked
+        const seeMoreClicked = sessionStorage.getItem('seeMoreClicked');
+
+        // Check if the button was clicked and selectedStatus is available
+        if (seeMoreClicked && localStorage.getItem('selectedStatus')) {
+            // Get the DataTable instance
+            var table = $('#statusTable').DataTable();
+
+            // Retrieve the selectedStatus from localStorage
+            const selectedStatus = localStorage.getItem('selectedStatus');
+
+            // Set the search value programmatically
+            table.search(selectedStatus).draw();
+
+            // Clear the sessionStorage flag
+            sessionStorage.removeItem('seeMoreClicked');
+        }
+    });
+</script>
 </body>
 
 </html>

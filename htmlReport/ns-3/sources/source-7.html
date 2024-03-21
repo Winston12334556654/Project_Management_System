@@ -1,0 +1,213 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProfileAPI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ai.group2.project_management_system.controller.api</a>
+</div>
+
+<h1>Coverage Summary for Class: ProfileAPI (ai.group2.project_management_system.controller.api)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProfileAPI</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2%
+  </span>
+  <span class="absValue">
+    (1/49)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ai.group2.project_management_system.controller.api;
+&nbsp;
+&nbsp;import ai.group2.project_management_system.model.entity.User;
+&nbsp;import ai.group2.project_management_system.service.ImageService;
+&nbsp;import ai.group2.project_management_system.service.UserService;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.mindrot.jbcrypt.BCrypt;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.multipart.MultipartFile;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class ProfileAPI {
+&nbsp;    private final UserService userService;
+&nbsp;    private final ImageService imageService;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/user/profile&quot;)
+&nbsp;    public ResponseEntity&lt;User&gt; getCurrentUser() {
+<b class="nc">&nbsp;       User currentUser = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;       System.out.println(currentUser);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(currentUser);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/user/password/{password}&quot;)
+&nbsp;    public boolean getCurrentUserPassword(@PathVariable(&quot;password&quot;) String password) {
+<b class="nc">&nbsp;        User currentUser = userService.getCurrentUser();</b>
+<b class="nc">&nbsp;        boolean checkedPassword = BCrypt.checkpw(password, currentUser.getPassword());</b>
+<b class="nc">&nbsp;        return checkedPassword;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/edit-user/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;User&gt; editUser(@PathVariable(&quot;id&quot;) Long userId, @RequestBody User user){
+<b class="nc">&nbsp;        System.out.println(&quot;we reach edit mapping!&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        User user1 = userService.getUserById(userId);</b>
+<b class="nc">&nbsp;        if (user1 != null) {</b>
+&nbsp;
+<b class="nc">&nbsp;            user1.setName(user.getName());</b>
+<b class="nc">&nbsp;            user1.setAddress(user.getAddress());</b>
+<b class="nc">&nbsp;            user1.setDob(user.getDob());</b>
+<b class="nc">&nbsp;            user1.setEducation(user.getEducation());</b>
+<b class="nc">&nbsp;            user1.setEmail(user.getEmail());</b>
+<b class="nc">&nbsp;            user1.setGender(user.getGender());</b>
+<b class="nc">&nbsp;            user1.setPhone(user.getPhone());</b>
+<b class="nc">&nbsp;            user1.setDepartment(user.getDepartment());</b>
+<b class="nc">&nbsp;            user1.setPosition(user.getPosition());</b>
+&nbsp;            //user1.setProfilePictureFileName(user.getProfilePictureFileName());
+<b class="nc">&nbsp;            User latestUser = userService.save(user1);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(latestUser);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    @PostMapping(&quot;/edit-profilePhoto/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;User&gt; updateUserProfilePhoto(@PathVariable(&quot;id&quot;) long userId,@RequestParam(&quot;file&quot;) MultipartFile file){
+&nbsp;        try {
+<b class="nc">&nbsp;            System.out.println(&quot;Received update request for user ID: &quot; + userId);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;File Name : &quot; + file);</b>
+&nbsp;
+&nbsp;            // Retrieve the existing user from the database
+<b class="nc">&nbsp;            User existingUser = userService.getUserById(userId);</b>
+<b class="nc">&nbsp;            if(existingUser!=null){</b>
+&nbsp;                // Process the image file
+<b class="nc">&nbsp;                MultipartFile photo = file;</b>
+<b class="nc">&nbsp;                System.out.println(&quot;photo : &quot;+photo);</b>
+<b class="nc">&nbsp;                if (photo != null &amp;&amp; !photo.isEmpty()) {</b>
+<b class="nc">&nbsp;                    String savedImagePath = imageService.saveImageAsync(photo);</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;savedImagePath  : &quot;+ savedImagePath);</b>
+<b class="nc">&nbsp;                    if (savedImagePath != null &amp;&amp; (savedImagePath.endsWith(&quot;.jpg&quot;) || savedImagePath.endsWith(&quot;.jpeg&quot;) ||</b>
+<b class="nc">&nbsp;                            savedImagePath.endsWith(&quot;.png&quot;) || savedImagePath.endsWith(&quot;.gif&quot;))) {</b>
+<b class="nc">&nbsp;                        existingUser.setProfilePictureFileName(savedImagePath);</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.err.println(&quot;Upload file is not an allowed image type.&quot;);</b>
+&nbsp;                    }
+&nbsp;                }// Save the updated user to the database
+<b class="nc">&nbsp;                User savedUser = userService.save(existingUser);</b>
+&nbsp;
+<b class="nc">&nbsp;                return ResponseEntity.ok(savedUser);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                return ResponseEntity.notFound().build();</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }catch (Exception e) {</b>
+&nbsp;            // Log the exception or handle it appropriately
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;            // Return an error response if the update fails
+<b class="nc">&nbsp;            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PostMapping(&quot;/update-password/{userId}&quot;)
+&nbsp;    public ResponseEntity&lt;User&gt; updatePassword(@PathVariable(&quot;userId&quot;) long userId, @RequestBody User user) {
+<b class="nc">&nbsp;        System.out.println(&quot;we reach edit mapping!&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        User existingUser = userService.getUserById(userId);</b>
+<b class="nc">&nbsp;        if (existingUser != null) {</b>
+&nbsp;            // Update the password
+<b class="nc">&nbsp;            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());</b>
+<b class="nc">&nbsp;            existingUser.setPassword(hashedPassword);</b>
+<b class="nc">&nbsp;            User updatedUser = userService.save(existingUser);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(updatedUser);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return ResponseEntity.notFound().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-03-12 10:09</div>
+</div>
+</body>
+</html>
